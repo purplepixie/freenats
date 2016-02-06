@@ -1,0 +1,12 @@
+<h1>FreeNATS</h1>
+
+Welcome to FreeNATS.<br><br>
+FreeNATS is &copy; Copyright 2008 <a href=http://www.purplepixie.org>PurplePixie Systems</a>, all rights reserved. It is
+released under the <a href=http://www.gnu.org>GNU General Public Licence</a>.<br><br>
+See <a href=install.html>install.html</a> for the briefest of brief instructions. More (and up-to-date-ish) information
+is available at the project homepage <a href=http://www.purplepixie.org/freenats/>www.purplepixie.org/freenats</a>.
+
+<br><br>
+Good luck!
+<br><br>
+

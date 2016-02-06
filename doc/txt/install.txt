@@ -1,0 +1,74 @@
+<h1>FreeNATS - Installation Documentation</h1>
+
+This brief installation document is the only documentation that comes with FreeNATS. For full up-to-date documentation and licence information visit the FreeNATS website at <a href=http://www.purplepixie.org/freenats/>www.purplepixie.org/freenats</a>.
+<br><br>
+There are two methods of installation available; automatic where a script does all the work creating the relevant database tables or you can import the SQL manually.
+<br><br>
+FreeNATS creates various tables in the database all prefixed with &quot;fn&quot;.
+<br><br>
+<b>Install PHP Source Code</b>
+<br><br>
+Extract freenats-V.vv.sr.tar.gz<br><br>
+&quot;web&quot; is the web interface directory and needs to be &quot;published&quot. Ideally the other dirs (base and bin) should be not published at all by apache but (a) it should be safe to call any of those scripts anyway and (b) there are .htaccess files in the dirs.<br><br>
+If you have moved web somewhere (so the base dir is not ../base from the web dir) will need to edit the include.php file in the web dir and give it the base location (WITH TRAILING SLASH!).
+<br><br>
+You can do this automatically by running the &quot;shell-install.sh&quot; script in the root folder (copying and moving that is - not the DB setup etc).
+<br><br>
+Edit the base/config.inc.php file and put in your MySQL connection settings.
+<br><br>
+
+<b>Upgrading</b>
+<br><br>
+You can upgrade your system (files only - not schema) by using the &quot;shell-install.sh&quot; script. This will copy all files bar specific system config (the includes and config.inc files).
+<br><br>
+Feel free to try the experimental upgrade process to update the schema either by manually importing the
+&quot;schema.sql&quot; and &quot;schema.upgrade.sql&quot; (one will create any missing tables and the other will
+update any pre-existing tables) or by using the firstrun script (you will need to rename it from firstrun-.php and
+then browse to it).<br><br>
+Expect lots of errors with the update as it will try to recreate tables/fields/keys already in existance - don't
+worry too much about it. You should be able to see any &quot;serious&quot; errors.<br><br>
+
+<b>Upgrading Virtual Appliance</b>
+<br><br>
+Virtual Appliance users should use the &quot;vm-upgrade.sh&quot; script which will run the upgrade script with the correct default locations.<br><br>
+Please note this will only upgrade FreeNATS - you should check for rPath upgrades through it's admin console.
+<br><br>
+<b>Automatic Installation</b>
+<br><br>
+Rename the web/firstrun-.php file to web/firstrun.php
+<br><br>
+Navigate to http://your.freenats.url/firstrun.php
+<br><br>
+Follow the instructions
+<br><br>
+<b>Manual Installation</b>
+<br><br>
+In the base/sql dir there are various .sql files - schema, schema.drop, schema.upgrade, default and example
+<br><br>
+You will need to run/import schema (the database table structure) and default (the admin user and some necessary default settings) for the system to work.
+<br><br>
+The example.sql file contains optional example node and group data and is recommended.
+<br><br>
+The schema.drop contains if table exists drop queries before trying to create the table so will clean out any
+existing junk if required.<br><br>
+The schema.upgrade contains upgrade instructions (see above) and not used for a fresh install. If you want to
+upgrade you will need to run mysql (with --force) on schema.sql, upgrade.sql and default.sql in that order.<br><br>
+<b>The Tester Script</b>
+<br><br>
+The tester script must be run (via cron or whatever) at regular intervals to poll the nodes. The recommended setting is five minutes.<br><br>
+It requires the working directory to be the bin dir on startup.
+<br><br>
+There are two choices - either run bin/tester.sh which will test all enabled nodes waiting for each node/test in sequence and then raising the relevant
+alerts and emails etc. The other option is to run bin/test-threaded.sh which will fork a background process for each node to test. This is better but will
+send an alert email for each node that fails (rather than one with all the failures from that test run at the end). See the documentation for more information.
+<br><br>
+On many PHP/Linux security setups many of the low level tests (such as ping for example) can require root or some other special privs. You can always run the tester script manually from the console in different environments to test the output.<br><br>
+Please note that a script crash for lack of privs may not be caught gracefully and may result in stuck monitor scripts and/or just an open monitor record in the database stopping other monitors from running.
+<br><br>
+In addition to the tester script you should run bin/cleanup.sh daily or so to clean out old sessions and data (inline with your retention settings). This doesn't
+require any special privs unlike the tester. See the documentation for more information.
+<b>Troubleshooting</b>
+<br><br>
+See <a href=http://www.purplepixie.org/freenats/>www.purplepixie.org/freenats</a>
+<br><br>
+

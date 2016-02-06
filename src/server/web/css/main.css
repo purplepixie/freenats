@@ -1,0 +1,354 @@
+<!--
+/* -------------------------------------------------------------
+This file is part of FreeNATS
+
+FreeNATS is (C) Copyright 2008-2010 PurplePixie Systems
+
+FreeNATS is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+FreeNATS is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with FreeNATS.  If not, see www.gnu.org/licenses
+
+For more information see www.purplepixie.org/freenats
+-------------------------------------------------------------- */
+
+body {  font-family: Verdana, Arial, Helvetica, sans-serif; color: #000000; font-size: 10pt; margin: 5px;}
+td {  font-family: Verdana, Arial, Helvetica, sans-serif; color: #000000; font-size: 10pt}
+tr {  font-family: Verdana, Arial, Helvetica, sans-serif; color: #000000; font-size: 10pt}
+
+a {  font-family: Verdana, Arial, Helvetica, sans-serif; color: #003366; text-decoration: underline; }
+
+a:hover {  font-family: Verdana, Arial, Helvetica, sans-serif; color: #663300; }
+
+table.maintitle
+	{
+	background-color: #e0e0ff;
+	border-bottom: none;
+	position: relative;
+	top: -5px;
+	left: 0;
+	margin: 0;
+	padding: 0;
+	padding-top: 2px;
+	width: 100%;
+	height: 35px;
+	}
+	
+td.mainleft
+	{
+	background: url(../images/e0e0ff.10px.bl.jpg) 0 100% no-repeat;
+	font-size: 8pt;
+	font-weight: bold;
+	}
+	
+td.mainleft a   /* page title options */
+	{
+	font-size: 8pt;
+	color: red;
+	text-decoration: none;
+	font-weight: bold;
+	}
+
+
+b.maintitle 
+	{ 
+	font-size: 14pt; 
+	padding: 5px;
+	position: relative;
+	top: -2px; 
+	}
+
+b.subtitle { font-size: 13pt; }
+
+b.sectitle { font-size: 12pt; }
+/*
+echo "<div style=\"background: #".$col."; margin: 0; padding: 0;\">";
+echo "<div style=\"background: url(out/".$col.".10px.bl.jpg) 0 100% no-repeat;\">";
+echo "<div style=\"background: url(out/".$col.".10px.br.jpg) 100% 100% no-repeat;\">";
+echo "<div style=\"background: url(out/".$col.".10px.tl.jpg) 0 0 no-repeat;\">";
+echo "<div style=\"background: url(out/".$col.".10px.tr.jpg) 100% 0 no-repeat; padding: 5px\">";
+*/
+div.bl
+	{
+	background: url(../images/e0e0ff.10px.bl.jpg) 0 100% no-repeat;
+	}
+
+div.br
+	{
+	background: url(../images/e0e0ff.10px.br.jpg) 100% 100% no-repeat;
+	}
+	
+div.tl
+	{
+	background: url(../images/e0e0ff.10px.tl.jpg) 0 0 no-repeat;
+	}
+	
+div.tr
+	{
+	background: url(../images/e0e0ff.10px.tr.jpg) 100% 0 no-repeat;
+	padding: 5px;
+	}
+
+td.titlelink
+	{
+	text-align: right;
+	font-size: 10pt;
+	background: url(../images/e0e0ff.10px.br.jpg) 100% 100% no-repeat;
+	}
+	
+hr.nspacer
+	{
+	width: 100%;
+	height: 1px;
+	border: 0;
+	background-color: #e0e0ff;
+	}
+	
+td.titlelink a
+	{
+	/*
+	position: relative;
+	top: -1px; */
+	color: blue;
+	text-decoration: none;
+	font-weight: bold;
+	}	
+	
+td.titlelink a:hover
+	{
+	color: red;
+	}
+
+
+b.configheading { font-size: 12pt; text-decoration: underline; }
+b.minortitle { 
+	font-size: 13pt; 
+	text-decoration: underline;
+	}
+
+div.alertpane
+	{
+	margin: 10px 0 0 0;
+	padding: 5px 5px 5px 5px;
+	float:	right;
+	background-color: #ffe0e0;
+	width: 200px;
+	border: dashed 1px #e0a0a0;
+	}
+	
+div.monitorviews
+	{
+	margin: 0px 5px 10px 10px;
+	padding: 5px;
+	position: relative;
+	float: right;
+	text-align: center;
+	width: 70;
+	border: dotted 1px #a0a0ff;
+	background-color: #f0f0ff;
+	font-size: 8pt;
+	z-index: 2;
+	}
+	
+table.nfooter
+	{
+	vertical-align: bottom;
+	/*border: dashed 1px #a0a0e0;*/
+	border: 0;
+	background-color: #e0e0ff;
+	}
+	
+div.nfooter
+	{
+	vertical-align: bottom;
+	position: relative;
+	/*border: dashed 1px #a0a0e0;*/
+	border: 0;
+	background: #e0e0ff;
+	padding: 0;
+	margin: 0;
+	z-index: 1;
+	}
+	
+div.nfootleft
+	{
+	display: inline;
+	}
+	
+div.nfootright
+	{
+	display: inline;
+	text-align: right;
+	position: absolute;
+	/*background-color: #f0f0f0;*/
+	right: 5px;
+	}
+	
+.al-1 { color: black; }
+.al0 { color: green; }
+.al1 { color: orange; }
+.al2 { color: red; }
+
+table.nicetable
+	{
+	border: dotted 1px #e0e0e0;
+	}
+	
+table.nicetable td
+	{
+	border-bottom: dotted 1px #e0e0e0;
+	}
+	
+table.hidenicetable
+	{
+	border: dotted 1px #e0e0e0;
+	visibility: hidden;
+	}
+	
+table.hidenicetable td
+	{
+	border-bottom: dotted 1px #e0e0e0;
+	}
+	
+table.nicetablehov
+	{
+	border: dotted 1px #e0e0e0;
+	}
+/*
+table.nicetablehov tr:hover
+	{
+	background-color: #a0a0ff;
+	}
+*/
+
+table.nicetablehov td
+	{
+	border-bottom: dotted 1px #e0e0e0;
+	/* border-spacing: 0px; */
+	/*margin: 5px 5px 5px 5px; */
+	/*padding: 5px 5px 5px 5px;*/
+	
+	/* margin: 50px; */
+	}
+
+tr.nicetablehov:hover
+	{
+	background-color: #f6f6ff;
+	}
+	
+table.viewtable:hover
+	{
+	background-color: #f9f9ff;
+	}
+	
+table.viewtable
+	{
+	/*background-color: #f9f9ff;*/
+	margin-top: 5px;
+	}
+	
+hr.viewtable
+	{
+	border: solid 0px #f0f0f0;
+	background-color: #f0f0f0;
+	text-align: left;
+	width: 80%;
+	height: 1px;
+	}
+/*	
+table.nicetablehov td:hover
+	{
+	background-color: #000000;
+	}
+*/	
+/*
+td#nicetablehov:hover
+	{
+	background-color: #000000;
+	}
+*/
+table.nptiny-al-1
+	{
+	width: 100px;
+	height: 100px;
+	border: dotted 1px #a0a0a0;
+	padding: 10px 10px 10px 10px;
+	margin: 10px 10px 10px 10px;
+	}
+	
+table.nptiny-al0
+	{
+	width: 100px;
+	height: 100px;
+	border: dotted 1px green;
+	padding: 10px 10px 10px 10px;
+	margin: 10px 10px 10px 10px;
+	}
+	
+table.nptiny-al1
+	{
+	width: 100px;
+	height: 100px;
+	border: dotted 1px orange;
+	padding: 10px 10px 10px 10px;
+	margin: 10px 10px 10px 10px;
+	}
+	
+table.nptiny-al2
+	{
+	width: 100px;
+	height: 100px;
+	border: dotted 1px red;
+	padding: 10px 10px 10px 10px;
+	margin: 10px 10px 10px 10px;
+	}
+	
+table.npbig-al-1
+	{
+	border: dotted 1px #e0e0e0;
+	margin: 10px 10px 10px 10px;
+	}
+
+table.npbig-al0
+	{
+	border: dotted 1px green;
+	margin: 10px 10px 10px 10px;
+	}
+
+table.npbig-al1
+	{
+	border: dotted 1px orange;
+	margin: 10px 10px 10px 10px;
+	}
+	
+table.npbig-al2
+	{
+	border: dotted 1px red;
+	margin: 10px 10px 10px 10px;
+	}
+
+div.page_error
+	{
+	color: #909090;
+	}
+
+div.page_error a
+	{
+	color: #9090e0;
+	}
+
+div.sec_warning
+	{
+	background-color: #fff0f0;
+	border: solid 1px red;
+	padding: 5px;
+	}
+-->

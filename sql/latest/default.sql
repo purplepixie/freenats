@@ -1,0 +1,48 @@
+-- default.sql
+-- FreeNATS Default Settings
+INSERT INTO fnuser(username,password,realname,userlevel) VALUES("admin",MD5("admin"),"Administrator",10);
+INSERT INTO fnconfig(fnc_var,fnc_val) VALUES("site.name","FreeNATS");
+INSERT INTO fnconfig(fnc_var,fnc_val) VALUES("site.admin","");
+INSERT INTO fnconfig(fnc_var,fnc_val) VALUES("site.email","");
+INSERT INTO fnconfig(fnc_var,fnc_val) VALUES("site.enable.tester","1");
+INSERT INTO fnconfig(fnc_var,fnc_val) VALUES("site.enable.web","1");
+INSERT INTO fnconfig(fnc_var,fnc_val) VALUES("site.enable.adminsql","0");
+INSERT INTO fnconfig(fnc_var,fnc_val) VALUES("site.enable.interactive","1");
+INSERT INTO fnconfig(fnc_var,fnc_val) VALUES("site.popupmessage","0");
+INSERT INTO fnconfig(fnc_var,fnc_val) VALUES("site.graph.public","0");
+INSERT INTO fnconfig(fnc_var,fnc_val) VALUES("site.text.closed","Alert Closed");
+INSERT INTO fnconfig(fnc_var,fnc_val) VALUES("site.text.untested","Untested");
+INSERT INTO fnconfig(fnc_var,fnc_val) VALUES("site.text.passed","Passed");
+INSERT INTO fnconfig(fnc_var,fnc_val) VALUES("site.text.warning","Warning");
+INSERT INTO fnconfig(fnc_var,fnc_val) VALUES("site.text.failed","Failed");
+INSERT INTO fnconfig(fnc_var,fnc_val) VALUES("site.dtformat","H:i:s d/m/Y");
+INSERT INTO fnconfig(fnc_var,fnc_val) VALUES("site.include.tests","0");
+INSERT INTO fnconfig(fnc_var,fnc_val) VALUES("site.include.events","0");
+INSERT INTO fnconfig(fnc_var,fnc_val) VALUES("site.links.newwindow","1");
+INSERT INTO fnconfig(fnc_var,fnc_val) VALUES("log.level","5");
+INSERT INTO fnconfig(fnc_var,fnc_val) VALUES("freenats.firstrun","1");
+INSERT INTO fnconfig(fnc_var,fnc_val) VALUES("freenats.tracker","1");
+INSERT INTO fnconfig(fnc_var,fnc_val) VALUES("test.http.timeout","0");
+INSERT INTO fnconfig(fnc_var,fnc_val) VALUES("test.icmp.attempts","2");
+INSERT INTO fnconfig(fnc_var,fnc_val) VALUES("test.icmp.timeout","0");
+INSERT INTO fnconfig(fnc_var,fnc_val) VALUES("test.icmp.returnms","0");
+INSERT INTO fnconfig(fnc_var,fnc_val) VALUES("test.smtp.timeout","0");
+INSERT INTO fnconfig(fnc_var,fnc_val) VALUES("test.imap.timeout","0");
+INSERT INTO fnconfig(fnc_var,fnc_val) VALUES("test.mysql.timeout","0");
+INSERT INTO fnconfig(fnc_var,fnc_val) VALUES("test.tcp.timeout","0");
+INSERT INTO fnconfig(fnc_var,fnc_val) VALUES("test.udp.timeout","0");
+INSERT INTO fnconfig(fnc_var,fnc_val) VALUES("test.spawndelay","1");
+INSERT INTO fnconfig(fnc_var,fnc_val) VALUES("test.interval","0");
+INSERT INTO fnconfig(fnc_var,fnc_val) VALUES("retain.alert","0");
+INSERT INTO fnconfig(fnc_var,fnc_val) VALUES("retain.testrun","0");
+INSERT INTO fnconfig(fnc_var,fnc_val) VALUES("retain.record","0");
+INSERT INTO fnconfig(fnc_var,fnc_val) VALUES("retain.syslog","0");
+INSERT INTO fnconfig(fnc_var,fnc_val) VALUES("mail.fromname","");
+INSERT INTO fnconfig(fnc_var,fnc_val) VALUES("mail.smtphostname","");
+INSERT INTO fnconfig(fnc_var,fnc_val) VALUES("mail.smtpserver","");
+INSERT INTO fnconfig(fnc_var,fnc_val) VALUES("mail.smtppassword","");
+INSERT INTO fnconfig(fnc_var,fnc_val) VALUES("alert.body.footer","");
+INSERT INTO fnconfig(fnc_var,fnc_val) VALUES("alert.body.header","FreeNATS Alert,");
+INSERT INTO fnconfig(fnc_var,fnc_val) VALUES("alert.subject.long","** FreeNATS Alert **");
+INSERT INTO fnconfig(fnc_var,fnc_val) VALUES("alert.subject.short","FreeNATS Alert");
+

@@ -1,0 +1,791 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+<title>Welcome to Demon&#46;net</title>
+<link type="text/css" rel="stylesheet" href="/static-content/css/common/global.css"></link>
+<link rel="stylesheet" media="print" href="/static-content/css/common/print.css"></link>
+<script type="text/javascript" src="/js/swfobject.js"></script>
+</head> 
+
+<body class="mainbody">
+
+<!-- START OF WEBTRENDS LIVE TAG -->
+<!-- Copyright 2002 NetIQ Corporation -->
+<!--  For privacy concerns, check our Privacy Policy at http://www.webtrendslive.com/wtl_system/privacy_policy.htm -->
+
+<!-- eCommerce Revenue Tracking (patent pending) -->
+<!-- For eCommerce implementation, visit the following page: -->
+<!-- http://www.webtrendslive.com/wtl_system/support/online_help/open_help.asp?helppage=techsupport_code_ecommerce&redirection=help -->
+
+<SCRIPT LANGUAGE="JavaScript1.2">
+
+<!--
+var wtl_imgarray = new Array;
+var wtl_ptr = 0;
+function wtl_Tag6(wtl_TagID,wtl_SID,wtl_URL,wtl_Title,CONTENTGROUP)
+{
+	function wtl_createImage(wtl_src)
+	{
+		if (document.images)
+		{
+			wtl_imgarray[wtl_ptr] = new Image;
+			wtl_imgarray[wtl_ptr].src = wtl_src;
+			wtl_ptr++;
+		}
+	}
+
+	function D8( d)
+	{
+		var fwd=1, seed= new Date('01/01/2000'), key= "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+		var s= key.charAt( d.getFullYear()-2000)+key.charAt( d.getMonth()+1)+key.charAt( d.getDate());
+		s+= key.charAt( d.getHours())+key.charAt( d.getMinutes())+key.charAt( d.getSeconds());
+		while( seed.getDay()!=fwd) seed= new Date(seed.getTime() + 86400000);
+		var w= Math.floor( (d.getTime()-(seed.getTime()+86400000)) / 604800000 );
+		s+= key.charAt( (w-(w%16))/16 );
+		s+= key.charAt( w%16);
+		return s;
+	}
+
+	function A( B, C)
+	{
+		W+="&"+B+"="+escape(C);
+	}
+
+	var t = new Date();
+	var W="http"+(window.location.protocol.indexOf('https:')==0?'s':'')+"://statse.webtrendslive.com/S" + wtl_SID + "/button6.asp?tagver=" + wtl_TagVer + "&si=" + wtl_TagID + "&fw=" + wtl_FWD;
+	A( "server", typeof(SERVER)== "string" ? SERVER : "");
+	A( "order", typeof(ORDER)== "string" ? ORDER : "");
+	A( "Group", typeof(CONTENTGROUP)== "string" ? CONTENTGROUP : "");
+	A( "invoice", typeof(INVOICE)== "string" ? INVOICE : "");
+	A( "cartview", typeof(CARTVIEW)== "string" ? CARTVIEW : "");
+	A( "cartadd", typeof(CARTADD)== "string" ? CARTADD : "");
+	A( "cartremove", typeof(CARTREMOVE)== "string" ? CARTREMOVE : "");
+	A( "checkout", typeof(CHECKOUT)== "string" ? CHECKOUT : "");
+	A( "cartbuy", typeof(CARTBUY)== "string" ? CARTBUY : "");
+	A( "adcampaign", typeof(ADCAMPAIGN)== "string" ? ADCAMPAIGN : "");
+	A( "tz", t.getTimezoneOffset());
+	A( "ch", t.getHours());
+	A( "cl", D8(t));
+	A( "ti", wtl_Title);
+	A( "url", wtl_URL);
+	A( "rf", window.document.referrer);
+	A( "js", "Yes");
+	A( "ul", navigator.appName=="Netscape" ? navigator.language : navigator.userLanguage);
+	if(typeof(screen)=="object")
+	{
+	A( "sr", screen.width+"x"+screen.height);
+	A( "cd", screen.colorDepth);
+	A( "jo", navigator.javaEnabled() ? "Yes" : "No");
+	}
+
+	if( W.length>2048 && navigator.userAgent.indexOf('MSIE')>=0)
+		W= W.substring( 0, 2043)+"&tu=1";
+
+	wtl_createImage(W);
+}
+//-->
+</SCRIPT>
+
+<!-- Code can be separated at this junction -->
+
+<SCRIPT LANGUAGE="JavaScript">
+
+<!--
+	var wtl_TagVer = 6;
+	var wtl_FWD = 0;
+	var wtl_url = document.URL;
+	var wtl_title = document.title;
+	var wtl_TagID = 146402;
+	var wtl_SID = "146402";
+
+	var ORDER= "";
+	var SERVER= "";
+	var CONTENTGROUP= "";
+	var INVOICE= "";
+	var CARTVIEW= "";
+	var CARTADD= "";
+	var CARTREMOVE= "";
+	var CHECKOUT= "";
+	var CARTBUY= "";
+	var ADCAMPAIGN= "";
+
+	wtl_Tag6(wtl_TagID,wtl_SID,wtl_url,wtl_title,CONTENTGROUP);
+
+//-->
+</SCRIPT>
+
+<NOSCRIPT>
+<IMG BORDER="0" WIDTH="1" HEIGHT="1" SRC="http://statse.webtrendslive.com/S146402/button6.asp?tagver=6&si=146402&fw=0&js=No">
+</NOSCRIPT>
+
+<!-- END OF WEBTRENDS LIVE TAG -->
+
+
+<div id="bodycontainer">
+		<table class="overalltable">
+		  <tr>
+		    <td class="topcell">
+
+
+
+
+
+
+
+	<a href="/index.html"><img src="/images/common/demon_logo.gif" width="129" height="24" alt="Demon" class="logo" border="0" /></a>
+	<div class="utilitybar">		
+		<div class="utilitybarnav"><a href="/aboutus/index.html"><img src="/images/common/utilitybar/about_us.gif" width="69" height="51" alt="About us" border="0" /></a><a href="/contactus/index.html"><img src="/images/common/utilitybar/contact_us.gif" width="76" height="51" alt="Contact us" border="0" /></a><a href="/sitehelp/index.html"><img src="/images/common/utilitybar/site_help.gif" width="75" height="51" alt="Site help" border="0" /></a></div>	
+		<form name="headerform"><div class="utilityquick"><img src="/images/common/utilitybar/quicklinks.gif" width="71" height="16" alt="Quick links" border="0" /><br />
+		  <div class="utilityformelement"><select class="selquick" name="selQuickLinks">
+		    <option>Please select</option>
+<option value="/quicklinks/Careers">Careers</option>
+<option value="/helpdesk/index.html">Helpdesk</option>
+<option value="/helpdesk/technicallibrary/misc/general/apart.html">Help for the visually impaired</option>
+<option value="/aboutus/safeusageguide/index.html">Internet Safe Usage Guide</option>
+<option value="/aboutus/privacy/index.html">Privacy Policy</option>
+</select></div>
+		  <div class="go"><input type="image" src="/images/common/buttons/go.gif" align="top" width="32" height="22" Border="0" align="bottom" alt="go" title="go" onClick="if (document.forms.headerform.selQuickLinks.selectedIndex == 0) return false ; location.href=document.forms.headerform.selQuickLinks.value ; return false;" /></div>
+		</div></form>
+		<form action="/cgi-bin/htsearch"><div class="utilitysearch">
+			<img src="/images/common/utilitybar/search_this_site.gif" width="92" height="16" alt="Search this site" border="0" /><br />
+			
+			<div class="utilityformelement"><input type="text" class="txtsearch" name="words" /></div>
+			<div class="go"><input type="image" src="/images/common/buttons/go.gif" width="32" height="22" alt="go" border="0" /></div>
+			
+		</div>
+                </form>
+	</div>	
+<br clear="all" />
+
+
+
+
+
+             
+
+
+
+
+
+
+<div class="leftcolumn">
+
+
+<a href="/" class="navon">Home</a>
+<img src="/images/common/spacer.gif" width="1" height="1" alt="*" class="greynavline" border="0" />
+<a href="/demon/products/" class="navheader">Products</a>
+<a href="/demon/products/internetaccess/" class="nav">Internet Access</a>
+<a href="/demon/products/hosting/" class="nav">Hosting & Web Services</a>
+<a href="/demon/products/hardware/" class="nav">Hardware & Security</a>
+<a href="/demon/products/mobileservices/" class="nav">Mobile Services</a>
+<a href="/demon/products/voice/" class="nav">Voice Services</a>
+<a href="/demon/products/data/" class="nav">Data Services</a>
+<a href="/demon/products/domains" class="nav">Domain Services</a>
+<img src="/images/common/spacer.gif" width="1" height="1" alt="*" class="greynavline" border="0" />
+<a href="/channel/" class="navheader">Channel Partners</a>
+<img src="/images/common/spacer.gif" width="1" height="1" alt="*" class="greynavline" border="0" />
+<a href="/businessresources/" class="navheader">Business Resources</a>
+<a href="/businessresources/knowledgecentre/" class="nav">Knowledge Centre</a>
+<a href="/businessresources/casestudies/" class="nav">Case Studies</a>
+<a href="/businessresources/businesssolutions/" class="nav">Business Solutions</a>
+<a href="/businessresources/usefullinks/" class="nav">Useful Links</a>
+<img src="/images/common/spacer.gif" width="1" height="1" alt="*" class="greynavline" border="0" />
+<a href="/helpdesk/" class="navheader">Helpdesk</a>
+<a href="/helpdesk/producthelp/" class="nav">Product Help</a>
+<a href="/helpdesk/technicallibrary/" class="nav">Technical Library</a>
+<a href="/helpdesk/networkstatus/" class="nav">Network Status</a>
+<a href="/helpdesk/youraccount/" class="nav">Customer service</a>
+<img src="/images/common/spacer.gif" width="1" height="1" alt="*" class="greynavline" border="0" />
+<a href="/toolkit/" class="navheader">Toolkit</a>
+<a href="/toolkit/webmail/" class="nav">WebMail</a>
+<a href="/toolkit/electronicfax/" class="nav">Fax to Email</a>
+<a href="/toolkit/controlcentre/" class="nav">DVS Control Centre</a>
+<a href="/toolkit/webpassword/" class="nav">Web Password</a>
+<a href="/toolkit/internettools/" class="nav">Internet query tools</a>
+<a href="/toolkit/downloads/" class="nav">Downloads</a>
+<a href="/toolkit/companion/" class="nav">Dial Companion for Broadband</a>
+<img src="/images/common/spacer.gif" width="1" height="1" alt="*" class="greynavline" border="0" />
+<a href="/demonnewsmagazine/" class="navheader">Demon Newsletter</a>
+
+</div>
+
+	<script language="Javascript">
+<!--
+	function fnLoadLink(link)
+	{
+		var contextPath = '/echannel';
+		window.location.href = contextPath + link;
+	}
+//-->
+</script>
+
+
+
+
+
+
+
+
+	<div class="middlecolumnhome">
+	     
+		     <script type="text/javascript" language="javascript"> function
+        submit(page){
+        //alert(page);
+        formcheck.page.value=
+        page;
+formcheck.submit();
+    } function setCriteria(){
+        formcheck.criteria.value=                           
+    radioButtonChecker();
+                            
+    } function radioButtonChecker(){
+        // Loop from zero to the one minus the number of radio button selections
+        for (counter = 0; counter <   
+                formcheck.searchCriteria.length; counter++) { // returns the value associated with the radio button that has been
+selected
+if
+(formcheck.searchCriteria[counter].checked)
+return
+formcheck.searchCriteria[counter].value;
+}
+
+
+    } function ow(u,n,o) {if (window.open(u, n, o)){return false;}else{return
+    true;}} function
+                          ga(o,e){ if (document.getElementById){
+                              a=o.id.substring(1); p = "";
+                              r = "";
+                              g = e.target;
+                              if (g) {        
+                                         t = g.id;
+                                         f =       
+                                         g.parentNode; if (f){
+                                                    p = f.id;
+                                                    h = f.parentNode;
+                                                    if (h) r =       
+                                                h.id;
+                              } } else{
+                                   h = e.srcElement;
+                                   f = h.parentNode;
+                                   if (f) p = f.id;
+                                   t =       
+                              h.id;}
+                              if (t==a || p==a || r== a) return
+                              true;
+                             window.open(document.getElementById(a).href);
+        }}
+    function ss(w){window.status=w;return true;}
+    function cs(){window.status='';}        
+                
+</script>
+<script type="text/JavaScript">/****
+* Banner Ad Rotater v3.02
+* Anarchos > anarchos3@hotmail.com
+* http://anarchos.xs.mw/bannerad.phtml
+**/
+
+
+//function Banner(refreshTime, width, height, altText, start, random){
+//  this.objName = "bannerAd" + (Banner.count++);
+//  eval(this.objName + "=this");
+//  if (!refreshTime) this.refreshTime = 5000; else this.refreshTime = refreshTime*1000;
+//  if (!width) this.width = 460; else this.width = width;
+//  if (!height) this.height = 68; else this.height = height;
+//  if (random == null) this.random = 1; else this.random = random;
+//  this.altText = altText;
+//  this.ads = [];
+//  if (start) this.currentAd = start-1; else start = null;
+//  this.mySize = 0;
+//
+//
+//  this.Ad =  function(src, href, target, mouseover){
+//      var tempImage = new Image();
+//      tempImage.src = src;
+//      this.ads[this.mySize] = new Object();
+//      var ad = this.ads[this.mySize];
+//      ad.src = src;
+//      if (typeof(target) == "undefined" || target == null) ad.target = "_self"; else ad.target = target;
+//      ad.href = href;
+//      ad.mouseover = mouseover;
+//      this.mySize++;
+//  }
+//
+//
+//  this.link = function(){
+//      var ad = this.ads[this.currentAd];
+//      if (ad.target == "_self"){
+//          location.href = 
+//      ad.href;}
+//      else if (ad.target == "_blank" || ad.target == 
+//          "_new"){ open(ad.href,this.objName +
+//      "Win");}
+//      else top.frames[ad.target].location.href = ad.href;
+//  }
+//
+//
+//  this.showStatus = function(){
+//      var ad = this.ads[this.currentAd];
+//      if (ad.mouseover) status = ad.mouseover;
+//      else status = ad.href;
+//  }
+//
+//
+//  this.randomAd = function(){
+//      var n;
+//      do { n = Math.floor(Math.random() * (this.mySize)); }  
+//      while(n == this.currentAd);
+//      this.currentAd = n;
+//  }
+//
+//
+//  this.output = function(){
+//      var tempCode = "";
+//      if (this.mySize > 1){
+//          if (this.currentAd == null) this.randomAd();
+//          if (this.currentAd >= this.mySize) this.currentAd = this.mySize - 1;
+//          tempCode = '<a href="javascript:'+this.objName+'.link();"';
+//          tempCode += ' onMouseOver="' + this.objName + '.showStatus(); return true"';
+//          tempCode +=  'onMouseOut="status=\'\';return true">';
+//          tempCode += '<img src="' + this.ads[this.currentAd].src + '" width="' + this.width;
+//          tempCode += '" name="' + this.objName + 'Img" height="' + this.height + '" ';
+//          if (this.altText) tempCode += 'alt="'+this.altText + '" ';
+//          tempCode += 'border="0" /><\/a>';
+//          document.write(tempCode);
+//          this.nextAd();
+//      } else document.write("Error: two banners must be defined for the script to work.");
+//
+//
+//
+//  this.newAd = function(){
+//      if (!this.random){
+//          this.currentAd++;
+//          if (this.currentAd >= this.mySize)
+//             this.currentAd = 
+//      
+//       0;}
+//          else{
+//          this.randomAd();}
+//      this.nextAd();
+//  }
+//
+//
+//  this.nextAd = function(){
+//      document.images[this.objName+ 'Img'].src = 
+//      this.ads[this.currentAd].src;
+//      setTimeout(this.objName+'.newAd()',this.refreshTime)
+//}}
+//Banner.count = 0;
+//</script>
+<table id="demonvoice" width="440" height="175" border="0" cellpadding="0" cellspacing="0"><tr><td id="business-broadband-player"><a href="/businessbroadband" target="_blank"><img alt="Faster Demon Business Broadband solutions" src="/pics/heroimages/hero-home-business-broadband.gif" width="440" height="175" border="0"></a></td>
+</tr>
+</table>
+<br><script type="text/javascript"><!--
+var so = new SWFObject("/images/heroimages/hero-home-business-broadband.swf", "business-broadband", "440", "175", "7", "#ffffff");
+so.addParam('allowfullscreen','true');
+so.addParam('allowscriptaccess','true');
+so.addVariable('displayheight','175');
+so.addVariable('height','440');
+so.addVariable('width','175');
+so.write("business-broadband-player");
+// -->
+</script>
+	             
+
+             
+
+
+
+
+
+
+
+
+
+<div class="maincolumnleft">
+
+	<span class="greynobox">
+	<h2>Business Broadband</h2>
+	</span>
+	
+<br clear="all"/><br/>
+Utilise the enhanced speeds and lower contention ratios offered as part of our business broadband range. 
+<br /><br /><br />
+
+	<span class="red">
+       <strong>Special offer available<br />
+	From &#163;34.00 a month </strong>exc VAT<br />
+	
+	
+<br />
+
+	<a href="/demon/products/internetaccess/businessbroadband/" ><img height=22 alt="More info" src="/images/common/buttons/more_info_white.gif" width =73 border=0 /></a>&nbsp;
+
+	<a href="https://www.olr.uk.demon.net/cgi-bin/demon-adsl/signup.cgi" target="_blank">
+            <img src="/images/common/buttons/buy_now_white.gif" width="63" height="22" alt="Buy now" border="0"/></a>
+	</span>
+</div>
+
+<!-- END snippet -->
+
+<div class="maincolumnright">
+	<span class="greynobox">
+	<h2>Home/HomeOffice Broadband</h2>
+	</span>
+	<br clear="all" >
+        <br>
+	Our Home/HomeOffice products now support speeds of up to 8Mbps. They are tailored to meet the needs of both small businesses and professionals working from home.<br>
+        <br>
+	<span class="red">
+        <strong>Free set up and router</strong><br/>
+        <strong>From &#163;17.99 a month </strong>inc VAT </span><br/>
+        <br/>
+        <a href="/demon/products/internetaccess/broadband/" >
+            <img height=22 alt="More info" src="/images/common/buttons/more_info_white.gif" width =73 border=0 ></a>&nbsp;
+	<a href="https://www.olr.uk.demon.net/cgi-bin/demon-adsl/signup.cgi" target="_blank">
+            <img src="/images/common/buttons/buy_now_white.gif" width="63" height="22" alt="Buy now" border="0"/></a>
+</div>
+<!-- END snippet -->
+
+
+<br clear="all"/>
+
+<div class="maincolumnleft bg-top">
+	<h2 class="no-bg">Help and Support</h2>	  
+	
+<table width="100%"  border="0" cellspacing="0" cellpadding="2">
+  <tr valign="top">
+    <td><div style="padding:0px 5px 0px 0px; margin:0px 0px 0px 0px; float:left;"><img src="/images/pics/helpbutton.gif" alt="helpsupportbutton" width="80" height="77" /></div>
+<div style="padding:0px 0px 0px 0px; margin:0px 0px 5px 0px;">
+Visit our support pages to get your questions answered 
+and your problems solved. Whatever your enquiry, there will be an FAQ or tutorial to help.<br /><br /></div></td>
+  </tr>
+</table>
+<ul class="arr">
+		<li><A href="/helpdesk/index.html" 
+  target=_self>Find out more</A></li>
+	</ul>
+</div>
+<div class="maincolumnright bg-top">
+	<h2 class="no-bg">My Broadband Order Status</h2>	  
+<table width="100%"  border="0" cellspacing="0" cellpadding="2">
+  <tr valign="top">
+    <td>
+<div style="PADDING-RIGHT: 2px; PADDING-LEFT: 0px; FLOAT: left; PADDING-BOTTOM: 0px; MARGIN: 0px; PADDING-TOP: 0px"><IMG alt="Demon Order Status - image" 
+      src="/images/about_us/calender-3.gif" width="78" height="72"></div>
+<div style="PADDING-RIGHT: 0px; PADDING-LEFT: 0px; PADDING-BOTTOM: 0px; MARGIN: 0px 0px 5px; PADDING-TOP: 0px" 
+     >
+Our new online tracking tool is now live. We have improved your ability to track the status of your broadband order.
+<br /><br />
+</div>
+
+</td>
+ </tr>
+</table>
+	<ul class="arr">
+		<li><A href="/helpdesk/youraccount/" target=_self>Find out more</a></li>
+	</ul>
+</div>
+<!-- version without an image <div class="maincolumnright bg-top">
+	<h2 class="no-bg">My Broadband Order Status</h2>
+
+<p class="nobooktext left-padd">Our new online tracking tool is now live. 
+We have improved your ability to track the status of your broadband order.<br /><br /><br /></p>
+
+<ul class="arr">
+		<li><a href="/helpdesk/youraccount/" class="red">Find out more</a></li>
+</ul> 
+
+
+</div>-->
+
+
+<br clear="all"/>
+
+<div class="maincolumnleft bg-top">
+	<h2 class="no-bg">Customer Satisfaction Survey</h2>
+	<p class="nobooktext left-padd">
+Win an iPod!<br />
+Your feedback is important to us. Please spare a few minutes to fill in our customer satisfaction survey so that we can continue to improve our service to you.
+<br ><br ></p>	  
+	<ul class="arr">
+		<li><A href="/customersurvey/" target=_self>Find out more</A></li>
+	</ul>
+</div>
+<div class="maincolumnright bg-top">
+	<h2 class="no-bg">Move to Demon Broadband</h2>
+
+<p class="nobooktext left-padd">
+If you have broadband lines with another provider, click here to take advantage of our great offer when you switch to Demon Business 8000.
+<br /><br /><br />
+</p>
+<ul class="arr">
+		<li><a href="http://fusion.demon.net/issue16/broadband_offer/">Find out more</a></li>
+</ul> 
+</div>
+
+
+
+
+
+	</div>
+
+
+
+             
+
+
+
+
+
+
+
+
+        <div class="rightcolumnhome">
+
+
+<p><!--<A href="http://signup.voip.demon.net/demon/products/voice/voiceoverbroadband/index.php" target="_blank">-->
+<A href="http://www.demon.net/vob" target="_blank"><IMG alt="Find out more about our Demon Voice over Broadband products - cut the cost of your calls" src="/images/demonstore/demonstore.gif" width="146" border="0"></A><br/>
+</p>
+
+
+<!--<p class="blueheaderbar">&nbsp;Demon Store</p>
+<p class="bluebartext">Want to build a wireless home network?.<br/>
+Go to the Demon Store to find out how.<br/>
+<br/>
+<A href="http://www.store.demon.net" target=_blank>Click here</A><br/>
+<br/>
+<IMG class="greyline145" height="1" alt=* src="/pics/common/spacer.gif" width=1 border=0 ></p>
+-->
+
+
+<p class="blueheaderbar">&nbsp;BlackBerry Launch</p>
+<p class="bluebartext">Find out how our BlackBerry can keep you connected.</p>
+<p><A href="http://www.demon.net/intouch" target=_self>Find out more</A></p>
+<P><IMG class=greyline145 height=1 alt=* src="/pics/common/spacer.gif" width=1 border=0 ></P>
+
+
+
+
+
+
+
+<p class="blueheaderbar">&nbsp;Online payment</p>
+<p class="bluebartext">For a simple and secure way to make a payment to Demon.</p>
+<p><A href="https://www.paythus.com/" target=_self>Click here</A></p>
+<P><IMG class=greyline145 height=1 alt=* src="/pics/common/spacer.gif" width=1 border=0 ></P>
+
+
+
+
+
+
+
+
+
+<p class="blueheaderbar">&nbsp;Demon Weblog</p>
+<p class="bluebartext">Our point of view on hot industry issues.</p>
+<p><A href="http://weblog.demon.net" target=_self>Read More Here</A></p>
+<P><IMG class=greyline145 height=1 alt=* src="/pics/common/spacer.gif" width=1 border=0 ></P>
+
+
+
+
+
+
+
+
+
+<p class="blueheaderbar">&nbsp;Text Chat</p>
+<p class="bluebartext">Chat online with our Customer Service or&nbsp;Product Advisors. </p>
+<p><A href="/helpdesk/helpdeskchat.html" target=_self>Find out more</A></p>
+<P><IMG class=greyline145 height=1 alt=* src="/pics/common/spacer.gif" width=1 border=0 ></P>
+
+    </form>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+              
+        </td>
+    </tr>
+    <tr>
+        <td class="bottomcell" id="displayFooter"><br /><br /><br /><a href="http://www.thus.net" target="_blank"><img src="/images/common/thus_logo.gif" width="133" height="50" alt="Thus - the home of Demon internet" class="thuslogo" border="0" /></a>   
+            <div class="copyright">&#169;Copyright 2008 THUS plc&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            </div>
+            <br clear="all" />
+            <div class="redbar">
+                  <img src="/images/common/spacer.gif" width="1" height="1" alt="*" border="0" />
+            </div>
+
+<!-- START OF WEBTRENDS LIVE TAG -->
+<!-- Copyright 2002 NetIQ Corporation -->
+<!--  For privacy concerns, check our Privacy Policy at http://www.webtrendslive.com/wtl_system/privacy_policy.htm -->
+
+<!-- eCommerce Revenue Tracking (patent pending) -->
+<!-- For eCommerce implementation, visit the following page: -->
+<!-- http://www.webtrendslive.com/wtl_system/support/online_help/open_help.asp?helppage=techsupport_code_ecommerce&redirection=help -->
+
+<SCRIPT LANGUAGE="JavaScript1.2">
+
+<!--
+var wtl_imgarray = new Array;
+var wtl_ptr = 0;
+function wtl_Tag6(wtl_TagID,wtl_SID,wtl_URL,wtl_Title,CONTENTGROUP)
+{
+	function wtl_createImage(wtl_src)
+	{
+		if (document.images)
+		{
+			wtl_imgarray[wtl_ptr] = new Image;
+			wtl_imgarray[wtl_ptr].src = wtl_src;
+			wtl_ptr++;
+		}
+	}
+
+	function D8( d)
+	{
+		var fwd=1, seed= new Date('01/01/2000'), key= "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+		var s= key.charAt( d.getFullYear()-2000)+key.charAt( d.getMonth()+1)+key.charAt( d.getDate());
+		s+= key.charAt( d.getHours())+key.charAt( d.getMinutes())+key.charAt( d.getSeconds());
+		while( seed.getDay()!=fwd) seed= new Date(seed.getTime() + 86400000);
+		var w= Math.floor( (d.getTime()-(seed.getTime()+86400000)) / 604800000 );
+		s+= key.charAt( (w-(w%16))/16 );
+		s+= key.charAt( w%16);
+		return s;
+	}
+
+	function A( B, C)
+	{
+		W+="&"+B+"="+escape(C);
+	}
+
+	var t = new Date();
+	var W="http"+(window.location.protocol.indexOf('https:')==0?'s':'')+"://statse.webtrendslive.com/S" + wtl_SID + "/button6.asp?tagver=" + wtl_TagVer + "&si=" + wtl_TagID + "&fw=" + wtl_FWD;
+	A( "server", typeof(SERVER)== "string" ? SERVER : "");
+	A( "order", typeof(ORDER)== "string" ? ORDER : "");
+	A( "Group", typeof(CONTENTGROUP)== "string" ? CONTENTGROUP : "");
+	A( "invoice", typeof(INVOICE)== "string" ? INVOICE : "");
+	A( "cartview", typeof(CARTVIEW)== "string" ? CARTVIEW : "");
+	A( "cartadd", typeof(CARTADD)== "string" ? CARTADD : "");
+	A( "cartremove", typeof(CARTREMOVE)== "string" ? CARTREMOVE : "");
+	A( "checkout", typeof(CHECKOUT)== "string" ? CHECKOUT : "");
+	A( "cartbuy", typeof(CARTBUY)== "string" ? CARTBUY : "");
+	A( "adcampaign", typeof(ADCAMPAIGN)== "string" ? ADCAMPAIGN : "");
+	A( "tz", t.getTimezoneOffset());
+	A( "ch", t.getHours());
+	A( "cl", D8(t));
+	A( "ti", wtl_Title);
+	A( "url", wtl_URL);
+	A( "rf", window.document.referrer);
+	A( "js", "Yes");
+	A( "ul", navigator.appName=="Netscape" ? navigator.language : navigator.userLanguage);
+	if(typeof(screen)=="object")
+	{
+	A( "sr", screen.width+"x"+screen.height);
+	A( "cd", screen.colorDepth);
+	A( "jo", navigator.javaEnabled() ? "Yes" : "No");
+	}
+
+	if( W.length>2048 && navigator.userAgent.indexOf('MSIE')>=0)
+		W= W.substring( 0, 2043)+"&tu=1";
+
+	wtl_createImage(W);
+}
+//-->
+</SCRIPT>
+
+<!-- Code can be separated at this junction -->
+
+<SCRIPT LANGUAGE="JavaScript">
+
+<!--
+	var wtl_TagVer = 6;
+	var wtl_FWD = 0;
+	var wtl_url = document.URL;
+	var wtl_title = document.title;
+	var wtl_TagID = 146402;
+	var wtl_SID = "146402";
+
+	var ORDER= "";
+	var SERVER= "";
+	var CONTENTGROUP= "";
+	var INVOICE= "";
+	var CARTVIEW= "";
+	var CARTADD= "";
+	var CARTREMOVE= "";
+	var CHECKOUT= "";
+	var CARTBUY= "";
+	var ADCAMPAIGN= "";
+
+	wtl_Tag6(wtl_TagID,wtl_SID,wtl_url,wtl_title,CONTENTGROUP);
+
+//-->
+</SCRIPT>
+
+<NOSCRIPT>
+<IMG BORDER="0" WIDTH="1" HEIGHT="1" SRC="http://statse.webtrendslive.com/S146402/button6.asp?tagver=6&si=146402&fw=0&js=No">
+</NOSCRIPT>
+
+<!-- END OF WEBTRENDS LIVE TAG -->
+
+        </td>
+    </tr>
+    <tr>
+       <td>
+         <script src="http://intelligence.dgmsearchlab.com/dcv4/jslib/sid0255_4.003.js" type="text/javascript"></script>
+<noscript><div style="VISIBILITY: hidden"><img src='http://intelligence.dgmsearchlab.com/dcv4/noscript.aspx'></div></noscript>
+       </td>
+    </tr>
+
+</table>
+</div>
+</BODY>
+</HTML>
+
+
+
+</body>
+
+<script language = "javaScript">
+<!--
+function buyProduct(URL,productID)
+{
+	var cntOne = URL.indexOf("/");
+	var cntTwo = URL.indexOf(".do");
+	if(cntTwo == -1)//URL is not from app then open new window
+	{
+		objWin = window.open();
+		objWin.location.href=URL;
+	}
+	else
+	{
+		//document.webDetailsForm.strProductId.value = productID;
+		URL = URL + "?strProductId="+productID
+		window.open('/echannel'+URL,'',"addressbar=no,scrollbars=yes,resizable=yes");
+		
+	}
+}
+
+-->
+</script>
+
+
+
+</html>
+
+
+

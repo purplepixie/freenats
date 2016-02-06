@@ -1,0 +1,117 @@
+<!--
+/* -------------------------------------------------------------
+This file is part of FreeNATS
+
+FreeNATS is (C) Copyright 2008 PurplePixie Systems
+
+FreeNATS is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+FreeNATS is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with FreeNATS.  If not, see www.gnu.org/licenses
+
+For more information see www.purplepixie.org/freenats
+-------------------------------------------------------------- */
+
+
+
+table.maintitle
+	{
+	background-color: #e0e0ff;
+	border: dashed 1px #a0a0e0;
+	}
+
+b.maintitle { font-size: 14pt; }
+
+b.subtitle { font-size: 13pt; }
+
+b.sectitle { font-size: 12pt; }
+
+td.titlelink
+	{
+	text-align: right;
+	font-size: 10pt;
+	}
+
+
+
+b.minortitle { 
+	font-size: 13pt; 
+	text-decoration: underline;
+	}
+
+
+	
+.al-1 { color: black; font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 10pt; }
+.al0 { color: green; font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 10pt;  }
+.al1 { color: orange; font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 10pt;  }
+.al2 { color: red; font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 10pt;  }
+	
+table.nptiny-al-1
+	{
+	width: 100px;
+	height: 100px;
+	border: dotted 1px #a0a0a0;
+	padding: 10px 10px 10px 10px;
+	margin: 10px 10px 10px 10px;
+	}
+	
+table.nptiny-al0
+	{
+	width: 100px;
+	height: 100px;
+	border: dotted 1px green;
+	padding: 10px 10px 10px 10px;
+	margin: 10px 10px 10px 10px;
+	}
+	
+table.nptiny-al1
+	{
+	width: 100px;
+	height: 100px;
+	border: dotted 1px orange;
+	padding: 10px 10px 10px 10px;
+	margin: 10px 10px 10px 10px;
+	}
+	
+table.nptiny-al2
+	{
+	width: 100px;
+	height: 100px;
+	border: dotted 1px red;
+	padding: 10px 10px 10px 10px;
+	margin: 10px 10px 10px 10px;
+	}
+	
+table.npbig-al-1
+	{
+	border: dotted 1px #e0e0e0;
+	margin: 10px 10px 10px 10px;
+	}
+
+table.npbig-al0
+	{
+	border: dotted 1px green;
+	margin: 10px 10px 10px 10px;
+	}
+
+table.npbig-al1
+	{
+	border: dotted 1px orange;
+	margin: 10px 10px 10px 10px;
+	}
+	
+table.npbig-al2
+	{
+	border: dotted 1px red;
+	margin: 10px 10px 10px 10px;
+	}
+
+-->
