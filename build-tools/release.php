@@ -13,7 +13,8 @@ if (!function_exists("curl_init"))
 }
 
  $remoteURL = "http://www.purplepixie.org/freenats/upload-release.php";
- $remoteURL = "http://127.0.0.1:8888/Code/purplepixie/freenats-web/upload-release.php";
+ // Testing URL for local shadow copy
+ //$remoteURL = "http://127.0.0.1:8888/Code/purplepixie/freenats-web/upload-release.php";
 
  if ($argc==4)
  	$remoteURL = $_SERVER['argv'][3];
