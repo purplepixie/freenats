@@ -234,8 +234,8 @@ if ($Config_Upload)
 }
 
 foreach($cmd as $c)
-	{
+{
 	echo $c."\n";
 	if ($Config_Exec === true) passthru($c);
-	}
+}
 ?>
