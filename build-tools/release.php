@@ -36,7 +36,7 @@ $username=trim(fgets(STDIN));
 echo "Password: ";
 $password=trim(fgets(STDIN));
 
-$fp=fopen($remoteURL."?mode=check&version=".urlencode($v)."&username=".urlencode($username)."&password=".urlencode($password),"r");
+$fp=fopen($remoteURL."?mode=check&version=".urlencode($v),"r");
 if ($fp <= 0)
 {
 	echo "Failed to open URL: ".$remoteURL."\n";
@@ -151,6 +151,7 @@ if ($proc != "y" && $proc != "Y")
 // changelog
 
 $md5=md5_file($f);
+$filepath = realpath($f);
 
 $post_data = array(
 	"mode" => "release",
@@ -164,18 +165,27 @@ $post_data = array(
 	"releasenotes" => $rnotes,
 	"changelog" => $changelog,
 	"md5" => $md5,
-	"file" => "@".$f);
+	"file" => new CurlFile($filepath),'application/x-gzip');
 
 $ch=curl_init();
+//$headers = array("Content-Type:multipart/form-data", "Expect:");
+$headers = array("Content-Type:multipart/form-data");
 curl_setopt($ch, CURLOPT_URL, $remoteURL);
+//curl_setopt($ch, CURLOPT_URL, "http://www.purplepixie.org/freenats/");
+curl_setopt($ch, CURLOPT_HEADER, 1);
+curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+//curl_setopt($ch, CURLOPT_POSTFIELDS, "file=@".$filepath."&".http_build_query($post_data,"","&"));
+//curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($post_data,"","&"));
+curl_setopt($ch, CURLOPT_POST, 1);
 curl_setopt($ch, CURLOPT_POSTFIELDS, $post_data);
-curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+//curl_setopt($ch, CURLOPT_USERAGENT, "User-Agent: Mozilla/5.0 (Windows NT 6.3; WOW64; rv:31.0) Gecko/20100101 Firefox/31.0");
 curl_setopt($ch, CURLOPT_VERBOSE, 1);
 
 $response=curl_exec($ch);
 curl_close($ch);
 
-echo $reponse;
+echo $response;
 echo "\n";
 
 
