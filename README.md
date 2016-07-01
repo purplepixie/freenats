@@ -64,6 +64,8 @@ Options:
         Say yes to all prompts (dangerous!)
  Clean  --noclean -nc
         No cleaning (don't remove directory after compression)
+ Dots  --dotclean -dc
+        Run a recursive dot_clean to clean up OSX ._ files from the built directory
 ```
 
 So for example, let's say the file */src/server/base/freenats.inc.php* contains the version 1.2.3 and release x, the compound version would be 1.2.3x.
