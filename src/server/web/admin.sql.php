@@ -2,7 +2,7 @@
 /* -------------------------------------------------------------
 This file is part of FreeNATS
 
-FreeNATS is (C) Copyright 2008 PurplePixie Systems
+FreeNATS is (C) Copyright 2008-2016 PurplePixie Systems
 
 FreeNATS is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -60,15 +60,15 @@ if ( (isset($_REQUEST['action'])) && ($_REQUEST['action']=="sql") )
 	
 	// sod the NATS-specific DB stuff here...
 	echo "<b>Executing: </b>";
-	$res=mysql_query($q);
-	if (mysql_errno()==0)
+	$res=mysqli_query($NATS->DB->sql,$q);
+	if (mysqli_errno($NATS->DB->sql)==0)
 		{
 		echo "Success";
 		$ok=true;
 		}
 	else
 		{
-		echo "Error: ".mysql_error()." (".mysql_errno().")";
+		echo "Error: ".mysqli_error($NATS->DB->sql)." (".mysqli_errno($NATS->DB->sql).")";
 		$ok=false;
 		}
 	echo "<br><br>";
@@ -79,7 +79,7 @@ if ( (isset($_REQUEST['action'])) && ($_REQUEST['action']=="sql") )
 		if (($type=="SELECT")||($type=="SHOW")||($type=="DESCRIBE"))
 			{
 			echo "<b>Returned: </b>";
-			echo mysql_num_rows($res);
+			echo mysqli_num_rows($res);
 			echo " Rows<br><br>";
 			if (isset($_REQUEST['show_data']))
 				{
@@ -87,7 +87,7 @@ if ( (isset($_REQUEST['action'])) && ($_REQUEST['action']=="sql") )
 				echo "<table width=100% border=1>";
 				$first=true;
 				$keys=array();
-				while ($row=mysql_fetch_array($res))
+				while ($row=mysqli_fetch_array($res))
 					{
 					if ($first)
 						{
@@ -117,7 +117,7 @@ if ( (isset($_REQUEST['action'])) && ($_REQUEST['action']=="sql") )
 		else
 			{
 			echo "<b>Affected: </b>";
-			echo mysql_affected_rows();
+			echo mysqli_affected_rows($NATS->DB->sql);
 			echo " Rows<br><br>";
 			}
 		}

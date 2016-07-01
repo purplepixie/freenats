@@ -406,7 +406,7 @@ $lasty=0;
 $startval=0;
 $finishval=0;
 
-while ($row=mysql_fetch_array($r))
+while ($row=mysqli_fetch_array($r,$NATS->DB->sql))
 	{
 	$x=posx($row['recordx']);
 	//$y=posy($row['testvalue']); 
@@ -453,7 +453,7 @@ while ($row=mysql_fetch_array($r))
 	$lasty=$y;
 	
 	}
-mysql_free_result($r);
+mysqli_free_result($r);
 
 	
 

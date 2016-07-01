@@ -38,7 +38,7 @@ if ($script!="firstrun.php")
 if (isset($_REQUEST['stage'])) $stage=$_REQUEST['stage'];
 else $stage=0;
 
-function sqlfile($file)
+function sqlfile($file,$sql)
 {
 global $BaseDir;
 $fn=$BaseDir."sql/".$file.".sql";
@@ -62,13 +62,13 @@ while ($s=fgets($fp,1024))
 			$c=$s[$a];
 			if ($c==";")
 				{
-				mysql_query($q);
+				mysqli_query($sql,$q);
 				$qc++;
-				if (mysql_errno()!=0)
+				if (mysqli_errno($sql)!=0)
 					{
 					echo "<b>Warning/Error</b><br>";
 					echo "<b>SQL:</b> ".$q."<br>";
-					echo "<b>Error:</b> ".mysql_error()." (Code ".mysql_errno().")<br><br>";
+					echo "<b>Error:</b> ".mysqli_error($sql)." (Code ".mysqli_errno($sql).")<br><br>";
 					$qerr++;
 					}
 				else $qok++;
@@ -87,10 +87,10 @@ echo "<html><head><title>FreeNATS Setup</title></head><body>\n";
 echo "<h1>First Run Setup: Stage ".$stage."</h1>";
 
 echo "Testing database connectivity...<br>";
-		$sql=mysql_connect($fnCfg['db.server'],$fnCfg['db.username'],$fnCfg['db.password'])
-			or die("Failed to connect to database server ".$fnCfg['db.server']." with username ".$fnCfg['db.username']."<br>Details: ".mysql_error());
-		mysql_select_db($fnCfg['db.database'])
-			or die("Connected ok but failed to select database ".$fnCfg['db.database']."<br>Details: ".mysql_error());
+		$sql=mysqli_connect($fnCfg['db.server'],$fnCfg['db.username'],$fnCfg['db.password'])
+			or die("Failed to connect to database server ".$fnCfg['db.server']." with username ".$fnCfg['db.username']."<br>Details: ".mysqli_error($sql));
+		mysqli_select_db($sql,$fnCfg['db.database'])
+			or die("Connected ok but failed to select database ".$fnCfg['db.database']."<br>Details: ".mysqli_error($sql));
 		echo "Database connection succeeded!<br><br>";
 
 switch($stage)
@@ -132,13 +132,13 @@ switch($stage)
 			{
 			echo "<b>Fresh Install or Clean Update</b><br><br>";
 			echo "<b>Setting Up Schema...</b><br><br>";
-			sqlfile("schema.drop");
+			sqlfile("schema.drop",$sql);
 			echo "<b>Setting Up Defaults...</b><br><br>";
-			sqlfile("default");
+			sqlfile("default",$sql);
 			if (isset($_REQUEST['example']))
 				{
 				echo "<b>Setting Up Examples...</b><br><br>";
-				sqlfile("example");
+				sqlfile("example",$sql);
 				}
 			}
 		else if ($_REQUEST['insttype']=="upgrade")
@@ -147,9 +147,9 @@ switch($stage)
 			echo "Doesn't mean it hasn't worked if you see already exists/duplicate errors<br><br>";
 			echo "<b style=\"color: red;\">Basically ignore errors: 1050, 1060, 1068 and 1054</b><br><br>";
 			echo "<b>Importing New Schema (sans drop tables)</b><br><br>";
-			sqlfile("schema");
+			sqlfile("schema",$sql);
 			echo "<br><br><b>Doing Schema Upgrade</b><br><br>";
-			sqlfile("schema.upgrade");
+			sqlfile("schema.upgrade",$sql);
 			echo "<br><br>";
 			}
 		else echo "<b>Error: Incorrect or Unknown Installation Type!</b><br><br>";
@@ -158,7 +158,7 @@ switch($stage)
 			{
 			echo "<b>Enabling Usage Tracker</b><br><br>";
 			$q="INSERT INTO fnconfig(fnc_var,fnc_val) VALUES(\"freenats.tracker\",\"1\")";
-			mysql_query($q);
+			mysqli_query($sql,$q);
 			}
 		echo "<br><br>";
 		echo "<b>CONGRATULATIONS!!</b><br><br>";

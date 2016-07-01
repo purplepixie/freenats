@@ -22,7 +22,8 @@ For more information see www.purplepixie.org/freenats
 
 function ss($s) // safestring
 {
-return mysql_escape_string($s);
+	global $NATS;
+	return $NATS->DB->SafeString($s);
 }
 
 class TNATS_DB
@@ -36,9 +37,9 @@ class TNATS_DB
 	function Connect()
 		{
 		global $fnCfg;
-		$this->sql=mysql_connect($fnCfg['db.server'],$fnCfg['db.username'],$fnCfg['db.password'])
+		$this->sql=mysqli_connect($fnCfg['db.server'],$fnCfg['db.username'],$fnCfg['db.password'])
 			or die("Cannot connect to MySQL server");
-		mysql_select_db($fnCfg['db.database'])
+		mysqli_select_db($this->sql,$fnCfg['db.database'])
 			or die("Cannot select MySQL database");
 		$this->connected=true;
 		return $this->sql;
@@ -46,30 +47,35 @@ class TNATS_DB
 		
 	function Disconnect()
 		{
-		mysql_close($this->sql);
+		mysqli_close($this->sql);
 		$this->sql=0;
 		$this->connected=false;
 		}
+
+	function SafeString($s)
+	{
+		return mysqli_real_escape_string($this->sql,$s);
+	}
 		
 	function Query($query,$debugerror=true)
 		{
 		global $NATS;
 		if (!$this->connected) return -1;
-		$result=mysql_query($query,$this->sql);
+		$result=mysqli_query($this->sql,$query);
 		if ($debugerror)
 			{
 			// persist the last error state
-			$this->LastError=mysql_errno($this->sql);
+			$this->LastError=mysqli_errno($this->sql);
 			if ($this->LastError>0)
 				{
-				$this->ErrorString=mysql_error($this->sql)." (".mysql_errno($this->sql).")";
+				$this->ErrorString=mysqli_error($this->sql)." (".mysqli_errno($this->sql).")";
 				}
 			else $this->ErrorString="";
 			}
 			
-		if (mysql_errno($this->sql)>0)
+		if (mysqli_errno($this->sql)>0)
 			{
-			$err=mysql_error($this->sql)." (".mysql_errno($this->sql).")";
+			$err=mysqli_error($this->sql)." (".mysqli_errno($this->sql).")";
 			if (isset($NATS)&&$debugerror)
 				{
 				$NATS->Event("Query Failed: ".$query,2,"DB","Query");
@@ -81,46 +87,42 @@ class TNATS_DB
 		
 	function Free(&$result)
 		{
-		mysql_free_result($result);
+		mysqli_free_result($result);
 		}
 		
 	function Fetch_Array(&$result)
 		{
-		return mysql_fetch_array($result);
+		return mysqli_fetch_array($result);
 		}
 		
 	function Affected_Rows()
 		{
-		return mysql_affected_rows($this->sql);
+		return mysqli_affected_rows($this->sql);
 		}
 		
 	function Insert_Id()
 		{
-		return mysql_insert_id($this->sql);
+		return mysqli_insert_id($this->sql);
 		}
 		
 	function Num_Rows(&$result)
 		{
-		return mysql_num_rows($result);
+		return mysqli_num_rows($result);
 		}
 		
 	function Error()
 		{
-		//if (mysql_errno($this->sql)==0) return false;
-		//return true;
 		if ($this->LastError==0) return false;
 		return true;
 		}
 		
 	function Error_Number()
 		{
-		//return mysql_errno($this->sql);
 		return $this->LastError;
 		}
 		
 	function Error_String()
 		{
 		return $this->ErrorString;
-		//return mysql_error($this->sql)." (".$this->Error_Number().")";
 		}
 	}

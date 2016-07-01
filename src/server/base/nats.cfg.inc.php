@@ -54,6 +54,7 @@ class TNATS_Cfg
 		}
 	function Set($var,$val,$perm=true)
 		{
+		global $NATS;
 		$this->data[$var]=$val;
 		if ($perm)
 			{
@@ -63,7 +64,7 @@ class TNATS_Cfg
 			if ($NATS->DB->Affected_Rows()<=0) // not already existing
 				{
 				$q="INSERT INTO fnconfig(fnc_var,fnc_val) VALUES(\"".ss($var)."\",\"".ss($val)."\")";
-				mysql_query($q);
+				$NATS->DB->Query($q);
 				}
 			}
 		}

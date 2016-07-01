@@ -64,7 +64,7 @@ if (!test_mod("Streams","fopen"))
 	{
 	echo "Streams are not supported - fatal error<br>";
 	}
-if (!test_mod("MySQL","mysql_connect"))
+if (!test_mod("MySQLi","mysqli_connect"))
 	{
 	echo "MySQL is not supported - fatal error<br>";
 	}
@@ -96,7 +96,7 @@ exit(1);
 }
 else // PHP Web/Apache Module Test
 {
-if (!test_mod("MySQL","mysql_connect"))
+if (!test_mod("MySQLi","mysqli_connect"))
 	{
 	echo "MySQL is not supported - fatal error<br>";
 	}
