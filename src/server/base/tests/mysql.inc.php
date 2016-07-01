@@ -2,7 +2,7 @@
 /* -------------------------------------------------------------
 This file is part of FreeNATS
 
-FreeNATS is (C) Copyright 2008 PurplePixie Systems
+FreeNATS is (C) Copyright 2008-2016 PurplePixie Systems
 
 FreeNATS is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -33,6 +33,7 @@ $NATS->Event("MySQL Test: ".$error,2,"Test","MySQL");
 function mysql_test_data($host,$user,$pass,$database="",$timeout=0,$query="",$column=0,$debug=false)
 {
 global $NATS;
+$sql=mysqli_init();
 if ($timeout>0) $timeout=$timeout; // use specific for test if set
 else
 	{
@@ -46,16 +47,25 @@ if ($timeout>0)
 	{
 	$oldtimeout=ini_get("mysql.timeout");
 	ini_set("mysql.timeout",$timeout);
+	mysqli_set_options($sql,MYSQLI_OPT_CONNECT_TIMEOUT,$timeout);
 	}
+
+if ($debug) echo "mysql://".$user.":".$pass."@".$host."/".$database."\n";
 
 if (!is_numeric($column)) $column=0;
 if ($column<0) $column=0;
 	
-$sql=@mysql_connect($host,$user,$pass,true);
+if ($debug) echo "Connecting\n";
 
-if ((!$sql)||($database==""))
+$connect=@mysqli_real_connect($sql,$host,$user,$pass);
+
+if ((!$sql)||($database=="")||!$connect)
 	{
-	if ($timeout>0) ini_set("mysql.timeout",$oldtimeout);
+	if ($timeout>0) 
+	{
+		ini_set("mysql.timeout",$oldtimeout);
+		mysqli_set_options($sql,MYSQLI_OPT_CONNECT_TIMEOUT,$oldtimeout);
+	}
 	if (!$sql) 
 		{
 		if ($debug) echo "Connect Error: Failed to Connect\n";
@@ -63,29 +73,40 @@ if ((!$sql)||($database==""))
 		return -1; // total connect failed
 		}
 	// otherwise is no database so close and return -1 to indicate failure (for the data requires a DB+qry etc)
-	@mysql_close($sql);
+	if ($debug) echo "Connect Error: Failed to Connect with valid SQL token or null database\n";
+	@mysqli_close($sql);
 	return -1;
 	}
 
-@mysql_select_db($database,$sql);
+if ($debug) echo "Selecting DB\n";
 
-if (mysql_errno($sql)!=0) // failed to select DB
+@mysqli_select_db($sql,$database);
+
+if ($sql===false || @mysqli_errno($sql)!=0) // failed to select DB
 	{
-	if ($timeout>0) ini_set("mysql.timeout",$oldtimeout);
-	fnmysql_error(mysql_error($sql));
-	@mysql_close($sql);
+	if ($timeout>0) 
+	{
+		ini_set("mysql.timeout",$oldtimeout);
+		mysqli_set_options($sql,MYSQLI_OPT_CONNECT_TIMEOUT,$oldtimeout);
+	}
+	fnmysql_error(mysqli_error($sql));
+	@mysqli_close($sql);
 	return -2;	// select database failed
 	}
 
 if ($query=="")
 	{ // no query to perform
-	if ($timeout>0) ini_set("mysql.timeout",$oldtimeout);	
-	@mysql_close($sql);
+	if ($timeout>0) 
+	{
+		ini_set("mysql.timeout",$oldtimeout);
+		mysqli_set_options($sql,MYSQLI_OPT_COMMENT_TIMEOUT,$oldtimeout);
+	}
+	@mysqli_close($sql);
 	return -1; // all ok but no query/rows
 	}
 	
-$r=@mysql_query($query,$sql);
-if (mysql_errno($sql)==0) // successful query
+$r=@mysqli_query($sql,$query);
+if (mysqli_errno($sql)==0) // successful query
 	{
 	if (is_bool($r)) // didn't return any data
 		{
@@ -93,23 +114,27 @@ if (mysql_errno($sql)==0) // successful query
 		}
 	else 
 		{
-		if ($row=mysql_fetch_array($r))
+		if ($row=mysqli_fetch_array($r))
 			{ // got data ok
 			if (isset($row[$column])) $return=$row[$column];
 			else $return=$row[0];
 			}
 		else $return=-5; // query seemed to succeed but no data at all here
-		@mysql_free_result($r,$sql); // free if a result
+		@mysqli_free_result($r,$sql); // free if a result
 		}
 	}
 else 
 	{
-	fnmysql_error(mysql_error($sql));
+	fnmysql_error(mysqli_error($sql));
 	$return=-3; // query failed
 	}
 
-@mysql_close($sql);
-if ($timeout>0) ini_set("mysql.timeout",$oldtimeout);
+@mysqli_close($sql);
+if ($timeout>0) 
+	{
+		ini_set("mysql.timeout",$oldtimeout);
+		mysqli_set_options($sql,MYSQLI_OPT_CONNECT_TIMEOUT,$oldtimeout);
+	}
 return $return;
 }
 
@@ -126,70 +151,90 @@ else
 	if (isset($NATS)) $timeout=$NATS->Cfg->Get("test.mysql.timeout",0);
 	if ($timeout<=0) $timeout=0; // unset specifically or in environment
 	}
+
+$sql=mysqli_init();
+
 // this will return a 0 at any stage if connect etc is ok but no rows are returned
 // negative if something actually fails
 if ($timeout>0)
 	{
 	$oldtimeout=ini_get("mysql.timeout");
 	ini_set("mysql.timeout",$timeout);
+	mysqli_set_options($sql,MYSQLI_OPT_CONNECT_TIMEOUT,$timeout);
 	}
 
-if ($debug) echo "mysql://".$user.":".$pass."@".$host."/".$database."\n";
+if ($debug) echo "mysqli://".$user.":".$pass."@".$host."/".$database."\n";
 
-$sql=@mysql_connect($host,$user,$pass,true);
+$connect=@mysqli_real_connect($sql,$host,$user,$pass);
 
-if ((!$sql)||($database==""))
+if ((!$sql)||($database=="")||!$connect)
 	{
-	if ($timeout>0) ini_set("mysql.timeout",$oldtimeout);
-	if (!$sql) 
+	if ($timeout>0) 
+	{
+		ini_set("mysql.timeout",$oldtimeout);
+		mysqli_set_options($sql,MYSQLI_OPT_CONNECT_TIMEOUT,$oldtimeout);
+	}
+	if (!$sql || !$connect) 
 		{
 		if ($debug) echo "Connect Error: Failed to Connect\n";
 		fnmysql_error("Failed to Connect");
 		return -1; // total connect failed
 		}
 	// otherwise is no database so close and return 0
-	@mysql_close($sql);
+	@mysqli_close($sql);
 	return 0;
 	}
 
-@mysql_select_db($database,$sql);
+@mysqli_select_db($sql,$database);
 
-if (mysql_errno($sql)!=0) // failed to select DB
+if ($sql===false || mysqli_errno($sql)!=0) // failed to select DB
 	{
-	if ($timeout>0) ini_set("mysql.timeout",$oldtimeout);
-	fnmysql_error(mysql_error($sql));
-	@mysql_close($sql);
+	if ($timeout>0) 
+	{
+		ini_set("mysql.timeout",$oldtimeout);
+		mysqli_set_options($sql,MYSQLI_OPT_CONNECT_TIMEOUT,$oldtimeout);
+	}
+	fnmysql_error(mysqli_error($sql));
+	@mysqli_close($sql);
 	return -2;	// select database failed
 	}
 
 if ($query=="")
 	{ // no query to perform
-	if ($timeout>0) ini_set("mysql.timeout",$oldtimeout);	
-	@mysql_close($sql);
+	if ($timeout>0) 
+	{
+		ini_set("mysql.timeout",$oldtimeout);
+		mysqli_set_options($sql,MYSQLI_OPT_CONNECT_TIMEOUT,$oldtimeout);
+	}	
+	@mysqli_close($sql);
 	return 0; // all ok but no query/rows
 	}
 	
-$r=@mysql_query($query,$sql);
-if (mysql_errno($sql)==0) // successful query
+$r=@mysqli_query($sql,$query);
+if (mysqli_errno($sql)==0) // successful query
 	{
 	if (is_bool($r)) // didn't return any daya
 		{
-		$return=mysql_affected_rows($sql);
+		$return=mysqli_affected_rows($sql);
 		}
 	else 
 		{
-		$return=mysql_num_rows($r);
-		@mysql_free_result($r,$sql); // free if a result
+		$return=mysqli_num_rows($r);
+		@mysqli_free_result($r); // free if a result
 		}
 	}
 else 
 	{
-	fnmysql_error(mysql_error($sql));
+	fnmysql_error(mysqli_error($sql));
 	$return=-3; // query failed
 	}
 
-@mysql_close($sql);
-if ($timeout>0) ini_set("mysql.timeout",$oldtimeout);
+@mysqli_close($sql);
+if ($timeout>0) 
+	{
+		ini_set("mysql.timeout",$oldtimeout);
+		mysqli_set_options($sql,MYSQLI_OPT_CONNECT_TIMEOUT,$oldtimeout);
+	}
 return $return;
 }
 
