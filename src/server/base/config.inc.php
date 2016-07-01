@@ -24,7 +24,7 @@ $fnCfg=array();
 
 $fnCfg['db.server']		=	"localhost";
 $fnCfg['db.username']	=	"root";
-$fnCfg['db.password']	=	"marvin";
+$fnCfg['db.password']	=	"root";
 $fnCfg['db.database']	=	"freenats";
 
 /* -- ok from version 1.01.9 onwards you can just drop new icons into the server/web/icons directory and they will
