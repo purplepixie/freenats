@@ -47,6 +47,8 @@ Options:
         Say yes to all prompts (dangerous!)
  Clean  --noclean -nc
         No cleaning (don't remove directory after compression)
+ Dots   --dotclean -dc
+        Dot clean (Mac OSX)
 ";
 }
 
@@ -63,6 +65,7 @@ $Config_Dir = "./release/";
 $Config_Yes = false;
 $Config_Exec = true;
 $Config_Clean = true;
+$Config_Dot = false;
 
 $BaseDir = $_FREENATS_BASE;
 //require_once($_FREENATS_NATS);
@@ -114,6 +117,9 @@ for ($i=1; $i<count($_SERVER['argv']); ++$i)
 			break;
 		case "--noclean": case "-nc":
 			$Config_Clean=false;
+			break;
+		case "--dotclean": case "-dc":
+			$Config_Dot=true;
 			break;
 		default:
 			UsageMessage();
@@ -203,6 +209,11 @@ $cmd[]="php build-tools/myrug.cli.php -h=".$_FREENATS_DB_SERVER." -u=".$_FREENAT
 
 $cmd[]="cp -Rf ".$BuildDir."/server/base/sql/* ./sql/latest/";
 
+if ($Config_Dot)
+{
+	$cmd[]="dot_clean -m -v ".$BuildDir;
+}
+
 $Build_File = "";
 if (!$Config_Dummy) // Compress File
 {
@@ -214,7 +225,7 @@ if (!$Config_Dummy) // Compress File
 	else
 	{
 		$Build_File = $BuildDir.".tar";
-		$cmd[]="tar -c -C ".$Config_Dir." ".$Build_ID." > ".$Build_File;
+		$cmd[]="COPYFILE_DISABLE=1 tar -c -C ".$Config_Dir." ".$Build_ID." > ".$Build_File;
 		$cmd[]="gzip ".$Build_File;
 		$Build_File.=".gz";
 	}

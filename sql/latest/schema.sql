@@ -1,2 +1,2 @@
--- FreeNATS freenats-1.15.0a Schema
+-- FreeNATS freenats-1.15.3a Schema
 -- No DROP TABLES - suitable for upgrade
