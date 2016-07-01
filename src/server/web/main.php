@@ -156,7 +156,8 @@ if ($mode=="overview")
 		echo "<a href=node.php?nodeid=".$row['nodeid'].">";
 		echo "<b class=\"al".$row['alertlevel']."\">";
 		if ($row['nodename']!="") echo $row['nodename'];
-		else echo $row['nodeid'];
+		else if ($row['nodeid'] != "") echo $row['nodeid'];
+		else echo $NATS->Lang->Item("node");
 		echo "</b></a>";
 		}
 	echo "</td></tr>";
@@ -225,7 +226,9 @@ else if ($mode=="nodes")
 		echo "<a href=node.php?nodeid=".$row['nodeid'].">";
 		
 		echo "<b class=\"al".$row['alertlevel']."\">";
-		echo $row['nodename'];
+		if ($row['nodename']!="") echo $row['nodename'];
+		else if ($row['nodeid'] != "") echo $row['nodeid'];
+		else echo $NATS->Lang->Item("node");
 		echo "</b>";
 		
 		echo "</a> ";
