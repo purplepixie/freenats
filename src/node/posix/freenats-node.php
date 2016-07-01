@@ -3,7 +3,7 @@
 /* -------------------------------------------------------------
 This file is part of FreeNATS
 
-FreeNATS is (C) Copyright 2008 PurplePixie Systems
+FreeNATS is (C) Copyright 2008-2016 PurplePixie Systems
 
 FreeNATS is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -39,7 +39,7 @@ $nodeCfg['phpscandir']="site/";
 $nodeCfg['xmlscan']=false;
 $nodeCfg['xmlscandir']="xml/";
 
-$nodeCfg['version']="0.05";
+$nodeCfg['version']="0.09";
 
 $nodeCfg['uptime']	=	true;
 $nodeCfg['disk']	=	true;
@@ -52,6 +52,8 @@ $nodeCfg['process']	=	true;
 
 $configFile="config.inc.php";
 $fileUpdate=true;
+
+$tests=array();
 
 // XML Format
 /*
@@ -81,14 +83,23 @@ $this->xml.=$line."\n";
 
 function AddTest($name,$desc,$val,$lvl=-1)
 {
-$this->AddLine("");
-$this->AddLine(" <test NAME=\"".$name."\">");
-$this->AddLine("  <name>".$name."</name>");
-$this->AddLine("  <desc>".$desc."</desc>");
-$this->AddLine("  <value>".$val."</value>");
-$this->AddLine("  <alertlevel>".$lvl."</alertlevel>");
-$this->AddLine(" </test>");
-$this->AddLine("");
+	global $tests;
+	$add=0;
+	$oname=$name;
+	while (isset($tests[$name]))
+	{
+	        $name=$oname."-".$add;
+	        $add++;
+	}
+	$tests[$name]=1;
+	$this->AddLine("");
+	$this->AddLine(" <test NAME=\"".$name."\">");
+	$this->AddLine("  <name>".$name."</name>");
+	$this->AddLine("  <desc>".$desc."</desc>");
+	$this->AddLine("  <value>".$val."</value>");
+	$this->AddLine("  <alertlevel>".$lvl."</alertlevel>");
+	$this->AddLine(" </test>");
+	$this->AddLine("");
 }
 
 function FreeNATS_XML_Node()

@@ -1,4 +1,4 @@
--- FreeNATS freenats-1.16.0a Schema
+-- FreeNATS freenats-1.16.2a Schema
 -- No DROP TABLES - suitable for upgrade
 -- MySQL dump 10.13  Distrib 5.5.42, for osx10.6 (i386)
 --
@@ -32,7 +32,7 @@ CREATE TABLE `fnalert` (
   PRIMARY KEY (`alertid`),
   KEY `nodeid` (`nodeid`),
   KEY `closedx` (`closedx`)
-) ENGINE=MyISAM AUTO_INCREMENT=2299 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=2300 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -73,7 +73,7 @@ CREATE TABLE `fnalertlog` (
   `logentry` varchar(250) NOT NULL,
   PRIMARY KEY (`alid`),
   KEY `alertid` (`alertid`)
-) ENGINE=MyISAM AUTO_INCREMENT=49750 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=49751 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -171,7 +171,7 @@ CREATE TABLE `fnlocaltest` (
   `nextrunx` bigint(20) unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (`localtestid`),
   KEY `nodeid` (`nodeid`)
-) ENGINE=MyISAM AUTO_INCREMENT=28 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=30 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -189,7 +189,7 @@ CREATE TABLE `fnlog` (
   `loglevel` int(11) NOT NULL DEFAULT '1',
   `logevent` varchar(250) NOT NULL,
   PRIMARY KEY (`logid`)
-) ENGINE=MyISAM AUTO_INCREMENT=96829628 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=96829630 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -398,7 +398,7 @@ CREATE TABLE `fntestrun` (
   PRIMARY KEY (`trid`),
   KEY `finishx` (`finishx`),
   KEY `fnode` (`fnode`)
-) ENGINE=MyISAM AUTO_INCREMENT=23 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=24 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -470,4 +470,4 @@ CREATE TABLE `fnviewitem` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2016-07-01 13:18:09
+-- Dump completed on 2016-07-01 13:55:17
