@@ -167,7 +167,7 @@ echo "<br><br>\n";
 echo "<div class=\"nfooter\">";
 echo "<div class=\"bl\"><div class=\"br\"><div class=\"tl\"><div class=\"tr\">";
 
-echo "<div align=\"left\" class=\"nfootleft\"><a href=http://www.purplepixie.org/freenats/>FreeNATS</a>; &copy; ".$NATS->Lang->Item("copyright")." 2008-2011 ";
+echo "<div align=\"left\" class=\"nfootleft\"><a href=http://www.purplepixie.org/freenats/>FreeNATS</a>; &copy; ".$NATS->Lang->Item("copyright")." 2008-2016 ";
 echo "<a href=http://www.purplepixie.org/>PurplePixie Systems</a>";
 echo "</div><div class=\"nfootright\">";
 echo $NATS->Lang->Item("version").": ".$NATS->Version;
