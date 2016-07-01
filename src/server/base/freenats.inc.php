@@ -71,6 +71,11 @@ function Start()
 				}
 			}
 		}
+
+	// Timezones
+	$zone=$this->Cfg->Get("site.timezone","");
+	if ($zone != "")
+		date_default_timezone_set($zone);
 		
 	// RSS
 	$this->RSS = new NATS_RSS();
