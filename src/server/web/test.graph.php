@@ -406,7 +406,7 @@ $lasty=0;
 $startval=0;
 $finishval=0;
 
-while ($row=mysqli_fetch_array($r,$NATS->DB->sql))
+while ($row=mysqli_fetch_array($r))
 	{
 	$x=posx($row['recordx']);
 	//$y=posy($row['testvalue']); 

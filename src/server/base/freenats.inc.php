@@ -28,7 +28,7 @@ var $Cfg;
 var $Tests;
 var $Lang;
 var $RSS;
-var $Version="1.16.2";
+var $Version="1.16.3";
 var $Release="a";
 var $EventHandlers=array();
 
