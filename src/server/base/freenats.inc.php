@@ -2,7 +2,7 @@
 /* -------------------------------------------------------------
 This file is part of FreeNATS
 
-FreeNATS is (C) Copyright 2008-2016 PurplePixie Systems
+FreeNATS is (C) Copyright 2008-2017 PurplePixie Systems
 
 FreeNATS is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -28,7 +28,7 @@ var $Cfg;
 var $Tests;
 var $Lang;
 var $RSS;
-var $Version="1.16.3";
+var $Version="1.17.0";
 var $Release="a";
 var $EventHandlers=array();
 
