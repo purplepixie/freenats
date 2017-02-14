@@ -2,7 +2,7 @@
 /* -------------------------------------------------------------
 This file is part of FreeNATS
 
-FreeNATS is (C) Copyright 2008-2011 PurplePixie Systems
+FreeNATS is (C) Copyright 2008-2017 PurplePixie Systems
 
 FreeNATS is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -33,29 +33,36 @@ $pagemenu['main'].="<a href=main.php?mode=groups>Groups</a>&nbsp; &nbsp;<a href=
 $pagemenu['main'].="<a href=pref.php>User Options</a>";
 */
 $pagemenu=array();
+
+
 $pagemenu['main']=array(
-	array("overview","main.php?mode=overview",$NATS->Lang->Item("overview")),
-	array("nodes","main.php?mode=nodes",$NATS->Lang->Item("nodes")),
-	array("groups","main.php?mode=groups",$NATS->Lang->Item("groups")),
-	array("views","main.php?mode=views",$NATS->Lang->Item("views.reports")),
-	array("pref","pref.php?mode=pref",$NATS->Lang->Item("user.options")),
-	array("admin","admin.php",$NATS->Lang->Item("system.settings")) );
+	array("overview","main.php?mode=overview",$NATS->Lang->Item("overview"), false),
+	array("nodes","main.php?mode=nodes",$NATS->Lang->Item("nodes"), true),
+	array("groups","main.php?mode=groups",$NATS->Lang->Item("groups"), true),
+	array("views","main.php?mode=views",$NATS->Lang->Item("views.reports"), false),
+	array("pref","pref.php?mode=pref",$NATS->Lang->Item("user.options"), true),
+	array("admin","admin.php",$NATS->Lang->Item("system.settings"),false) );
 	
+
 function PageMenu($name,$mode="")
 {
-global $pagemenu;
+global $pagemenu,$NATS_Session,$NATS;
+$restrict = $NATS->isUserRestricted($NATS_Session->username);
 if (($mode=="")&&isset($_REQUEST['mode'])) $mode=$_REQUEST['mode'];
 $out="";
 $first=true;
 foreach($pagemenu[$name] as $opt)
 	{
-	if ($first) $first=false;
-	else $out.=" ";
-	if ($mode!=$opt[0]) $out.="&nbsp;<a href=".$opt[1].">";
-	else $out.="<b style=\"background-color: #ffffff;\">&nbsp;<a href=\"".$opt[1]."\" style=\"color: black; text-decoration: none;\">";
-	$out.=$opt[2];
-	if ($mode!=$opt[0]) $out.="</a>&nbsp; ";
-	else $out.="</a>&nbsp;</b>";
+		if (!$restrict || $opt[3]==true)
+		{
+			if ($first) $first=false;
+			else $out.=" ";
+			if ($mode!=$opt[0]) $out.="&nbsp;<a href=".$opt[1].">";
+			else $out.="<b style=\"background-color: #ffffff;\">&nbsp;<a href=\"".$opt[1]."\" style=\"color: black; text-decoration: none;\">";
+			$out.=$opt[2];
+			if ($mode!=$opt[0]) $out.="</a>&nbsp; ";
+			else $out.="</a>&nbsp;</b>";
+		}
 	}
 return $out;
 }
@@ -167,7 +174,7 @@ echo "<br><br>\n";
 echo "<div class=\"nfooter\">";
 echo "<div class=\"bl\"><div class=\"br\"><div class=\"tl\"><div class=\"tr\">";
 
-echo "<div align=\"left\" class=\"nfootleft\"><a href=http://www.purplepixie.org/freenats/>FreeNATS</a>; &copy; ".$NATS->Lang->Item("copyright")." 2008-2016 ";
+echo "<div align=\"left\" class=\"nfootleft\"><a href=http://www.purplepixie.org/freenats/>FreeNATS</a>; &copy; ".$NATS->Lang->Item("copyright")." 2008-2017 ";
 echo "<a href=http://www.purplepixie.org/>PurplePixie Systems</a>";
 echo "</div><div class=\"nfootright\">";
 echo $NATS->Lang->Item("version").": ".$NATS->Version;

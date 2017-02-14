@@ -34,6 +34,9 @@ var $EventHandlers=array();
 
 var $PageErrors=array();
 
+var $userdata = array();
+var $usergrouplock = array();
+
 function TFreeNATS()
 	{
 	$this->Tests=new TNATS_Tests(); // need this available during the include phase pre-start
@@ -378,16 +381,20 @@ function ActionFlush()
 
 function GetAlerts()
 	{
+	global $NATS_Session;
 	$q="SELECT nodeid,alertlevel FROM fnalert WHERE closedx=0";
 	$r=$this->DB->Query($q);
 	$c=0;
 	$al=array();
 	while ($row=$this->DB->Fetch_Array($r))
+	{
+		if ($this->isUserAllowedNode($NATS_Session->username,$row['node']))
 		{
-		$al[$c]['nodeid']=$row['nodeid'];
-		$al[$c]['alertlevel']=$row['alertlevel'];
-		$c++;
+			$al[$c]['nodeid']=$row['nodeid'];
+			$al[$c]['alertlevel']=$row['alertlevel'];
+			$c++;
 		}
+	}
 	if ($c>0) return $al;
 	else return false;
 	}
@@ -1079,7 +1086,59 @@ function StripGPC($data)
 
 function PageError($code,$desc)
 {
-$this->PageErrors[]=array( "code" => $code, "desc" => $desc );
+	$this->PageErrors[]=array( "code" => $code, "desc" => $desc );
+}
+
+function isUserRestricted($username)
+{
+	if (!isset($this->userdata[$username]))
+	{
+		$q="SELECT * FROM fnuser WHERE username=\"".ss($username)."\" LIMIT 0,1";
+		$r=$this->DB->Query($q);
+		if ($u=$this->DB->Fetch_Array($r))
+			$this->userdata[$username]=$u;
+		else
+			return false;
+		$this->DB->Free($r);
+	}
+
+	// If user is a normal user & restricted then YES
+	if ($this->userdata[$username]['userlevel']<2 && $this->userdata[$username]['grouplock'])
+		return true;
+	return false;
+}
+
+function isUserAllowedGroup($username, $groupid)
+{
+	if (!$this->isUserRestricted($username)) return true;
+
+	if (!isset($this->usergrouplock[$username]))
+	{
+		$q="SELECT * FROM fngrouplock WHERE username=\"".ss($username)."\"";
+		$r=$this->DB->Query($q);
+		$this->usergrouplock[$username]=array();
+		while($row=$this->DB->Fetch_Array($r))
+			$this->usergrouplock[$username][]=$row['groupid'];
+	}
+
+	if (in_array($groupid,$this->usergrouplock[$username]))
+		return true;
+	return false;
+}
+
+function isUserAllowedNode($username, $nodeid)
+{
+	if (!$this->isUserRestricted($username)) return true;
+
+	$q="SELECT groupid FROM fngrouplink WHERE nodeid=\"".ss($nodeid)."\"";
+	$r=$this->DB->Query($q);
+	while ($row=$this->DB->Fetch_Array($r))
+	{
+		if ($this->isUserAllowedGroup($username, $row['groupid']))
+			return true;
+	}
+
+	return false;
 }
 	
 }

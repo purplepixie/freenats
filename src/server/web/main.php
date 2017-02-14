@@ -2,7 +2,7 @@
 /* -------------------------------------------------------------
 This file is part of FreeNATS
 
-FreeNATS is (C) Copyright 2008-2016 PurplePixie Systems
+FreeNATS is (C) Copyright 2008-2017 PurplePixie Systems
 
 FreeNATS is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -31,11 +31,27 @@ if (!$NATS_Session->Check($NATS->DB))
 ob_end_flush();
 
 if (isset($_REQUEST['mode'])) $mode=$_REQUEST['mode'];
-else 
-	{
+else if ($NATS->isUserRestricted($NATS_Session->username))
+{
+	$mode="nodes";
+	$_REQUEST['mode']="nodes";
+}
+else if (!$NATS->isUserRestricted($NATS_Session->username))
+{
 	$mode="overview";
 	$_REQUEST['mode']="overview";
-	}
+}
+else
+{
+	$mode="nodes";
+	$_REQUEST['mode']="nodes";
+}
+
+if ($mode=="overview" && $NATS->isUserRestricted($NATS_Session->username))
+{
+	$mode="nodes";
+	$_REQUEST['mode']="nodes";
+}
 
 Screen_Header($NATS->Lang->Item("overview.title"),1,0,"","main");
 
@@ -80,6 +96,7 @@ if ($check_update)
 
 if ($mode=="overview")
 	{
+
 	$t="<b class=\"subtitle\">".$NATS->Lang->Item("overview.subtitle")."</b>";
 	Start_Round($t,600);
 	echo "<table width=100% border=0><tr><td align=left width=50%>";
@@ -220,63 +237,67 @@ else if ($mode=="nodes")
 	$f=0;
 	$l=$NATS->DB->Num_Rows($r);
 	while ($row=$NATS->DB->Fetch_Array($r))
+	{
+		if ($NATS->isUserAllowedNode($NATS_Session->username, $row['nodeid']))
 		{
-		//echo "<tr class=\"nicetablehov\" id=\"noderow_".$row['nodeid']."\" onmouseover=\"highlightrow('noderow_".$row['nodeid']."')\"><td align=left>";
-		echo "<tr class=\"nicetablehov\"><td align=left>";
-		echo "<a href=node.php?nodeid=".$row['nodeid'].">";
-		
-		echo "<b class=\"al".$row['alertlevel']."\">";
-		if ($row['nodename']!="") echo $row['nodename'];
-		else if ($row['nodeid'] != "") echo $row['nodeid'];
-		else echo $NATS->Lang->Item("node");
-		echo "</b>";
-		
-		echo "</a> ";
-		echo "(".$row['nodeid'].")";
-		echo "</td><td align=left>";
-		echo "&nbsp;<a href=node.edit.php?nodeid=".$row['nodeid']."><img src=images/options/application.png border=0 title=\"".$NATS->Lang->Item("edit")."\"></a>";
-		echo "&nbsp;";
-		echo "<a href=node.action.php?action=delete&nodeid=".$row['nodeid']."><img src=images/options/action_delete.png border=0 title=\"".$NATS->Lang->Item("delete")."\"></a> ";
-		echo "</td>";
-		
-		if ($nm) 
-			{
-			echo "<form action=node.action.php method=post>";
-			echo "<input type=hidden name=nodeid value=".$row['nodeid'].">";
-			echo "<input type=hidden name=action value=move_before>";
-			}
-		
-		echo "<td>";
-		if ($f==0) echo "<img src=images/arrows/off/arrow_top.png>";
-		else 
-			{
-			echo "<a href=node.action.php?nodeid=".$row['nodeid']."&action=move&dir=up>";
-			echo "<img src=\"images/arrows/on/arrow_top.png\" border=0>";
-			echo "</a>";
-			}
-		
-		if ($f>=($l-1)) echo "<img src=images/arrows/off/arrow_down.png>";
-		else 
-			{
-			echo "<a href=node.action.php?nodeid=".$row['nodeid']."&action=move&dir=down>";
-			echo "<img src=\"images/arrows/on/arrow_down.png\" border=0>";
-			echo "</a>";
-			}
-		
-		if ($nm)
-			{
-			echo "<span style=\"font-size: 8pt;\">&nbsp;[".$row['weight']."]&nbsp;</span>";
-			echo $nml;
-			echo " <input type=submit value=\"Go\" style=\"font-size: 8pt;\">";
-			}
+			//echo "<tr class=\"nicetablehov\" id=\"noderow_".$row['nodeid']."\" onmouseover=\"highlightrow('noderow_".$row['nodeid']."')\"><td align=left>";
+			echo "<tr class=\"nicetablehov\"><td align=left>";
+			echo "<a href=node.php?nodeid=".$row['nodeid'].">";
 			
-		echo "</td>";
-		
-		if ($nm) echo "</form>"; 
-		$f++;
-		
-		echo "</tr>";
+			echo "<b class=\"al".$row['alertlevel']."\">";
+			if ($row['nodename']!="") echo $row['nodename'];
+			else if ($row['nodeid'] != "") echo $row['nodeid'];
+			else echo $NATS->Lang->Item("node");
+			echo "</b>";
+			
+			echo "</a> ";
+			echo "(".$row['nodeid'].")";
+			echo "</td><td align=left>";
+			echo "&nbsp;<a href=node.edit.php?nodeid=".$row['nodeid']."><img src=images/options/application.png border=0 title=\"".$NATS->Lang->Item("edit")."\"></a>";
+			echo "&nbsp;";
+			echo "<a href=node.action.php?action=delete&nodeid=".$row['nodeid']."><img src=images/options/action_delete.png border=0 title=\"".$NATS->Lang->Item("delete")."\"></a> ";
+			echo "</td>";
+			
+			if ($nm) 
+				{
+				echo "<form action=node.action.php method=post>";
+				echo "<input type=hidden name=nodeid value=".$row['nodeid'].">";
+				echo "<input type=hidden name=action value=move_before>";
+				}
+			
+			echo "<td>";
+			if ($f==0) echo "<img src=images/arrows/off/arrow_top.png>";
+			else 
+				{
+				echo "<a href=node.action.php?nodeid=".$row['nodeid']."&action=move&dir=up>";
+				echo "<img src=\"images/arrows/on/arrow_top.png\" border=0>";
+				echo "</a>";
+				}
+			
+			if ($f>=($l-1)) echo "<img src=images/arrows/off/arrow_down.png>";
+			else 
+				{
+				echo "<a href=node.action.php?nodeid=".$row['nodeid']."&action=move&dir=down>";
+				echo "<img src=\"images/arrows/on/arrow_down.png\" border=0>";
+				echo "</a>";
+				}
+			
+			if ($nm)
+				{
+				echo "<span style=\"font-size: 8pt;\">&nbsp;[".$row['weight']."]&nbsp;</span>";
+				echo $nml;
+				echo " <input type=submit value=\"Go\" style=\"font-size: 8pt;\">";
+				}
+				
+			echo "</td>";
+			
+			if ($nm) echo "</form>"; 
+			$f++;
+			
+			echo "</tr>";
 		}
+	}
+
 	echo "<tr><td colspan=3>&nbsp;<br></td></tr>";
 	echo "<form action=node.action.php><input type=hidden name=action value=create>";
 	echo "<tr><td><input type=text name=nodeid size=20 maxlenth=32></td><td colspan=2><input type=submit value=\"".$NATS->Lang->Item("create.node")."\"> ";

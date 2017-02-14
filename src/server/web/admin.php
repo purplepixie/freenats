@@ -35,11 +35,36 @@ if (isset($_REQUEST['action']))
 	switch($_REQUEST['action'])
 		{
 		case "save_user":
+		$glock = isset($_REQUEST['grouplock']) && $_REQUEST['grouplock']==1 ? 1 : 0;
 		$q="UPDATE fnuser SET realname=\"".ss($_REQUEST['realname'])."\",userlevel=".ss($_REQUEST['userlevel']);
+		$q.=",grouplock=".ss($glock);
 		if ((isset($_REQUEST['pword']))&&($_REQUEST['pword']!="_NOTTHIS_")) $q.=",password=MD5(\"".ss($_REQUEST['pword'])."\")";
 		$q.=" WHERE username=\"".ss($_REQUEST['username'])."\"";
 		$NATS->DB->Query($q);
-		if ($NATS->DB->Affected_Rows()<=0) $amsg=$NATS->Lang->Item("save.user.fail");
+
+		$update=false;
+		if ($NATS->DB->Affected_Rows()>0) $update=true;
+
+		// Grouplock!
+		$q="DELETE FROM fngrouplock WHERE username=\"".ss($_REQUEST['username'])."\"";
+		$NATS->DB->Query($q);
+
+
+
+		if (isset($_REQUEST['gl']))
+		{
+			foreach($_REQUEST['gl'] as $id => $state)
+			{
+				if ($state == 1)
+				{
+					$iq="INSERT INTO fngrouplock(username,groupid) VALUES(\"".ss($_REQUEST['username'])."\",".ss($id).")";
+					//echo $iq;
+					$NATS->DB->Query($iq);
+				}
+			}
+		}
+
+		if (!$update) $amsg=$NATS->Lang->Item("save.user.fail");
 		else $amsg=$NATS->Lang->Item("save.user.ok");
 		break;
 		
@@ -250,7 +275,7 @@ echo "<b class=\"subtitle\">".$NATS->Lang->Item("user.admin")."</b><br><br>";
 
 
 
-$q="SELECT username,realname,userlevel FROM fnuser";
+$q="SELECT username,realname,userlevel,grouplock FROM fnuser";
 $r=$NATS->DB->Query($q);
 echo "<table border=0>";
 echo "<tr><td><b>".$NATS->Lang->Item("username")."&nbsp;</b></td>";
@@ -273,8 +298,45 @@ while ($row=$NATS->DB->Fetch_Array($r))
 	echo "</select>";
 	echo "</td>";
 	echo "<td><input type=password name=pword value=\"_NOTTHIS_\" size=10 maxlength=128></td>";
+	echo "<td><a href=\"javascript:displayToggle('extended-".$row['username']."');\">".$NATS->Lang->Item("extended.user")."</a></td>";
 	echo "<td><input type=submit value=\"".$NATS->Lang->Item("save")."\"> <a href=admin.php?action=delete_user&username=".$row['username'].">".$NATS->Lang->Item("delete")."</a></td>";
 	echo "</tr>";
+
+	echo "<tr>";
+	echo "<td colspan=\"6\">";
+
+	echo "<div class=\"userExtended\" id=\"extended-".$row['username']."\">";
+
+	$check = $row['grouplock'] == 1 ? " checked" : "";
+	echo "<input type=\"checkbox\" name=\"grouplock\" value=\"1\"".$check." /> ";
+	echo $NATS->Lang->Item("user.grouplock");
+	echo " (<i>".$NATS->Lang->Item("user.grouplock.warning")."</i>)<br /><br />";
+
+	$gq = "SELECT * FROM fngroup";
+	$gr=$NATS->DB->Query($gq);
+	$groups=array();
+	while ($grow=$NATS->DB->Fetch_Array($gr))
+		$groups[$grow['groupid']]=$grow['groupname'];
+	$NATS->DB->Free($gr);
+
+	$mygq = "SELECT * FROM fngrouplock WHERE username=\"".ss($row['username'])."\"";
+	$mygr = $NATS->DB->Query($mygq);
+	$mygroups=array();
+	while ($myrow = $NATS->DB->Fetch_Array($mygr))
+		$mygroups[]=$myrow['groupid'];
+	$NATS->DB->Free($mygr);
+
+	foreach($groups as $id => $name)
+	{
+		$check = in_array($id,$mygroups) ? " checked" : "";
+		echo "<input type=\"checkbox\" name=\"gl[".$id."]\" value=\"1\"".$check." /> ".$name."<br />";
+	}
+
+	echo "<br /><br /></div>";
+
+	echo "</td>";
+	echo "</tr>";
+
 	echo "</form>";
 	}
 echo "<form action=admin.php method=post>";

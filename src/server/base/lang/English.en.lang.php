@@ -604,5 +604,7 @@ $lang['help.VAR:RETAIN.SYSLOG'] = "Days to retain log entries for (default 30 if
 $lang['help.VAR:FREENATS.TRACKER'] = "Participate in the automated feedback process - 1 for yes low level, 2 for detailed, 0 for disabled (default 0)";
 $lang['help.VAR:FREENATS.TRACKER.USID'] = "Unique Site ID for FreeNATS tracker to anonymise data capture (only if {Var:freenats.tracker|freenats.tracker} set to 1";
 
-
+$lang['extended.user'] = "Extended";
+$lang['user.grouplock'] = "Lock User to Groups";
+$lang['user.grouplock.warning'] = "Only applies to ".$lang['ul.normal'];
 ?>
