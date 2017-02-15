@@ -46,7 +46,7 @@ echo "<div class=\"popup_inside\">";
 switch ($type)
 {
 case "node": // a node details
-if (isset($_REQUEST['nodeid']))
+if (isset($_REQUEST['nodeid']) && $NATS->isUserAllowedNode($NATS_Session->username,$_REQUEST['nodeid']))
 	{
 	$nodeid=ss($_REQUEST['nodeid']);
 	$node=$NATS->GetNode($nodeid);

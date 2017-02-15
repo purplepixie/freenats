@@ -2,7 +2,7 @@
 /* -------------------------------------------------------------
 This file is part of FreeNATS
 
-FreeNATS is (C) Copyright 2008 PurplePixie Systems
+FreeNATS is (C) Copyright 2008-2017 PurplePixie Systems
 
 FreeNATS is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -163,21 +163,24 @@ $name="";
 $first=true;
 
 while ($row=$NATS->DB->Fetch_Array($r))
+{
+	if ($NATS->isUserAllowedNode($NATS_Session->username,$row['nodeid']))
 	{
-	if ($name!=$row['nodeid'])
+		if ($name!=$row['nodeid'])
 		{
-		if ($first) $first=false;
-		else echo "<br><br>";
-		echo "<b class=\"subtitle\">Node: <a href=node.php?nodeid=".$row['nodeid'].">".$row['nodeid']."</a></b><br><br>";
-		$name=$row['nodeid'];
+			if ($first) $first=false;
+			else echo "<br><br>";
+			echo "<b class=\"subtitle\">Node: <a href=node.php?nodeid=".$row['nodeid'].">".$row['nodeid']."</a></b><br><br>";
+			$name=$row['nodeid'];
 		}
-	echo "<b>".gtinfo($row['testid'])." on ".$row['nodeid']."</b><br>";
-	//echo "img src=\"test.graph.php?testid=".$row['testid']."&startx=".$startx."&finishx=".$finishx."\"<br>";
-	echo "<a href=history.test.php?nodeid=".$row['nodeid']."&testid=".$row['testid']."&startx=".$startx."&finishx=".$finishx.">";
-	echo "<img src=\"test.graph.php?nodeid=".$row['nodeid']."&testid=".$row['testid']."&startx=".$startx."&finishx=".$finishx."\" border=0>";
-	echo "</a>";
-	echo "<br><br>&nbsp;<br>";
+		echo "<b>".gtinfo($row['testid'])." on ".$row['nodeid']."</b><br>";
+		//echo "img src=\"test.graph.php?testid=".$row['testid']."&startx=".$startx."&finishx=".$finishx."\"<br>";
+		echo "<a href=history.test.php?nodeid=".$row['nodeid']."&testid=".$row['testid']."&startx=".$startx."&finishx=".$finishx.">";
+		echo "<img src=\"test.graph.php?nodeid=".$row['nodeid']."&testid=".$row['testid']."&startx=".$startx."&finishx=".$finishx."\" border=0>";
+		echo "</a>";
+		echo "<br><br>&nbsp;<br>";
 	}
+}
 	
 $NATS->DB->Free($r);
 

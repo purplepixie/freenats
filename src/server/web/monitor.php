@@ -128,18 +128,21 @@ if ($NATS->DB->Num_Rows($r)>0)
 	echo "<table border=0>";
 	$a=0;
 	while ($row=$NATS->DB->Fetch_Array($r))
+	{
+		if ($NATS->isUserAllowedGroup($NATS_Session->username,$row['groupid']))
 		{
-		if ($a==0) echo "<tr>";
-		echo "<td>";
-		ng_big($row['groupid'],$row['groupname'],$row['groupdesc'],$row['groupicon']);
-		echo "</td>";
-		$a++;
-		if ($a==2)
-			{
-			$a=0;
-			echo "</tr>";
-			}
+			if ($a==0) echo "<tr>";
+			echo "<td>";
+			ng_big($row['groupid'],$row['groupname'],$row['groupdesc'],$row['groupicon']);
+			echo "</td>";
+			$a++;
+			if ($a==2)
+				{
+				$a=0;
+				echo "</tr>";
+				}
 		}
+	}
 	if ($a>0) echo "</tr>";
 	echo "</table>";
 	echo "<br><br>";
@@ -155,18 +158,21 @@ $r=$NATS->DB->Query($q);
 echo "<table border=0>";
 $a=0;
 while ($row=$NATS->DB->Fetch_Array($r))
+{
+	if ($NATS->isUserAllowedNode($NATS_Session->username,$row['nodeid']))
 	{
-	if ($a==0) echo "<tr>";
-	echo "<td>";
-	np_tiny($row['nodeid'],true,$row['nodename'],$monpopup);
-	echo "</td>";
-	$a++;
-	if ($a==5)
-		{
-		$a=0;
-		echo "</tr>";
-		}
+		if ($a==0) echo "<tr>";
+		echo "<td>";
+		np_tiny($row['nodeid'],true,$row['nodename'],$monpopup);
+		echo "</td>";
+		$a++;
+		if ($a==5)
+			{
+			$a=0;
+			echo "</tr>";
+			}
 	}
+}
 if ($a>0) echo "</tr>";
 echo "</table>";
 $NATS->DB->Free($r);
@@ -181,7 +187,7 @@ echo "<table border=0>";
 $a=0;
 while ($row=$NATS->DB->Fetch_Array($r))
 	{
-		if ($NATS->GroupAlertLevel($row['groupid'])>0)
+		if ($NATS->GroupAlertLevel($row['groupid'])>0 && $NATS->isUserAllowedGroup($NATS_Session->username,$row['groupid']))
 		{
 		if ($a==0) echo "<tr>";
 		echo "<td>";
@@ -209,18 +215,21 @@ $r=$NATS->DB->Query($q);
 echo "<table border=0>";
 $a=0;
 while ($row=$NATS->DB->Fetch_Array($r))
+{
+	if ($NATS->isUserAllowedNode($NATS_Session->username,$row['nodeid']))
 	{
-	if ($a==0) echo "<tr>";
-	echo "<td>";
-	np_tiny($row['nodeid'],true,$row['nodename'],$monpopup);
-	echo "</td>";
-	$a++;
-	if ($a==5)
-		{
-		$a=0;
-		echo "</tr>";
-		}
+		if ($a==0) echo "<tr>";
+		echo "<td>";
+		np_tiny($row['nodeid'],true,$row['nodename'],$monpopup);
+		echo "</td>";
+		$a++;
+		if ($a==5)
+			{
+			$a=0;
+			echo "</tr>";
+			}
 	}
+}
 if ($a>0) echo "</tr>";
 echo "</table>";
 $NATS->DB->Free($r);
@@ -234,18 +243,21 @@ $r=$NATS->DB->Query($q);
 echo "<table border=0>";
 $a=0;
 while ($row=$NATS->DB->Fetch_Array($r))
+{
+	if ($NATS->isUserAllowedGroup($NATS_Session->username,$row['groupid']))
 	{
-	if ($a==0) echo "<tr>";
-	echo "<td>";
-	ng_big($row['groupid'],$row['groupname'],$row['groupdesc'],$row['groupicon'],$monpopup);
-	echo "</td>";
-	$a++;
-	if ($a==2)
-		{
-		$a=0;
-		echo "</tr>";
-		}
+		if ($a==0) echo "<tr>";
+		echo "<td>";
+		ng_big($row['groupid'],$row['groupname'],$row['groupdesc'],$row['groupicon'],$monpopup);
+		echo "</td>";
+		$a++;
+		if ($a==2)
+			{
+			$a=0;
+			echo "</tr>";
+			}
 	}
+}
 if ($a>0) echo "</tr>";
 echo "</table>";
 
@@ -261,18 +273,21 @@ $r=$NATS->DB->Query($q);
 echo "<table border=0>";
 $a=0;
 while ($row=$NATS->DB->Fetch_Array($r))
+{
+	if ($NATS->isUserAllowedNode($NATS_Session->username,$row['nodeid']))
 	{
-	if ($a==0) echo "<tr>";
-	echo "<td>";
-	np_big($row['nodeid'],$row['nodename'],$row['nodedesc'],$row['nodeicon'],$monpopup);
-	echo "</td>";
-	$a++;
-	if ($a==2)
-		{
-		$a=0;
-		echo "</tr>";
-		}
+		if ($a==0) echo "<tr>";
+		echo "<td>";
+		np_big($row['nodeid'],$row['nodename'],$row['nodedesc'],$row['nodeicon'],$monpopup);
+		echo "</td>";
+		$a++;
+		if ($a==2)
+			{
+			$a=0;
+			echo "</tr>";
+			}
 	}
+}
 if ($a>0) echo "</tr>";
 echo "</table>";
 

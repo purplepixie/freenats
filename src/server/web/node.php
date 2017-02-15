@@ -2,7 +2,7 @@
 /* -------------------------------------------------------------
 This file is part of FreeNATS
 
-FreeNATS is (C) Copyright 2008-2010 PurplePixie Systems
+FreeNATS is (C) Copyright 2008-2017 PurplePixie Systems
 
 FreeNATS is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -31,6 +31,10 @@ if (!$NATS_Session->Check($NATS->DB))
 	exit();
 	}
 if ($NATS_Session->userlevel<1) UL_Error($NATS->Lang->Item("viewing.node"));
+
+if (!$NATS->isUserAllowedNode($NATS_Session->username,$_REQUEST['nodeid']))
+	UL_Error($NATS->Lang->Item("viewing.node"));
+
 ob_end_flush();
 Screen_Header($NATS->Lang->Item("viewing.node")." ".$_REQUEST['nodeid'],1);
 ?>

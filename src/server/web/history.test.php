@@ -2,7 +2,7 @@
 /* -------------------------------------------------------------
 This file is part of FreeNATS
 
-FreeNATS is (C) Copyright 2008 PurplePixie Systems
+FreeNATS is (C) Copyright 2008-2017 PurplePixie Systems
 
 FreeNATS is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -60,7 +60,9 @@ if (!$row=$NATS->DB->Fetch_Array($r))
 	header("main.php?message=Error+opening+test+history");
 	exit();
 	}
-	
+
+if (!$NATS->isUserAllowedNode($NATS_Session->username,$row['nodeid']))
+	UL_Error($NATS->Lang->Item("viewing.node"));
 	
 // This bit handles up-front the test interval stuff i.e. which is the interval that
 // the test "should run" at
