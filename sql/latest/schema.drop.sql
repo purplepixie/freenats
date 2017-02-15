@@ -125,7 +125,7 @@ CREATE TABLE `fngroup` (
   `groupicon` varchar(64) NOT NULL,
   `weight` int(10) unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (`groupid`)
-) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -141,7 +141,22 @@ CREATE TABLE `fngrouplink` (
   `nodeid` varchar(64) NOT NULL,
   PRIMARY KEY (`glid`),
   KEY `groupid` (`groupid`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `fngrouplock`
+--
+
+DROP TABLE IF EXISTS `fngrouplock`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `fngrouplock` (
+  `glid` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `username` varchar(64) NOT NULL,
+  `groupid` bigint(20) NOT NULL,
+  PRIMARY KEY (`glid`)
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -197,7 +212,7 @@ CREATE TABLE `fnlog` (
   `loglevel` int(11) NOT NULL DEFAULT '1',
   `logevent` varchar(250) NOT NULL,
   PRIMARY KEY (`logid`)
-) ENGINE=MyISAM AUTO_INCREMENT=96829674 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -397,7 +412,7 @@ CREATE TABLE `fnsession` (
   `updatex` bigint(20) unsigned NOT NULL DEFAULT '0',
   `userlevel` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`sessionid`)
-) ENGINE=MyISAM AUTO_INCREMENT=156 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=164 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -431,6 +446,7 @@ CREATE TABLE `fnuser` (
   `password` varchar(64) NOT NULL,
   `realname` varchar(128) NOT NULL,
   `userlevel` int(11) NOT NULL DEFAULT '1',
+  `grouplock` tinyint(4) NOT NULL,
   PRIMARY KEY (`username`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -491,4 +507,4 @@ CREATE TABLE `fnviewitem` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2016-07-06 16:10:12
+-- Dump completed on 2017-02-15 14:42:59

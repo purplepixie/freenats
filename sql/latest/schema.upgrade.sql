@@ -1,4 +1,4 @@
--- FreeNATS freenats-1.16.3a Schema
+-- FreeNATS freenats-1.17.0a Schema
 -- Experimental Upgrade SQL - run after schema.sql (not drop!)
 -- Both will generate many many errors - run with --force, ignore errors
 -- myrug -- PurplePixie Systems
@@ -115,6 +115,16 @@ ALTER TABLE `fngrouplink` ADD `groupid` bigint(20) unsigned NOT NULL DEFAULT '0'
 CREATE INDEX `groupid` ON `fngrouplink` ( `groupid` );
 ALTER TABLE `fngrouplink` CHANGE `nodeid` `nodeid` varchar(64) NOT NULL;
 ALTER TABLE `fngrouplink` ADD `nodeid` varchar(64) NOT NULL;
+-- 
+-- Table: fngrouplock
+-- DESCRIBE fngrouplock
+ALTER TABLE `fngrouplock` CHANGE `glid` `glid` bigint(20) unsigned NOT NULL auto_increment;
+ALTER TABLE `fngrouplock` ADD `glid` bigint(20) unsigned NOT NULL auto_increment;
+ALTER TABLE `fngrouplock` ADD PRIMARY KEY( `glid` );
+ALTER TABLE `fngrouplock` CHANGE `username` `username` varchar(64) NOT NULL;
+ALTER TABLE `fngrouplock` ADD `username` varchar(64) NOT NULL;
+ALTER TABLE `fngrouplock` CHANGE `groupid` `groupid` bigint(20) NOT NULL;
+ALTER TABLE `fngrouplock` ADD `groupid` bigint(20) NOT NULL;
 -- 
 -- Table: fnlocaltest
 -- DESCRIBE fnlocaltest
@@ -430,6 +440,8 @@ ALTER TABLE `fnuser` CHANGE `realname` `realname` varchar(128) NOT NULL;
 ALTER TABLE `fnuser` ADD `realname` varchar(128) NOT NULL;
 ALTER TABLE `fnuser` CHANGE `userlevel` `userlevel` int(11) NOT NULL DEFAULT '1';
 ALTER TABLE `fnuser` ADD `userlevel` int(11) NOT NULL DEFAULT '1';
+ALTER TABLE `fnuser` CHANGE `grouplock` `grouplock` tinyint(4) NOT NULL;
+ALTER TABLE `fnuser` ADD `grouplock` tinyint(4) NOT NULL;
 -- 
 -- Table: fnview
 -- DESCRIBE fnview

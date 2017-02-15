@@ -64,6 +64,8 @@ require($BaseDir."tests/ppping.inc.php");
 
 require($BaseDir."tests/ldap.inc.php");
 
+require($BaseDir."tests/nslast.inc.php");
+
 function ip_lookup($hostname) // "safe" DNS lookup function to call with a hostname, URL or IP - returns 0 if unsuccessful
 {
 // Is it already an IP adress?
