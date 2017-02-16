@@ -52,7 +52,6 @@ class FreeNATS_DNSAPI_Test extends FreeNATS_Local_Test
 		$elapsedTime=round($elapsedTime,4);
 		if ($elapsedTime<=0) return 0.0001;
 		return $elapsedTime;
-		break;
 		}
 	function Evaluate($result) 
 		{
