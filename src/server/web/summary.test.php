@@ -101,12 +101,15 @@ if (isset($_REQUEST['mode'])&&($_REQUEST['mode']=="custom"))
 	$q="SELECT nodeid,nodename FROM fnnode ORDER BY weight ASC";
 	$r=$NATS->DB->Query($q);
 	while ($row=$NATS->DB->Fetch_Array($r))
+	{
+		if ($NATS->isUserAllowedNode($NATS_Session->username,$row['nodeid']))
 		{
-		echo "<input type=checkbox name=nodelist[] value=\"".$row['nodeid']."\"> ";
-		if ($row['nodename']=="") echo $row['nodeid'];
-		else echo $row['nodename'];
-		echo "<br>";
+			echo "<input type=checkbox name=nodelist[] value=\"".$row['nodeid']."\"> ";
+			if ($row['nodename']=="") echo $row['nodeid'];
+			else echo $row['nodename'];
+			echo "<br>";
 		}
+	}
 	$NATS->DB->Free($r);
 	echo "</td><td align=left valign=top>";
 	echo "<b>Start Time</b><br><br>";

@@ -328,35 +328,38 @@ else if ($mode=="groups")
 	echo "<table class=\"nicetablehov\" width=100%>";
 	$l=$NATS->DB->Num_Rows($r);
 	while ($row=$NATS->DB->Fetch_Array($r))
+	{
+		if ($NATS->isUserAllowedGroup($NATS_Session->username,$row['groupid']))
 		{
-		echo "<tr class=\"nicetablehov\">";
-		echo "<td><a href=group.php?groupid=".$row['groupid']."><b class=\"al".$NATS->GroupAlertLevel($row['groupid'])."\">".$row['groupname']."</b></a></td>";
-		echo "<td><a href=group.edit.php?groupid=".$row['groupid']."><img src=images/options/application.png border=0 title=\"".$NATS->Lang->Item("edit")."\"></a>";
-		echo "&nbsp;";
-		echo "<a href=group.action.php?action=delete&groupid=".$row['groupid']."><img src=images/options/action_delete.png border=0 title=\"".$NATS->Lang->Item("delete")."\"></a></td>";
-		echo "<td>";
-		
-		if ($f==0) echo "<img src=images/arrows/off/arrow_top.png>";
-		else 
-			{
-			echo "<a href=group.action.php?groupid=".$row['groupid']."&action=move&dir=up>";
-			echo "<img src=\"images/arrows/on/arrow_top.png\" border=0>";
-			echo "</a>";
-			}
-		
-		if ($f>=($l-1)) echo "<img src=images/arrows/off/arrow_down.png>";
-		else 
-			{
-			echo "<a href=group.action.php?groupid=".$row['groupid']."&action=move&dir=down>";
-			echo "<img src=\"images/arrows/on/arrow_down.png\" border=0>";
-			echo "</a>";
-			}
+			echo "<tr class=\"nicetablehov\">";
+			echo "<td><a href=group.php?groupid=".$row['groupid']."><b class=\"al".$NATS->GroupAlertLevel($row['groupid'])."\">".$row['groupname']."</b></a></td>";
+			echo "<td><a href=group.edit.php?groupid=".$row['groupid']."><img src=images/options/application.png border=0 title=\"".$NATS->Lang->Item("edit")."\"></a>";
+			echo "&nbsp;";
+			echo "<a href=group.action.php?action=delete&groupid=".$row['groupid']."><img src=images/options/action_delete.png border=0 title=\"".$NATS->Lang->Item("delete")."\"></a></td>";
+			echo "<td>";
 			
-		echo "</td>";
-		$f++;
-		
-		echo "</tr>";
+			if ($f==0) echo "<img src=images/arrows/off/arrow_top.png>";
+			else 
+				{
+				echo "<a href=group.action.php?groupid=".$row['groupid']."&action=move&dir=up>";
+				echo "<img src=\"images/arrows/on/arrow_top.png\" border=0>";
+				echo "</a>";
+				}
+			
+			if ($f>=($l-1)) echo "<img src=images/arrows/off/arrow_down.png>";
+			else 
+				{
+				echo "<a href=group.action.php?groupid=".$row['groupid']."&action=move&dir=down>";
+				echo "<img src=\"images/arrows/on/arrow_down.png\" border=0>";
+				echo "</a>";
+				}
+				
+			echo "</td>";
+			$f++;
+			
+			echo "</tr>";
 		}
+	}
 	echo "<tr><td colspan=3>&nbsp;<br></td></tr>";
 	echo "<form action=group.action.php method=post>";
 	echo "<input type=hidden name=action value=create>";
@@ -465,30 +468,33 @@ else if ($mode=="configsummary")
 	$q="SELECT * FROM fnnode ORDER BY weight ASC";
 	$r=$NATS->DB->Query($q);
 	while ($row=$NATS->DB->Fetch_Array($r))
+	{
+		if ($NATS->isUserAllowedNode($NATS_Session->username,$row['nodeid']))
 		{
-		echo "<tr><td>";
-		echo $row['nodeid'];
-		echo "</td><td>";
-		echo $row['nodename'];
-		echo "</td><td>";
-		echo $row['hostname'];
-		echo "</td><td>";
-		if ($row['scheduleid']==0) $s="All Times";
-		else if (isset($scheds[$row['scheduleid']])) $s=$scheds[$row['scheduleid']];
-		else $s="UNKNOWN";
-		echo $s;
-		echo "</td><td>";
-		echo dispyn($row['nodeenabled']);
-		echo "</td><td>";
-		echo dispyn($row['pingtest'])." / ".dispyn($row['pingfatal']);
-		echo "</td><td>";
-		echo $row['testinterval'];
-		echo "</td><td>";
-		echo dispyn($row['nsenabled']);
-		echo "</td>";
-		
-		echo "</tr>";
+			echo "<tr><td>";
+			echo $row['nodeid'];
+			echo "</td><td>";
+			echo $row['nodename'];
+			echo "</td><td>";
+			echo $row['hostname'];
+			echo "</td><td>";
+			if ($row['scheduleid']==0) $s="All Times";
+			else if (isset($scheds[$row['scheduleid']])) $s=$scheds[$row['scheduleid']];
+			else $s="UNKNOWN";
+			echo $s;
+			echo "</td><td>";
+			echo dispyn($row['nodeenabled']);
+			echo "</td><td>";
+			echo dispyn($row['pingtest'])." / ".dispyn($row['pingfatal']);
+			echo "</td><td>";
+			echo $row['testinterval'];
+			echo "</td><td>";
+			echo dispyn($row['nsenabled']);
+			echo "</td>";
+			
+			echo "</tr>";
 		}
+	}
 	$NATS->DB->Free($r);
 	echo "</table><br><br>";
 	
