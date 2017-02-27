@@ -183,6 +183,11 @@ if (isset($_REQUEST['action']))
 		$NATS->DB->Query($q);
 		$amsg=$NATS->Lang->Item("optimised.ok")." ".$_REQUEST['table'];
 		break;
+
+		case "test_suspend":
+		$s = isset($_REQUEST['suspend']) && $_REQUEST['suspend']==1 ? 1 : 0;
+		$NATS->Cfg->Set("site.tester.suspended",$s,true);
+		break;
 		
 		}
 	}
@@ -771,6 +776,18 @@ echo "<br><br>";
 else // catch-all
 {
 echo "<H3>".$NATS->Lang->Item("tests.alerting")."</H3>\n";
+
+$suspend = $NATS->Cfg->Get("site.tester.suspended",0) == 1 ? true : false;
+echo "<form action=\"admin.php\" method=\"post\">";
+$col = $suspend ? "red" : "green";
+$txt = $suspend ? $NATS->Lang->Item("testing.suspended") : $NATS->Lang->Item("testing.not.suspended");
+$opt = $suspend ? $NATS->Lang->Item("testing.resume") : $NATS->Lang->Item("testing.suspend");
+$val = $suspend ? 0 : 1;
+echo "<b style=\"color: ".$col."\">".$txt."</b> ";
+echo "<input type=\"hidden\" name=\"action\" value=\"test_suspend\" />";
+echo "<input type=\"hidden\" name=\"suspend\" value=\"".$val."\" />";
+echo "<input type=\"submit\" value=\"".$opt."\" />";
+echo "</form><br />";
 
 echo "<img src=images/options/letter_open.png style=\"vertical-align: bottom;\">&nbsp;&nbsp;";
 echo "<a href=admin.php?mode=alertactions>".$NATS->Lang->Item("alert.actions")."</a><br><br>";

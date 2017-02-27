@@ -127,6 +127,17 @@ if ($secCheckFirstrun && ( $NATS->Cfg->Get("site.firstrun.ignore",0) != 1 ) )
 		}
 	}
 
+if ($NATS->Cfg->Get("site.tester.suspended",0) == 1)
+{
+	
+	echo "<div class=\"sec_warning\">";
+	echo "<b>".$NATS->Lang->Item("testing.suspended")."</b><br />";
+	echo $NATS->Lang->Item("testing.suspended.explain")."<br />";
+	echo "<a href=\"admin.php\">".$NATS->Lang->Item("system.settings")."</a>";
+	echo "</div>";
+		
+}
+
 
 if ($alertpane==1)
 	{

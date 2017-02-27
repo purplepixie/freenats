@@ -604,7 +604,17 @@ $lang['help.VAR:RETAIN.SYSLOG'] = "Days to retain log entries for (default 30 if
 $lang['help.VAR:FREENATS.TRACKER'] = "Participate in the automated feedback process - 1 for yes low level, 2 for detailed, 0 for disabled (default 0)";
 $lang['help.VAR:FREENATS.TRACKER.USID'] = "Unique Site ID for FreeNATS tracker to anonymise data capture (only if {Var:freenats.tracker|freenats.tracker} set to 1";
 
+// Restricted Users
 $lang['extended.user'] = "Extended";
 $lang['user.grouplock'] = "Lock User to Groups";
 $lang['user.grouplock.warning'] = "Only applies to ".$lang['ul.normal'];
+
+// Suspending
+$lang['testing.suspended'] = "Testing is Suspended";
+$lang['testing.not.suspended'] = "Testing is Enabled";
+$lang['testing.resume'] = "Resume Testing";
+$lang['testing.suspend'] = "Suspend Testing";
+$lang['testing.suspended.explain'] = "Testing is suspended - no nodes will be tested until re-enabled in system settings";
+
+
 ?>
