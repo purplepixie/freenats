@@ -47,7 +47,7 @@ if ($timeout>0)
 	{
 	$oldtimeout=ini_get("mysql.timeout");
 	ini_set("mysql.timeout",$timeout);
-	mysqli_set_options($sql,MYSQLI_OPT_CONNECT_TIMEOUT,$timeout);
+	mysqli_options($sql,MYSQLI_OPT_CONNECT_TIMEOUT,$timeout);
 	}
 
 if ($debug) echo "mysql://".$user.":".$pass."@".$host."/".$database."\n";
@@ -64,7 +64,7 @@ if ((!$sql)||($database=="")||!$connect)
 	if ($timeout>0) 
 	{
 		ini_set("mysql.timeout",$oldtimeout);
-		mysqli_set_options($sql,MYSQLI_OPT_CONNECT_TIMEOUT,$oldtimeout);
+		mysqli_options($sql,MYSQLI_OPT_CONNECT_TIMEOUT,$oldtimeout);
 	}
 	if (!$sql) 
 		{
@@ -87,7 +87,7 @@ if ($sql===false || @mysqli_errno($sql)!=0) // failed to select DB
 	if ($timeout>0) 
 	{
 		ini_set("mysql.timeout",$oldtimeout);
-		mysqli_set_options($sql,MYSQLI_OPT_CONNECT_TIMEOUT,$oldtimeout);
+		mysqli_options($sql,MYSQLI_OPT_CONNECT_TIMEOUT,$oldtimeout);
 	}
 	fnmysql_error(mysqli_error($sql));
 	@mysqli_close($sql);
@@ -99,7 +99,7 @@ if ($query=="")
 	if ($timeout>0) 
 	{
 		ini_set("mysql.timeout",$oldtimeout);
-		mysqli_set_options($sql,MYSQLI_OPT_COMMENT_TIMEOUT,$oldtimeout);
+		mysqli_options($sql,MYSQLI_OPT_COMMENT_TIMEOUT,$oldtimeout);
 	}
 	@mysqli_close($sql);
 	return -1; // all ok but no query/rows
@@ -133,7 +133,7 @@ else
 if ($timeout>0) 
 	{
 		ini_set("mysql.timeout",$oldtimeout);
-		mysqli_set_options($sql,MYSQLI_OPT_CONNECT_TIMEOUT,$oldtimeout);
+		mysqli_options($sql,MYSQLI_OPT_CONNECT_TIMEOUT,$oldtimeout);
 	}
 return $return;
 }
@@ -160,7 +160,7 @@ if ($timeout>0)
 	{
 	$oldtimeout=ini_get("mysql.timeout");
 	ini_set("mysql.timeout",$timeout);
-	mysqli_set_options($sql,MYSQLI_OPT_CONNECT_TIMEOUT,$timeout);
+	mysqli_options($sql,MYSQLI_OPT_CONNECT_TIMEOUT,$timeout);
 	}
 
 if ($debug) echo "mysqli://".$user.":".$pass."@".$host."/".$database."\n";
@@ -172,7 +172,7 @@ if ((!$sql)||($database=="")||!$connect)
 	if ($timeout>0) 
 	{
 		ini_set("mysql.timeout",$oldtimeout);
-		mysqli_set_options($sql,MYSQLI_OPT_CONNECT_TIMEOUT,$oldtimeout);
+		mysqli_options($sql,MYSQLI_OPT_CONNECT_TIMEOUT,$oldtimeout);
 	}
 	if (!$sql || !$connect) 
 		{
@@ -192,7 +192,7 @@ if ($sql===false || mysqli_errno($sql)!=0) // failed to select DB
 	if ($timeout>0) 
 	{
 		ini_set("mysql.timeout",$oldtimeout);
-		mysqli_set_options($sql,MYSQLI_OPT_CONNECT_TIMEOUT,$oldtimeout);
+		mysqli_options($sql,MYSQLI_OPT_CONNECT_TIMEOUT,$oldtimeout);
 	}
 	fnmysql_error(mysqli_error($sql));
 	@mysqli_close($sql);
@@ -204,7 +204,7 @@ if ($query=="")
 	if ($timeout>0) 
 	{
 		ini_set("mysql.timeout",$oldtimeout);
-		mysqli_set_options($sql,MYSQLI_OPT_CONNECT_TIMEOUT,$oldtimeout);
+		mysqli_options($sql,MYSQLI_OPT_CONNECT_TIMEOUT,$oldtimeout);
 	}	
 	@mysqli_close($sql);
 	return 0; // all ok but no query/rows
@@ -229,12 +229,12 @@ else
 	$return=-3; // query failed
 	}
 
-@mysqli_close($sql);
 if ($timeout>0) 
 	{
 		ini_set("mysql.timeout",$oldtimeout);
-		mysqli_set_options($sql,MYSQLI_OPT_CONNECT_TIMEOUT,$oldtimeout);
+		mysqli_options($sql,MYSQLI_OPT_CONNECT_TIMEOUT,$oldtimeout);
 	}
+@mysqli_close($sql);
 return $return;
 }
 
@@ -347,11 +347,11 @@ class FreeNATS_MySQL_Test extends FreeNATS_Local_Test
 		
 	}
 $params=array();
-$NATS->Tests->Register("mysql","FreeNATS_MySQL_Test",$params,"MySQL Connect",2,"FreeNATS MySQL Tester");
+$NATS->Tests->Register("mysql","FreeNATS_MySQL_Test",$params,"MySQL Connect",3,"FreeNATS MySQL Tester");
 $NATS->Tests->SetUnits("mysql","Seconds","s");
-$NATS->Tests->Register("mysqlrows","FreeNATS_MySQL_Test",$params,"MySQL Rows",2,"FreeNATS MySQL Tester");
+$NATS->Tests->Register("mysqlrows","FreeNATS_MySQL_Test",$params,"MySQL Rows",3,"FreeNATS MySQL Tester");
 $NATS->Tests->SetUnits("mysqlrows","Rows","rows");
-$NATS->Tests->Register("mysqldata","FreeNATS_MySQL_Test",$params,"MySQL Data",2,"FreeNATS MySQL Tester");
+$NATS->Tests->Register("mysqldata","FreeNATS_MySQL_Test",$params,"MySQL Data",3,"FreeNATS MySQL Tester");
 }
 
 

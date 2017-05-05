@@ -1,4 +1,4 @@
--- FreeNATS freenats-1.17.4a Schema
+-- FreeNATS freenats-1.17.7a Schema
 -- Experimental Upgrade SQL - run after schema.sql (not drop!)
 -- Both will generate many many errors - run with --force, ignore errors
 -- myrug -- PurplePixie Systems

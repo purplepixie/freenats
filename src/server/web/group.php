@@ -88,7 +88,7 @@ echo "<br><br>";
 echo "<table border=0>";
 $a=0;
 //$q="SELECT nodeid FROM fngrouplink WHERE groupid=".ss($_REQUEST['groupid']);
-$q="select fngrouplink.nodeid as nodeid from fngrouplink left join fnnode on fngrouplink.nodeid=fnnode.nodeid where fngrouplink.groupid=2 order by fnnode.weight";
+$q="select fngrouplink.nodeid as nodeid from fngrouplink left join fnnode on fngrouplink.nodeid=fnnode.nodeid where fngrouplink.groupid=".ss($_REQUEST['groupid'])." order by fnnode.weight";
 $r=$NATS->DB->Query($q);
 while ($row=$NATS->DB->Fetch_Array($r))
 	{

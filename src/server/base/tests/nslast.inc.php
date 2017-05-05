@@ -50,7 +50,7 @@ if (isset($NATS))
 			
 		function Evaluate($result) 
 		{
-			if ($result<=0) return 2; // failure (test failed for reason)
+			if ($result<0) return 2; // failure (test failed for reason)
 			else if ($result>(60*60)) return 2; // an hour
 			else if ($result>(20*60)) return 1; // over 20 mins warning
 			else return 0; //passed
