@@ -350,6 +350,8 @@ function nicediff($diff)
 $hr=0;
 $mn=0;
 $se=0;
+$dd=0;
+
 if ($diff>59)
 	{
 	$mn=round($diff/60,0);
@@ -358,11 +360,18 @@ if ($diff>59)
 		{
 		$hr=round($mn/60,0);
 		$mn=$mn%60;
+        if ($hr>23)
+            $dd=round($hr/24,0);
+            $hr=$hr%24;
 		}
 	}
 else $se=$diff;
 $s="";
-if ($hr<10) $s="0";
+if ($dd) {
+    global $NATS;
+    $s = $dd.' '.($dd == 1 ? $NATS->Lang->Item("day") : $NATS->Lang->Item("days")).' ';
+}
+if ($hr<10) $s.="0";
 $s.=$hr.":";
 if ($mn<10) $s.="0";
 $s.=$mn.":";
@@ -640,7 +649,8 @@ else echo "<a href=node.php?nodeid=".$nodeid.">";
 echo $nodename."</a></td></tr>";
 echo "<tr><td align=right>".$NATS->Lang->Item("description")." :";
 echo "</td><td align=left>".$nodedesc."</td></tr>";
-echo "<tr><td align=right>".$NATS->Lang->item("status")." :</td><td align=left>";
+//echo "<tr><td align=right>".$NATS->Lang->item("status")." :</td><td align=left>";
+echo "<tr><td align=right>".$NATS->Lang->Item("status")." :</td><td align=left>";
 echo "<b class=\"al".$al."\">".oText($al)."</b></td></tr>";
 echo "</table></td>";
 //echo "<td align=left valign=top align=right width=60>";
@@ -648,6 +658,22 @@ echo "</table></td>";
 //echo "</td>";
 echo "</tr>";
 echo "</table>";
+}
+function np_list_item($nodeid,$nodename="",$nodedesc="",$nodeenabled="",$jslink=false)
+{
+global $NATS;
+if ($nodedesc=="") $nodedesc="&nbsp;";
+$al=$NATS->NodeAlertLevel($nodeid);
+if ($nodename=="") $nodename=$nodeid;
+echo "<tr><td align=left>";
+if ($jslink) echo "<a href=\"javascript:nodeClick('".$nodeid."');\">";
+else echo "<a href=node.php?nodeid=".$nodeid.">";
+echo $nodename."</a></td>";
+echo "<td align=left>".$nodedesc."</td>";
+echo "<td align=center>";
+echo "<b class=\"al".$al."\">".oText($al)."</b></td>";
+echo "<td align=center>".$NATS->Lang->Item($nodeenabled ? 'yes' : 'no')."</td>";
+echo '</tr>';
 }
 
 function GetAbsolute($filename="")

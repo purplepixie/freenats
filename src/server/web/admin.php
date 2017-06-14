@@ -523,11 +523,20 @@ if ($row['atype']!="url")
 	echo "</td></tr>";
 	
 	echo "<tr><td>".$NATS->Lang->Item("aa.esubj")." : </td><td>";
+    $esubjects = array (
+        0 => $NATS->Lang->Item("aa.esubj.blank"),
+        1 => $NATS->Lang->Item("aa.esubj.short"),
+        2 => $NATS->Lang->Item("aa.esubj.long"),
+        3 => $NATS->Lang->Item("aa.esubj.nodeid"),
+        );
 	echo "<select name=esubject>";
-	echo "<option value=".$row['esubject'].">".aat_esub($row['esubject'])."</option>";
+    foreach ($esubjects as $id => $desc)
+	    echo '<option value="'.$id.'"'.($row['esubject'] == $id ? ' selected' :'').">".$desc."</option>";
+        /*
 	echo "<option value=0>Blank</option>";
 	echo "<option value=1>Short</option>";
 	echo "<option value=2>Long</option>";
+        */
 	echo "</select>";
 	echo "</td></tr>";
 	

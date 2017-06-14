@@ -112,6 +112,8 @@ $lang['last.24h']="Last 24 Hours";
 $lang['custom']="Custom";
 $lang['ago']="ago";
 $lang['never']="never";
+$lang['day']="day";
+$lang['days']="days";
 
 // User Preferences
 $lang['user.pref']="User Preferences";
@@ -206,6 +208,10 @@ $lang['aa.test']="Test Action";
 $lang['aa.cancel']="Cancel Update";
 $lang['aa.delete']="Delete Action";
 $lang['aa.testflush']="Alert Action Tested &amp; Flushed";
+$lang['aa.esubj.blank']="Blank";
+$lang['aa.esubj.short']="Short";
+$lang['aa.esubj.long']="Long";
+$lang['aa.esubj.nodeid']="Node ID";
 
 
 $lang['system.status']="System Status";
@@ -284,6 +290,7 @@ $lang['mon.std']="standard";
 $lang['mon.grp']="groups";
 $lang['mon.nodes']="nodes";
 $lang['mon.alerting']="alerting";
+$lang['mon.list']="list";
 $lang['mon.hide']="...hide...";
 $lang['mon.goto.node']="Goto Node";
 $lang['mon.goto.node.page']="Goto Node Page";
