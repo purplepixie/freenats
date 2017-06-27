@@ -25,7 +25,7 @@ require("include.php");
 $NATS->Start();
 if (!$NATS_Session->Check($NATS->DB))
 	{
-	$p = $_SERVER['HTTPS']=="on" ? "https" : "http";
+	$p = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS']=="on" ? "https" : "http";
 	$url = $p."://".$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'];
 	header("Location: ./?login_msg=Invalid+Or+Expired+Session&url=".urlencode($url));
 	exit();

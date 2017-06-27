@@ -89,6 +89,8 @@ dispOptions[optCount]='nodes';
 dispLink[optCount++]='<?php echo $NATS->Lang->Item("mon.nodes"); ?>';
 dispOptions[optCount]='alerting';
 dispLink[optCount++]='<?php echo $NATS->Lang->Item("mon.alerting"); ?>';
+dispOptions[optCount]='list';
+dispLink[optCount++]='<?php echo $NATS->Lang->Item("mon.list"); ?>';
 
 function showMonitorViews()
 {
@@ -289,6 +291,31 @@ while ($row=$NATS->DB->Fetch_Array($r))
 	}
 }
 if ($a>0) echo "</tr>";
+echo "</table>";
+
+
+$NATS->DB->Free($r);
+}
+else if ($style=="list")
+{
+$q="SELECT * FROM fnnode ORDER BY alertlevel DESC, weight ASC";
+$r=$NATS->DB->Query($q);
+
+echo "<table border=0>";
+$a=0;
+while ($row=$NATS->DB->Fetch_Array($r))
+{
+	if ($NATS->isUserAllowedNode($NATS_Session->username,$row['nodeid']))
+	{
+		if ($a==0) {
+            echo "<tr>";
+            echo '<td align="left">'.$NATS->Lang->Item("node.name").'</td><td align="left">'.$NATS->Lang->Item("description").'</td><td align="center">'.$NATS->Lang->Item("status").'</td><td align="center">'.$NATS->Lang->Item("node.enabled").'</td>';
+            echo "</tr>";
+        }
+		np_list_item($row['nodeid'],$row['nodename'],$row['nodedesc'],$row['nodeenabled'],$monpopup);
+		$a++;
+	}
+}
 echo "</table>";
 
 

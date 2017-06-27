@@ -226,12 +226,18 @@ function ActionFlush()
 					}
 			
 			}
-			
-			
-		if ($row['atype']=="email")
+
+
+        if ($row['atype']=="email")
 			{
+
 			if ($row['esubject']==0) $sub="";
-			else if ($row['esubject']==1) $sub=$this->Cfg->Get("alert.subject.short","FreeNATS Alert");
+			elseif ($row['esubject']==1) $sub=$this->Cfg->Get("alert.subject.short","FreeNATS Alert");
+                //nodeid
+			elseif ($row['esubject']==3){
+                $sub=$this->Cfg->Get("alert.subject.nodeinfo","FN %node% Alert");
+                $sub = str_replace('%node%',substr($row['mdata'], 0, strpos($row['mdata'], ':')),$sub);
+            }
 			else $sub=$this->Cfg->Get("alert.subject.long","** FreeNATS Alert **");
 			$body="";
 			if ($row['etype']==0) $body=$row['mdata'];
@@ -388,7 +394,8 @@ function GetAlerts()
 	$al=array();
 	while ($row=$this->DB->Fetch_Array($r))
 	{
-		if ($this->isUserAllowedNode($NATS_Session->username,$row['node']))
+		//was $row['node'] (2017-06-12)
+        if ($this->isUserAllowedNode($NATS_Session->username,$row['nodeid']))
 		{
 			$al[$c]['nodeid']=$row['nodeid'];
 			$al[$c]['alertlevel']=$row['alertlevel'];
