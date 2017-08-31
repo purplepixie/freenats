@@ -42,7 +42,7 @@ $pagemenu['main']=array(
 	array("views","main.php?mode=views",$NATS->Lang->Item("views.reports"), false),
 	array("pref","pref.php?mode=pref",$NATS->Lang->Item("user.options"), true),
 	array("admin","admin.php",$NATS->Lang->Item("system.settings"),false) );
-	
+
 
 function PageMenu($name,$mode="")
 {
@@ -66,7 +66,7 @@ foreach($pagemenu[$name] as $opt)
 	}
 return $out;
 }
-	
+
 $poplist=array();
 
 function Screen_Header($title,$menuindex=0,$alertpane=0,$ah="",$pagemenu="",$pagemenumode="")
@@ -122,20 +122,20 @@ if ($secCheckFirstrun && ( $NATS->Cfg->Get("site.firstrun.ignore",0) != 1 ) )
 		echo $NATS->Lang->Item("sec.firstrun.text")."<br />";
 		echo $NATS->Lang->Item("sec.firstrun.ignore")."<BR />";
 		echo "<a href=\"http://www.purplepixie.org/freenats/wiki/Firstrun_Warning\" target=\"top\">http://www.purplepixie.org/freenats/wiki/Firstrun_Warning</a>";
-		
+
 		echo "</div>";
 		}
 	}
 
 if ($NATS->Cfg->Get("site.tester.suspended",0) == 1)
 {
-	
+
 	echo "<div class=\"sec_warning\">";
 	echo "<b>".$NATS->Lang->Item("testing.suspended")."</b><br />";
 	echo $NATS->Lang->Item("testing.suspended.explain")."<br />";
 	echo "<a href=\"admin.php\">".$NATS->Lang->Item("system.settings")."</a>";
 	echo "</div>";
-		
+
 }
 
 
@@ -229,13 +229,13 @@ if ($track_if_enabled)
 				}
 			$NATS->Cfg->Set("freenats.tracker.usid",$usid);
 			}
-			
+
 		// get some more data
 		$sn=explode("/",$_SERVER['SCRIPT_NAME']);
 		$script=$sn[count($sn)-1];
-		
+
 		// show tracking image
-		echo "<img src=\"http://www.purplepixie.org/freenats/report/ping.png.php?data=v=".$NATS->Version."+p=".$script."&type=ping&usid=".$usid."\" width=1 height=1>\n";
+		echo "<img src=\"//www.purplepixie.org/freenats/report/ping.png.php?data=v=".$NATS->Version."+p=".$script."&type=ping&usid=".$usid."\" width=1 height=1>\n";
 		}
 	}
 
@@ -256,17 +256,17 @@ if (count($NATS->PageErrors)>0) // page errors reported
 		$counter++;
 		}
 	$url.="&ver=".$NATS->Version;
-		
+
 	echo "<script type=\"text/javascript\">\n";
 	echo "function report_error()\n";
 	echo "{\n";
 	echo "document.getElementById('error_report_result').innerHTML = 'Reporting Now...';\n";
 	echo "var s = document.createElement(\"script\");\n";
-	echo "s.src = \"http://www.purplepixie.org/freenats/report/error.php?".$url."\";\n";
+	echo "s.src = \"//www.purplepixie.org/freenats/report/error.php?".$url."\";\n";
 	echo "document.body.appendChild(s);\n";
 	echo "}\n";
 	echo "</script>";
-		
+
 	echo "<span id=\"error_report_result\">";
 	if ($autofeedback)
 		{
@@ -286,7 +286,7 @@ if (count($NATS->PageErrors)>0) // page errors reported
 		}
 	echo "</div>";
 	echo "</div>\n";
-	
+
 	if ($autofeedback)
 		{
 		//echo "<script src=\"http://www.purplepixie.org/freenats/report/error.php?".$url."\" type=\"text/javascript\"></script>\n";
@@ -294,20 +294,20 @@ if (count($NATS->PageErrors)>0) // page errors reported
 		echo "report_error();\n";
 		echo "</script>\n";
 		}
-		
+
 	}
-		
+
 if ($NATS->Cfg->Get("site.popupmessage")=="1")
 	{
 	if (count($poplist)>0)
 		{
 		echo "\n<script type=\"text/javascript\">\n";
-		
+
 		foreach($poplist as $pop)
 			{
 			echo "alert('".$pop."');\n";
 			}
-			
+
 		echo "</script>\n";
 		}
 	}
@@ -503,7 +503,7 @@ function NodeIcon($nodeid)
 global $NATS,$fnIcons,$fnIcon_DefNode;
 $q="SELECT nodeicon FROM fnnode WHERE nodeid=\"".ss($nodeid)."\"";
 $r=$NATS->DB->Query($q);
-if ($row=$NATS->DB->Fetch_Array($r)) 
+if ($row=$NATS->DB->Fetch_Array($r))
 	{
 	if ($row['nodeicon']!="") return $row['nodeicon'];
 	}
@@ -515,7 +515,7 @@ function GroupIcon($groupid)
 global $NATS,$fnIcons,$fnIcon_DefGroup;
 $q="SELECT groupicon FROM fngroup WHERE groupid=\"".ss($groupid)."\"";
 $r=$NATS->DB->Query($q);
-if ($row=$NATS->DB->Fetch_Array($r)) 
+if ($row=$NATS->DB->Fetch_Array($r))
 	{
 	if ($row['groupicon']!="") return $row['groupicon'];
 	}
@@ -535,11 +535,11 @@ echo "</a>";
 if ($text)
 	{
 	if ($nodename=="") $nodename=$nodeid;
-	
+
 	//$words=explode(" ",$nodename);
-	
+
 	// messy but there you go...
-	
+
 	$max_on_line=7;
 	$max_lines=2;
 	$len=strlen($nodename);
@@ -548,35 +548,35 @@ if ($text)
 	$charcount=0;
 	for ($a=0; $a<$len; $a++)
 		{
-			
+
 		$char=$nodename[$a];
-		
+
 		if ($char==" ")
 			{
 			$linecount++;
 			$charcount=0;
 			}
 		else $charcount++;
-		
-		if ($charcount>=$max_on_line) 
+
+		if ($charcount>=$max_on_line)
 			{
 			$a=$len+10;
 			$out.="..";
 			}
-		else if ($linecount>=$max_lines) 
+		else if ($linecount>=$max_lines)
 			{
 			$a=$len+10;
 			$out.="..";
 			}
 		else $out.=$char;
-		
+
 		}
 	//if ($a==($len+10)) $out.="..";
 	$nodename=$out;
-	
+
 	$size=10;
-		
-/* -- size-based	
+
+/* -- size-based
 	$len=strlen($nodename);
 	if ($len<9) $size=10;
 	else if ($len<15) $size=8;
@@ -587,7 +587,7 @@ if ($text)
 		$nodename=substr($nodename,0,18)."..";
 		}
 */
-	
+
 	echo "<br><b class=\"al".$al."\" style=\"font-size: ".$size."pt;\">".$nodename."</b>";
 	}
 echo "</td></tr></table>";

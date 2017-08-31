@@ -55,12 +55,12 @@ if ($mode=="overview" && $NATS->isUserRestricted($NATS_Session->username))
 
 Screen_Header($NATS->Lang->Item("overview.title"),1,0,"","main");
 
-if (isset($_REQUEST['message'])) 
+if (isset($_REQUEST['message']))
 	{
 	echo "<b>".$_REQUEST['message']."</b><br>";
 	$poplist[]=$_REQUEST['message'];
 	}
-	
+
 if (isset($_REQUEST['nodemove'])) $nm=true;
 else $nm=false;
 
@@ -112,7 +112,7 @@ if ($mode=="overview")
 		echo "</a>";
 		}
 	echo "</td><td align=right><b><a href=main.php?check_updates=1>".$NATS->Lang->Item("check.updates")."</a></b></td></tr>";
-	
+
 	echo "<tr><td colspan=2><hr class=\"nspacer\"></td></tr>";
 	$fx=time();
 	$sx=$fx-(60*60*24);
@@ -182,23 +182,23 @@ if ($mode=="overview")
 	echo "<br>";
 	End_Round();
 	echo "<br><br>";
-	
+
 	if ($NATS->Cfg->Get("site.nonews",0)!=1)
 	{
 		$t="<b class=\"subtitle\">".$NATS->Lang->Item("freenats.news")."</b>";
 		Start_Round($t,600);
-		
+
 		echo "<DIV ID=\"news-holder\" STYLE=\"padding: 4px;\">";
 		echo "<IMG SRC=\"images/loading/small-circle-lines.gif\">";
 		echo "</DIV>\n";
-		
+
 		echo "<I>Want to disable news? Set variable site.nonews to 1</I>";
-		
+
 		End_Round();
-		
+
 		echo "<SCRIPT TYPE=\"text/javascript\">\n";
 		//echo "alert('check');\n";
-		echo "var url='http://www.purplepixie.org/freenats/newsfeed.js.php';\n";
+		echo "var url='//www.purplepixie.org/freenats/newsfeed.js.php';\n";
 		echo "var nf=document.createElement('script');\n";
 		echo "nf.type='text/javascript';\n";
 		echo "nf.src=url;\n";
@@ -206,11 +206,11 @@ if ($mode=="overview")
 		echo "var fs=document.getElementsByTagName('script')[0];\n";
 		echo "fs.parentNode.insertBefore(nf, fs);\n";
 		echo "</SCRIPT>\n";
-		
+
 	}
-	
+
 	}
-	
+
 else if ($mode=="nodes")
 {
 
@@ -224,13 +224,13 @@ else if ($mode=="nodes")
 		$nml.="<option value=".$row['weight'].">".$row['nodeid']."</option>";
 		}
 	$nml.="</select>";
-	$NATS->DB->Free($r);	
+	$NATS->DB->Free($r);
 	}
-	
+
 	Start_Round("<b class=\"subtitle\">".$NATS->Lang->Item("nodes")."</b> ".hlink("Node",12),600);
 	$q="SELECT nodeid,nodename,alertlevel,weight FROM fnnode ORDER BY weight ASC";
 	$r=$NATS->DB->Query($q);
-	
+
 	echo "<table class=\"nicetablehov\" width=100%>";
 	echo "<tr><td><b>".$NATS->Lang->Item("node")."</b></td><td><b>".$NATS->Lang->Item("options")."</b></td><td><a href=main.php?mode=nodes&nodemove=1>";
 	echo "<b>".$NATS->Lang->Item("move")."</a></b></td></tr>";
@@ -243,13 +243,13 @@ else if ($mode=="nodes")
 			//echo "<tr class=\"nicetablehov\" id=\"noderow_".$row['nodeid']."\" onmouseover=\"highlightrow('noderow_".$row['nodeid']."')\"><td align=left>";
 			echo "<tr class=\"nicetablehov\"><td align=left>";
 			echo "<a href=node.php?nodeid=".$row['nodeid'].">";
-			
+
 			echo "<b class=\"al".$row['alertlevel']."\">";
 			if ($row['nodename']!="") echo $row['nodename'];
 			else if ($row['nodeid'] != "") echo $row['nodeid'];
 			else echo $NATS->Lang->Item("node");
 			echo "</b>";
-			
+
 			echo "</a> ";
 			echo "(".$row['nodeid'].")";
 			echo "</td><td align=left>";
@@ -257,43 +257,43 @@ else if ($mode=="nodes")
 			echo "&nbsp;";
 			echo "<a href=node.action.php?action=delete&nodeid=".$row['nodeid']."><img src=images/options/action_delete.png border=0 title=\"".$NATS->Lang->Item("delete")."\"></a> ";
 			echo "</td>";
-			
-			if ($nm) 
+
+			if ($nm)
 				{
 				echo "<form action=node.action.php method=post>";
 				echo "<input type=hidden name=nodeid value=".$row['nodeid'].">";
 				echo "<input type=hidden name=action value=move_before>";
 				}
-			
+
 			echo "<td>";
 			if ($f==0) echo "<img src=images/arrows/off/arrow_top.png>";
-			else 
+			else
 				{
 				echo "<a href=node.action.php?nodeid=".$row['nodeid']."&action=move&dir=up>";
 				echo "<img src=\"images/arrows/on/arrow_top.png\" border=0>";
 				echo "</a>";
 				}
-			
+
 			if ($f>=($l-1)) echo "<img src=images/arrows/off/arrow_down.png>";
-			else 
+			else
 				{
 				echo "<a href=node.action.php?nodeid=".$row['nodeid']."&action=move&dir=down>";
 				echo "<img src=\"images/arrows/on/arrow_down.png\" border=0>";
 				echo "</a>";
 				}
-			
+
 			if ($nm)
 				{
 				echo "<span style=\"font-size: 8pt;\">&nbsp;[".$row['weight']."]&nbsp;</span>";
 				echo $nml;
 				echo " <input type=submit value=\"Go\" style=\"font-size: 8pt;\">";
 				}
-				
+
 			echo "</td>";
-			
-			if ($nm) echo "</form>"; 
+
+			if ($nm) echo "</form>";
 			$f++;
-			
+
 			echo "</tr>";
 		}
 	}
@@ -304,24 +304,24 @@ else if ($mode=="nodes")
 	echo hlink("Node:Create");
 	if ($nm) echo " <a href=node.action.php?action=reorderweight>".$NATS->Lang->Item("refresh.weight")."</a>";
 	echo "</td></tr></form>";
-	
+
 	$fx=time();
 	$sx=$fx-(60*60*24);
 	echo "<tr><td colspan=3><b>Summary: </b><a href=summary.test.php?nodeid=*>".$NATS->Lang->Item("today")."</a> - ";
 	echo "<a href=summary.test.php?nodeid=*&startx=".$sx."&finishx=".$fx.">".$NATS->Lang->Item("last.24h")."</a> - ";
 	echo "<a href=summary.test.php?mode=custom>".$NATS->Lang->Item("custom")."</a> - ";
 	echo "<a href=main.php?mode=configsummary>".$NATS->Lang->Item("config")."</a></td></tr>";
-	
+
 	echo "</table>";
 	End_Round();
 	}
 
 else if ($mode=="groups")
 	{
-	
+
 	$t="<b class=\"subtitle\">".$NATS->Lang->Item("node.groups")."</b> ".hlink("Group",12);
 	Start_Round($t,600);
-	
+
 	$q="SELECT groupid,groupname FROM fngroup ORDER BY weight ASC";
 	$r=$NATS->DB->Query($q);
 	$f=0;
@@ -337,26 +337,26 @@ else if ($mode=="groups")
 			echo "&nbsp;";
 			echo "<a href=group.action.php?action=delete&groupid=".$row['groupid']."><img src=images/options/action_delete.png border=0 title=\"".$NATS->Lang->Item("delete")."\"></a></td>";
 			echo "<td>";
-			
+
 			if ($f==0) echo "<img src=images/arrows/off/arrow_top.png>";
-			else 
+			else
 				{
 				echo "<a href=group.action.php?groupid=".$row['groupid']."&action=move&dir=up>";
 				echo "<img src=\"images/arrows/on/arrow_top.png\" border=0>";
 				echo "</a>";
 				}
-			
+
 			if ($f>=($l-1)) echo "<img src=images/arrows/off/arrow_down.png>";
-			else 
+			else
 				{
 				echo "<a href=group.action.php?groupid=".$row['groupid']."&action=move&dir=down>";
 				echo "<img src=\"images/arrows/on/arrow_down.png\" border=0>";
 				echo "</a>";
 				}
-				
+
 			echo "</td>";
 			$f++;
-			
+
 			echo "</tr>";
 		}
 	}
@@ -368,7 +368,7 @@ else if ($mode=="groups")
 	echo "</table>";
 	End_Round();
 	}
-	
+
 else if ($mode=="views")
 	{
 	$t="<b class=\"subtitle\">".$NATS->Lang->Item("views")."</b> ".hlink("View",12);
@@ -387,20 +387,20 @@ else if ($mode=="views")
 		echo "<a href=view.edit.php?viewid=".$row['viewid']."&action=delete><img src=images/options/action_delete.png border=0 title=\"".$NATS->Lang->Item("delete")."\"></a>";
 		echo "</td></tr>";
 		}
-	
+
 	echo "<tr><td colspan=2>&nbsp;<br></td></tr>";
 	echo "<form action=view.edit.php method=post><input type=hidden name=action value=create>";
 	echo "<tr><td><input type=text name=vtitle size=20 maxlength=64></td><td><input type=submit value=\"".$NATS->Lang->Item("create.view")."\"> ";
 	echo hlink("View:Create")."</td></tr></form>";
 	echo "</table>";
 	End_Round();
-	
+
 	echo "<br><br>";
 	$t="<b class=\"subtitle\">".$NATS->Lang->Item("reports")." ".hlink("Report",12)."</b>";
 	Start_Round($t,600);
 	echo "<b><a href=report.php>".$NATS->Lang->Item("create.report")."</a></b> ".hlink("Report",12);
 	echo "<br><br>";
-	
+
 	// reports in here
 	$rq="SELECT reportid,reportname FROM fnreport";
 	$rr=$NATS->DB->Query($rq);
@@ -421,11 +421,11 @@ else if ($mode=="views")
 			}
 		echo "</table>";
 		}
-	
+
 	End_Round();
-	
+
 	}
-	
+
 else if ($mode=="configsummary")
 	{
 	$scheds=array();
@@ -436,7 +436,7 @@ else if ($mode=="configsummary")
 		$scheds[$row['scheduleid']]=$row['schedulename'];
 		}
 	$NATS->DB->Free($r);
-		
+
 	echo "<b class=\"subtitle\">".$NATS->Lang->Item("config.summary")."</b><br><br>";
 	echo "<table width=100% border=1>";
 	echo "<tr>";
@@ -491,14 +491,14 @@ else if ($mode=="configsummary")
 			echo "</td><td>";
 			echo dispyn($row['nsenabled']);
 			echo "</td>";
-			
+
 			echo "</tr>";
 		}
 	}
 	$NATS->DB->Free($r);
 	echo "</table><br><br>";
-	
-	}	
+
+	}
 
 else
 	{
@@ -516,7 +516,7 @@ if ($check_update)
 {
 	echo "<SCRIPT TYPE=\"text/javascript\">\n";
 	//echo "alert('check');\n";
-	echo "var url='http://www.purplepixie.org/freenats/download.php?CheckVersion2=".$NATS->Version."';\n";
+	echo "var url='//www.purplepixie.org/freenats/download.php?CheckVersion2=".$NATS->Version."';\n";
 	echo "var us=document.createElement('script');\n";
 	echo "us.type='text/javascript';\n";
 	echo "us.src=url;\n";

@@ -28,8 +28,8 @@ var $Cfg;
 var $Tests;
 var $Lang;
 var $RSS;
-var $Version="1.19.0";
-var $Release="a";
+var $Version="1.19.1";
+var $Release="b";
 var $EventHandlers=array();
 
 var $PageErrors=array();
@@ -55,7 +55,7 @@ function Start()
 	// Tests
 	if ( (!isset($fnSkipSiteIncludes)) || ($fnSkipSiteIncludes === false) )
 		{
-	
+
 		if ($this->Cfg->Get("site.include.tests",0)==1)
 			{
 			foreach(glob($BaseDir."site/tests/*.php") as $phpfile)
@@ -79,20 +79,20 @@ function Start()
 	$zone=$this->Cfg->Get("site.timezone","");
 	if ($zone != "")
 		date_default_timezone_set($zone);
-		
+
 	// RSS
 	$this->RSS = new NATS_RSS();
-	
+
 	// Language
 	$this->Lang=new TNATS_Lang();
 	if (isset($_COOKIE['fn_lang']) && ($_COOKIE['fn_lang']!="") ) $l=$_COOKIE['fn_lang'];
 	else $l=$this->Cfg->Get("site.language","");
 	$this->Lang->Load($l);
-	
-		
+
+
 	$this->init=true;
 	}
-	
+
 function Stop()
 	{
 	$t=$this->Cfg->Get("freenats.tracker","");
@@ -105,11 +105,11 @@ function Stop()
 			$this->PhoneHome();
 			}
 		}
-		
+
 	$this->DB->Disconnect();
 	$this->init=false;
-	}	
-	
+	}
+
 function Event($logevent,$loglevel=1,$modid="NONE",$catid="NONE")
 	{
 	global $NATS_Session;
@@ -139,11 +139,11 @@ function AlertAction($nodeid,$alertlevel,$change,$alerttext)
 		{
 		// get details for this alert action
 		$aq="SELECT * FROM fnalertaction WHERE aaid=".$arow['aaid']." LIMIT 0,1";
-		
+
 		$ar=$this->DB->Query($aq);
 		$aa=$this->DB->Fetch_Array($ar);
 		$this->DB->Free($ar);
-		
+
 		// UGGGGGGGG continue!!
 		// if the type is blank or disabled skip
 		if ( ($aa['atype']=="") || ($aa['atype']=="Disabled") ) continue;
@@ -153,12 +153,12 @@ function AlertAction($nodeid,$alertlevel,$change,$alerttext)
 		if ( ($aa['adecrease']==0) && ($change<1) ) continue;
 		// if has a schedule and it dictates not to run now then skip
 		if (($aa['scheduleid']!=0)&&(!run_x_in_schedule(time(),$aa['scheduleid']))) continue;
-		
+
 		// made it this far
-		
+
 		$ndata=$nodeid.": ".$alerttext;
 		$this->ActionAddData($arow['aaid'],$ndata);
-		
+
 		/* // spun to ActionAddData
 		if ($aa['mdata']!="") $ndata=$aa['mdata']."\n".$nodeid.": ".$alerttext;
 		else $ndata=$nodeid.": ".$alerttext;
@@ -168,22 +168,22 @@ function AlertAction($nodeid,$alertlevel,$change,$alerttext)
 		*/
 		}
 	}
-	
+
 function ActionAddData($aaid, $newmdata)
 	{
 	$q="SELECT aaid,mdata FROM fnalertaction WHERE aaid=".ss($aaid)." LIMIT 0,1";
 	$r=$this->DB->Query($q);
 	if (!$row=$this->DB->Fetch_Array($r)) return false;
 	$this->DB->Free($r);
-	
+
 	if ($row['mdata']!="") $ndata=$row['mdata']."\n".$newmdata;
 	else $ndata=$newmdata;
-	
+
 	$uq="UPDATE fnalertaction SET mdata=\"".ss($ndata)."\" WHERE aaid=".$row['aaid'];
 	$this->DB->Query($uq);
 	return true;
 	}
-	
+
 function ActionFlush()
 	{
 	global $allowed,$BaseDir; // allowed chars from screen in YA BODGE
@@ -191,19 +191,19 @@ function ActionFlush()
 	$r=$this->DB->Query($q);
 	while ($row=$this->DB->Fetch_Array($r))
 		{
-			
+
 			$doalert=true;
-			
+
 		// clear mdata right at the start to get around duplicate emails whilst processing
 			$q="UPDATE fnalertaction SET mdata=\"\" WHERE aaid=".$row['aaid'];
 			$this->DB->Query($q);
-			
+
 			if ($this->DB->Affected_Rows()<=0) // already flushed or failed to flush
 				{
 				$doalert=false;
 				$this->Event("Alert Action Already Flushed - Skipping",8,"Flush","Action");
 				}
-			
+
 		// alert counter
 		$td=date("Ymd");
 		if ($td!=$row['ctrdate']) // new day or no flush record
@@ -213,7 +213,7 @@ function ActionFlush()
 			}
 		else
 			{
-			
+
 				if ( ($row['ctrlimit']==0) || ($row['ctrlimit']>$row['ctrtoday']) ) // no limit or below
 					{
 					$q="UPDATE fnalertaction SET ctrtoday=ctrtoday+1 WHERE aaid=".$row['aaid'];
@@ -224,7 +224,7 @@ function ActionFlush()
 					$this->Event("Alert Action Limit Reached - Skipping",2,"Flush","Action");
 					$doalert=false;
 					}
-			
+
 			}
 
 
@@ -241,7 +241,7 @@ function ActionFlush()
 			else $sub=$this->Cfg->Get("alert.subject.long","** FreeNATS Alert **");
 			$body="";
 			if ($row['etype']==0) $body=$row['mdata'];
-			else 
+			else
 				{
 				$body=$this->Cfg->Get("alert.body.header","FreeNATS Alert,");
 				$body.="\r\n\r\n".$row['mdata']."\r\n\r\n";
@@ -266,7 +266,7 @@ function ActionFlush()
 					$tolist[$f].=$chr;
 					}
 				}
-			
+
 			foreach($tolist as $toaddr)
 				{
 				$toaddr=nices($toaddr);
@@ -281,7 +281,7 @@ function ActionFlush()
 							{
 							mail($toaddr,$sub,$body,$header);
 							$this->Event("Sent alert email to ".$toaddr,4,"Flush","Email");
-							}		
+							}
 						}
 					else // use phpmailer direct SMTP delivery
 						{
@@ -321,19 +321,19 @@ function ActionFlush()
 							$this->Event("phpMailer Sent Email To ".$toaddr,4,"Flush","Email");
 							}
 						}
-						
+
 					}
 				}
-				
-				
-				
+
+
+
 			}
 		else if ($row['atype']=="url")
 			{
 			// url send
 			if ($row['etype']==0) $body=$row['mdata'];
 			else $body="FreeNATS Alert,\r\n".$row['mdata']."\r\n--FreeNATS @ ".nicedt(time());
-			
+
 			$body=urlencode($body);
 			$tolist=array();
 			$f=0;
@@ -352,7 +352,7 @@ function ActionFlush()
 					$tolist[$f].=$chr;
 					}
 				}
-			
+
 			foreach($tolist as $tourl)
 				{
 				if ($doalert)
@@ -364,8 +364,8 @@ function ActionFlush()
 					$this->Event("URL Alert ".$url,4,"Flush","URL");
 					}
 				}
-			
-			
+
+
 			}
 		else if ($row['atype']=="mqueue")
 			{
@@ -381,9 +381,9 @@ function ActionFlush()
 				}
 			else $this->Event("Queue Cleared for AAID ".$row['aaid']." by Handler",4,"Flush","MQueue");
 			}
-			
+
 		}
-	}	
+	}
 
 function GetAlerts()
 	{
@@ -405,7 +405,7 @@ function GetAlerts()
 	if ($c>0) return $al;
 	else return false;
 	}
-	
+
 function SetAlerts($nodeid,$alertlevel,$alerts="")
 	{
 	if ($alerts=="") $alerts=array();
@@ -415,23 +415,23 @@ function SetAlerts($nodeid,$alertlevel,$alerts="")
 	$row=$this->DB->Fetch_Array($r);
 	$this->DB->Free($r);
 	$cal=$row['alertlevel'];
-	
+
 	$eventdata=array("nodeid"=>$nodeid,"alertlevel"=>$alertlevel,
 		"oldalertlevel"=>$cal);
 	$this->EventHandler("set_alerts",$eventdata);
-		
+
 	if ($alertlevel!=$cal)
 		{
 		// update table
 		$q="UPDATE fnnode SET alertlevel=".ss($alertlevel)." WHERE nodeid=\"".ss($nodeid)."\"";
 		$this->DB->Query($q);
 		}
-		
+
 	// do not continue if node alert isn't set
 	if ($row['nodealert']!=1) return 0;
 	// or if untested
 	if ($alertlevel<0) return 0;
-		
+
 	// ALERTS
 	// is there an existing alert for this node
 	$q="SELECT alertid,alertlevel FROM fnalert WHERE nodeid=\"".ss($nodeid)."\" AND closedx=0";
@@ -494,11 +494,11 @@ function SetAlerts($nodeid,$alertlevel,$alerts="")
 				}
 			}
 		}
-		
+
 	$this->AlertAction($nodeid,$alertlevel,$alertlevel-$cal,$at);
-	
-		
-		
+
+
+
 	}
 
 function NodeAlertLevel($nodeid)
@@ -507,7 +507,7 @@ function NodeAlertLevel($nodeid)
 	$r=$this->DB->Query($q);
 	if ($row=$this->DB->Fetch_Array($r)) return $row['alertlevel'];
 	else return -1;
-	}	
+	}
 
 function GroupAlertLevel($groupid)
 	{
@@ -522,7 +522,7 @@ function GroupAlertLevel($groupid)
 	$this->DB->Free($r);
 	return $lvl;
 	}
-	
+
 function PhoneHome($mode=0,$type="ping") // 0 - php, 1 - html, 2 - data
 {
 if ($mode<2)
@@ -533,9 +533,9 @@ if ($mode<2)
 	$ploc="http://www.purplepixie.org/freenats/report/";
 	if ($mode==1) $ploc.="ping.html";
 	else $ploc.="ping.php";
-	
+
 	$ploc.=$qs;
-	
+
 	$lp=@fopen($ploc,"r");
 	if ($lp>0) @fclose($lp);
 	}
@@ -552,58 +552,58 @@ function GetNode($nodeid)
 	$r=$this->DB->Query($q);
 	if ($row=$this->DB->Fetch_Array($r))
 		$return_row=true;
-		
+
 	$this->DB->Free($r);
 	if ($return_row) // found a valid
 		{
 		if ($row['nodename']!="") $row['name']=$row['nodename']; // make a "nice" name for it
 		else $row['name']=$row['nodeid'];
-		
+
 		$row['alerttext']=oText($row['alertlevel']); // textual alert status
-		
+
 		$row['lastrundt']=nicedt($row['lastrunx']); // text date-time last run
 		$row['lastrunago']=dtago($row['lastrunx'],false); // last run ago
-		
+
 		// protection
 		$row['nskey']="";
-		
+
 		return $row;
 		}
 	else
 		return false; // or failed
 	}
-	
+
 function GetNodes()
 {
 	$out=array();
 	$q="SELECT * FROM fnnode";
 	$r=$this->DB->Query($q);
-	
+
 	while ($row=$this->DB->Fetch_Array($r))
 	{
 		if ($row['nodename']!="") $row['name']=$row['nodename']; // make a "nice" name for it
 		else $row['name']=$row['nodeid'];
-		
+
 		$row['alerttext']=oText($row['alertlevel']); // textual alert status
-		
+
 		$row['lastrundt']=nicedt($row['lastrunx']); // text date-time last run
 		$row['lastrunago']=dtago($row['lastrunx'],false); // last run ago
-		
+
 		// protection
 		$row['nskey']="";
-		
+
 		$out[$row['nodeid']]=$row;
 	}
 	$this->DB->Free($r);
-	
+
 	return $out;
 }
 
-	
+
 function GetNodeTests($nodeid)
 	{ // returns an array of testids for the node (enabled tests only)
 	$tests=array();
-	
+
 	// local tests
 	$q="SELECT localtestid FROM fnlocaltest WHERE testenabled=1 AND nodeid=\"".ss($nodeid)."\" ORDER BY localtestid ASC";
 	$r=$this->DB->Query($q);
@@ -612,7 +612,7 @@ function GetNodeTests($nodeid)
 		$tests[]="L".$row['localtestid'];
 		}
 	$this->DB->Free($r);
-	
+
 	// nodeside
 	$q="SELECT nstestid FROM fnnstest WHERE testenabled=1 AND nodeid=\"".ss($nodeid)."\" ORDER BY testtype ASC";
 	$r=$this->DB->Query($q);
@@ -621,10 +621,10 @@ function GetNodeTests($nodeid)
 		$tests[]="N".$row['nstestid'];
 		}
 	$this->DB->Free($r);
-	
+
 	return $tests;
 	}
-	
+
 function SetNode($nodeid,$data)
 	{
 	$q="UPDATE fnnode SET ";
@@ -638,7 +638,7 @@ function SetNode($nodeid,$data)
 	$q.=" WHERE nodeid=\"".ss($nodeid)."\"";
 	$this->DB->Query($q);
 	if ($this->DB->Affected_Rows()>0) return true;
-	
+
 	if ($this->DB->Error()) // query failed
 		{
 		$errstr1="Query Failed: ".$q;
@@ -649,7 +649,7 @@ function SetNode($nodeid,$data)
 		}
 	return true; // query succeeded but nothing was updated
 	}
-	
+
 function EnableNode($nodeid,$enabled=true)
 	{
 	if ($enabled) $ne=1;
@@ -657,47 +657,47 @@ function EnableNode($nodeid,$enabled=true)
 	$data=array("nodeenabled"=>$ne);
 	return $this->SetNode($nodeid,$data);
 	}
-	
+
 function DisableNode($nodeid)
 	{
 	return $this->EnableNode($nodeid,false);
 	}
-	
+
 function SetNodeSchedule($nodeid,$scheduleid)
 	{
 	$data=array("scheduleid"=>$scheduleid);
 	return $this->SetNode($nodeid,$data);
 	}
-	
+
 function GetGroup($groupid)
 	{
 	$q="SELECT * FROM fngroup WHERE groupid=".ss($groupid)." LIMIT 0,1";
 	$r=$this->DB->Query($q);
 	if (!$row=$this->DB->Fetch_Array($r)) return false;
-	
+
 	$this->DB->Free($r);
 	$row['alertlevel']=$this->GroupAlertLevel($groupid);
 	$row['alerttext']=oText($row['alertlevel']);
 	return $row;
 	}
-	
+
 function GetGroups()
 {
 	$out=array();
 	$q="SELECT * FROM fngroup";
 	$r=$this->DB->Query($q);
-	
+
 	while ($row=$this->DB->Fetch_Array($r))
 	{
 		$row['alertlevel']=$this->GroupAlertLevel($row['groupid']);
 		$row['alerttext']=oText($row['alertlevel']);
 		$out[$row['groupid']]=$row;
 	}
-	
+
 	$this->DB->Free($r);
 	return $out;
 }
-	
+
 function GetTest($testid,$protect=false)
 	{
 	if ($testid=="") return false;
@@ -713,11 +713,11 @@ function GetTest($testid,$protect=false)
 		//$testid=substr($testid,1); // as it will here also so direct use to graphs can be made
 		$anytestid=substr($testid,1); // the classless version
 		}
-		
+
 	$q="";
 	switch($class)
 		{
-		case "L": // local tests 
+		case "L": // local tests
 			$q="SELECT * FROM fnlocaltest WHERE localtestid=".ss($anytestid)." LIMIT 0,1";
 			break;
 		case "N": // node-side test
@@ -726,20 +726,20 @@ function GetTest($testid,$protect=false)
 		default:
 			return false; // can't lookup this class
 		}
-		
+
 	if ($q=="") return false;
-	
+
 	$r=$this->DB->Query($q);
-	
+
 	if (!$row=$this->DB->Fetch_Array($r)) return false;
-	
+
 	$row['class']=$class;
 	$row['testid']=$testid;
 	$row['anytestid']=$anytestid;
 	$row['alerttext']=oText($row['alertlevel']);
 	$row['lastrundt']=nicedt($row['lastrunx']);
 	$row['lastrunago']=dtago($row['lastrunx'],false);
-	
+
 	if  ($row['testname']!="")  $row['name']=$row['testname'];
 	else
 			{
@@ -754,7 +754,7 @@ function GetTest($testid,$protect=false)
 				else $row['name']=$row['testtype'];
 				}
 			}
-			
+
 	if ($protect&&($class=="L")) // module test protection
 		{
 		if ($this->Tests->Exists($row['testtype'])) // in the module register
@@ -763,13 +763,13 @@ function GetTest($testid,$protect=false)
 			$this->Tests->Tests[$row['testtype']]->instance->ProtectOutput($row);
 			}
 		}
-	
+
 	$this->DB->Free($r);
-	
+
 	return $row;
 	}
 
-	
+
 function DeleteTest($testid)
 	{
 	if ($testid=="") return false;
@@ -784,11 +784,11 @@ function DeleteTest($testid)
 		{
 		$anytestid=substr($testid,1); // the classless version
 		}
-		
+
 	$q="";
 	switch($class)
 		{
-		case "L": // local tests 
+		case "L": // local tests
 			$q="DELETE FROM fnlocaltest WHERE localtestid=".ss($anytestid);
 			break;
 		case "N": // node-side test
@@ -797,26 +797,26 @@ function DeleteTest($testid)
 		default:
 			return false; // can't lookup this class
 		}
-		
+
 	if ($q=="") return false;
-	
+
 	$this->DB->Query($q);
 	$tests=$this->DB->Affected_Rows();
-	
+
 	$rq="DELETE FROM fnrecord WHERE testid=\"".ss($testid)."\"";
 	$this->DB->Query($rq);
 	$records=$this->DB->Affected_Rows();
-	
+
 	$eq="DELETE FROM fneval WHERE testid=\"".ss($testid)."\"";
 	$this->DB->Query($eq);
 	$eval=$this->DB->Affected_Rows();
-	
+
 	$s="Deleted test ".$testid." (".$tests." tests, ".$records." records, ".$eval." evaluators)";
 	$this->Event($s,6,"Test","Delete");
 	}
-	
-	
-	
+
+
+
 function InvalidateTest($testid,$rightnow=false)
 	{
 	$class=$testid[0];
@@ -828,21 +828,21 @@ function InvalidateTest($testid,$rightnow=false)
 		$q="UPDATE ";
 		if ($class=="L") $q.="fnlocaltest";
 		// other ones here
-		
+
 		$q.=" SET nextrunx=".$nextx." WHERE ";
-		
+
 		if ($class=="L") $q.="localtestid=".$testid;
 		// other ones here
-		
+
 		$this->DB->Query($q);
 		return true;
 		}
 	// otherwise use it's interval
 	$q="SELECT testinterval FROM ";
-	
+
 	if ($class=="L") $q.="fnlocaltest WHERE localtestid=";
 	// other ones here
-	
+
 	$q.=$testid;
 	$r=$this->DB->Query($q);
 	if ($row=$this->DB->Fetch_Array($r))
@@ -852,18 +852,18 @@ function InvalidateTest($testid,$rightnow=false)
 		$q="UPDATE ";
 		if ($class=="L") $q.="fnlocaltest";
 		// other ones here
-		
+
 		$q.=" SET nextrunx=".$nextx." WHERE ";
-		
+
 		if ($class=="L") $q.="localtestid=".$testid;
 		// other ones here
-		
+
 		$this->DB->Query($q);
 		return true;
 		}
 	return false;
-	}		
-	
+	}
+
 function InvalidateNode($nodeid,$rightnow=false,$testsaswell=false)
 	{
 	if ($rightnow)
@@ -896,24 +896,24 @@ function InvalidateNode($nodeid,$rightnow=false,$testsaswell=false)
 		}
 	return false;
 	}
-	
-	
+
+
 function NodeSide_Pull($nodeid)
 	{
 	$eventdata=array("nodeid"=>$nodeid,"success"=>false);
 	$q="SELECT nsenabled,nspullenabled,nsurl,nskey,nsinterval FROM fnnode WHERE nodeid=\"".ss($nodeid)."\" LIMIT 0,1";
 	$r=$this->DB->Query($q);
 	if (!$row=$this->DB->Fetch_Array($r)) return false;
-	
+
 	$this->DB->Free($r);
-	
+
 	$url=$row['nsurl'];
 	if ($row['nskey']!="") $url.="?nodekey=".$row['nskey'];
 	//echo $url."\n";
 	$this->Event("NodeSide_Pull Started for ".$nodeid,10,"Node","Pull");
-	
+
 	$xmlobj=new TNodeXML();
-	
+
 	$fp=@fopen($url,"r");
 	if ($fp<=0)
 		{
@@ -931,11 +931,11 @@ function NodeSide_Pull($nodeid)
 		$this->EventHandler("nodeside_pull",$eventdata);
 		return false;
 		}
-	
+
 	//echo $xml;
-	
+
 	$result=$xmlobj->Parse($xml);
-	
+
 	if ($xmlobj->Error()!="")
 		{
 		$this->Event("NodeXML Error: ".$xmlobj->Error(),1,"Node","Pull");
@@ -948,8 +948,8 @@ function NodeSide_Pull($nodeid)
 	$this->EventHandler("nodeside_pull",$eventdata);
 	$this->NodeSide_Process($nodeid,$xmlobj);
 	return true;
-	}	
-	
+	}
+
 function NodeSide_Process($nodeid,&$xmlobj)
 	{ // nodeid + takes a TNodeXML Object
 	$alvl=0;
@@ -972,9 +972,9 @@ function NodeSide_Process($nodeid,&$xmlobj)
 				else if ($level>0) $debuglev=5;
 				else $debuglev=2;
 				$this->Event($dbs,$debuglev,"Node","Process");
-				
+
 				if ($level>$alvl) $alvl=$level;
-				
+
 				if ($row['testrecord']==1) // record it
 					{
 					$testvalue=$xmlobj->Catalogue[$row['testtype']]['VALUE'];
@@ -986,23 +986,23 @@ function NodeSide_Process($nodeid,&$xmlobj)
 					if ($this->DB->Affected_Rows()<=0)
 						$this->Event("Nodeside ".$row['testtype']." Failed to Record",1,"Node","Process");
 					}
-					
+
 				// We don't do any alerting here - the tester will do that for us!
 				$uq="UPDATE fnnstest SET lastrunx=".time().",lastvalue=\"".ss($xmlobj->Catalogue[$row['testtype']]['VALUE'])."\",alertlevel=".$level." ";
 				$uq.="WHERE nstestid=".$row['nstestid'];
 				$this->DB->Query($uq);
 				if ($this->DB->Affected_Rows()<=0)
 						$this->Event("Nodeside ".$row['testtype']." Failed to Update or Same Values",5,"Node","Process");
-				
+
 				}
-					
+
 			// check to see if the desc has changed
 			if ($row['testdesc']!=$xmlobj->Catalogue[$row['testtype']]['DESC'])
 				{
 				$duq="UPDATE fnnstest SET testdesc=\"".ss($xmlobj->Catalogue[$row['testtype']]['DESC'])."\" WHERE nstestid=".$row['nstestid'];
 				$this->DB->Query($duq);
 				}
-				
+
 			}
 		else
 			{
@@ -1032,8 +1032,8 @@ function NodeSide_Process($nodeid,&$xmlobj)
 			}
 		}
 	$this->DB->Free($r);
-	
-	
+
+
 	// and finally we look for new tests i.e. in the cat but not in the DB
 	foreach($xmlobj->Catalogue as $val)
 		{
@@ -1046,14 +1046,14 @@ function NodeSide_Process($nodeid,&$xmlobj)
 			$this->DB->Query($q);
 			}
 		}
-		
+
 	$eventdata=array("nodeid"=>$nodeid,"alertlevel"=>$alvl);
 	$this->EventHandler("nodeside_process",$eventdata);
-	
-	
+
+
 	}
-	
-	
+
+
 function AddEventHandler($event,$function)
 {
 	if (!isset($this->EventHandlers[$event])) $this->EventHandlers[$event]=array();
@@ -1064,7 +1064,7 @@ function EventHandler($event,$data)
 {
 	$res=false;
 	if ( isset($data) && is_array($data) ) $data['event']=$event;
-	
+
 	if (isset($this->EventHandlers[$event])) // handler(s) exist
 	{
 	for($a=0; $a<count($this->EventHandlers[$event]); $a++)
@@ -1147,6 +1147,6 @@ function isUserAllowedNode($username, $nodeid)
 
 	return false;
 }
-	
+
 }
 ?>
