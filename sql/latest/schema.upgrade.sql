@@ -1,4 +1,4 @@
--- FreeNATS freenats-1.19.1b Schema
+-- FreeNATS freenats-1.19.2a Schema
 -- Experimental Upgrade SQL - run after schema.sql (not drop!)
 -- Both will generate many many errors - run with --force, ignore errors
 -- myrug -- PurplePixie Systems
@@ -30,8 +30,8 @@ ALTER TABLE `fnalertaction` CHANGE `atype` `atype` varchar(32) NOT NULL;
 ALTER TABLE `fnalertaction` ADD `atype` varchar(32) NOT NULL;
 ALTER TABLE `fnalertaction` CHANGE `efrom` `efrom` varchar(250) NOT NULL;
 ALTER TABLE `fnalertaction` ADD `efrom` varchar(250) NOT NULL;
-ALTER TABLE `fnalertaction` CHANGE `etolist` `etolist` text NOT NULL;
-ALTER TABLE `fnalertaction` ADD `etolist` text NOT NULL;
+ALTER TABLE `fnalertaction` CHANGE `etolist` `etolist` text;
+ALTER TABLE `fnalertaction` ADD `etolist` text;
 ALTER TABLE `fnalertaction` CHANGE `esubject` `esubject` int(11) NOT NULL DEFAULT '0';
 ALTER TABLE `fnalertaction` ADD `esubject` int(11) NOT NULL DEFAULT '0';
 ALTER TABLE `fnalertaction` CHANGE `etype` `etype` int(11) NOT NULL DEFAULT '0';
@@ -40,12 +40,12 @@ ALTER TABLE `fnalertaction` CHANGE `awarnings` `awarnings` tinyint(1) NOT NULL D
 ALTER TABLE `fnalertaction` ADD `awarnings` tinyint(1) NOT NULL DEFAULT '0';
 ALTER TABLE `fnalertaction` CHANGE `adecrease` `adecrease` tinyint(1) NOT NULL DEFAULT '0';
 ALTER TABLE `fnalertaction` ADD `adecrease` tinyint(1) NOT NULL DEFAULT '0';
-ALTER TABLE `fnalertaction` CHANGE `mdata` `mdata` text NOT NULL;
-ALTER TABLE `fnalertaction` ADD `mdata` text NOT NULL;
+ALTER TABLE `fnalertaction` CHANGE `mdata` `mdata` text;
+ALTER TABLE `fnalertaction` ADD `mdata` text;
 ALTER TABLE `fnalertaction` CHANGE `aname` `aname` varchar(120) NOT NULL;
 ALTER TABLE `fnalertaction` ADD `aname` varchar(120) NOT NULL;
-ALTER TABLE `fnalertaction` CHANGE `ctrdate` `ctrdate` varchar(8) NOT NULL;
-ALTER TABLE `fnalertaction` ADD `ctrdate` varchar(8) NOT NULL;
+ALTER TABLE `fnalertaction` CHANGE `ctrdate` `ctrdate` varchar(8);
+ALTER TABLE `fnalertaction` ADD `ctrdate` varchar(8);
 ALTER TABLE `fnalertaction` CHANGE `ctrlimit` `ctrlimit` int(10) unsigned NOT NULL DEFAULT '0';
 ALTER TABLE `fnalertaction` ADD `ctrlimit` int(10) unsigned NOT NULL DEFAULT '0';
 ALTER TABLE `fnalertaction` CHANGE `ctrtoday` `ctrtoday` int(10) unsigned NOT NULL DEFAULT '0';
@@ -63,8 +63,8 @@ ALTER TABLE `fnalertlog` ADD `alertid` bigint(20) unsigned NOT NULL DEFAULT '0';
 CREATE INDEX `alertid` ON `fnalertlog` ( `alertid` );
 ALTER TABLE `fnalertlog` CHANGE `postedx` `postedx` bigint(20) unsigned NOT NULL DEFAULT '0';
 ALTER TABLE `fnalertlog` ADD `postedx` bigint(20) unsigned NOT NULL DEFAULT '0';
-ALTER TABLE `fnalertlog` CHANGE `logentry` `logentry` varchar(250) NOT NULL;
-ALTER TABLE `fnalertlog` ADD `logentry` varchar(250) NOT NULL;
+ALTER TABLE `fnalertlog` CHANGE `logentry` `logentry` varchar(250);
+ALTER TABLE `fnalertlog` ADD `logentry` varchar(250);
 -- 
 -- Table: fnconfig
 -- DESCRIBE fnconfig
@@ -123,8 +123,8 @@ ALTER TABLE `fngrouplock` ADD `glid` bigint(20) unsigned NOT NULL auto_increment
 ALTER TABLE `fngrouplock` ADD PRIMARY KEY( `glid` );
 ALTER TABLE `fngrouplock` CHANGE `username` `username` varchar(64) NOT NULL;
 ALTER TABLE `fngrouplock` ADD `username` varchar(64) NOT NULL;
-ALTER TABLE `fngrouplock` CHANGE `groupid` `groupid` bigint(20) NOT NULL;
-ALTER TABLE `fngrouplock` ADD `groupid` bigint(20) NOT NULL;
+ALTER TABLE `fngrouplock` CHANGE `groupid` `groupid` bigint(20) NOT NULL DEFAULT '0';
+ALTER TABLE `fngrouplock` ADD `groupid` bigint(20) NOT NULL DEFAULT '0';
 -- 
 -- Table: fnlocaltest
 -- DESCRIBE fnlocaltest
@@ -154,24 +154,24 @@ ALTER TABLE `fnlocaltest` CHANGE `timeout` `timeout` int(11) NOT NULL DEFAULT '0
 ALTER TABLE `fnlocaltest` ADD `timeout` int(11) NOT NULL DEFAULT '0';
 ALTER TABLE `fnlocaltest` CHANGE `testenabled` `testenabled` tinyint(1) NOT NULL DEFAULT '1';
 ALTER TABLE `fnlocaltest` ADD `testenabled` tinyint(1) NOT NULL DEFAULT '1';
-ALTER TABLE `fnlocaltest` CHANGE `testparam1` `testparam1` varchar(250) NOT NULL;
-ALTER TABLE `fnlocaltest` ADD `testparam1` varchar(250) NOT NULL;
-ALTER TABLE `fnlocaltest` CHANGE `testparam2` `testparam2` varchar(250) NOT NULL;
-ALTER TABLE `fnlocaltest` ADD `testparam2` varchar(250) NOT NULL;
-ALTER TABLE `fnlocaltest` CHANGE `testparam3` `testparam3` varchar(250) NOT NULL;
-ALTER TABLE `fnlocaltest` ADD `testparam3` varchar(250) NOT NULL;
-ALTER TABLE `fnlocaltest` CHANGE `testparam4` `testparam4` varchar(250) NOT NULL;
-ALTER TABLE `fnlocaltest` ADD `testparam4` varchar(250) NOT NULL;
-ALTER TABLE `fnlocaltest` CHANGE `testparam5` `testparam5` varchar(250) NOT NULL;
-ALTER TABLE `fnlocaltest` ADD `testparam5` varchar(250) NOT NULL;
-ALTER TABLE `fnlocaltest` CHANGE `testparam6` `testparam6` varchar(250) NOT NULL;
-ALTER TABLE `fnlocaltest` ADD `testparam6` varchar(250) NOT NULL;
-ALTER TABLE `fnlocaltest` CHANGE `testparam7` `testparam7` varchar(250) NOT NULL;
-ALTER TABLE `fnlocaltest` ADD `testparam7` varchar(250) NOT NULL;
-ALTER TABLE `fnlocaltest` CHANGE `testparam8` `testparam8` varchar(250) NOT NULL;
-ALTER TABLE `fnlocaltest` ADD `testparam8` varchar(250) NOT NULL;
-ALTER TABLE `fnlocaltest` CHANGE `testparam9` `testparam9` varchar(250) NOT NULL;
-ALTER TABLE `fnlocaltest` ADD `testparam9` varchar(250) NOT NULL;
+ALTER TABLE `fnlocaltest` CHANGE `testparam1` `testparam1` varchar(250);
+ALTER TABLE `fnlocaltest` ADD `testparam1` varchar(250);
+ALTER TABLE `fnlocaltest` CHANGE `testparam2` `testparam2` varchar(250);
+ALTER TABLE `fnlocaltest` ADD `testparam2` varchar(250);
+ALTER TABLE `fnlocaltest` CHANGE `testparam3` `testparam3` varchar(250);
+ALTER TABLE `fnlocaltest` ADD `testparam3` varchar(250);
+ALTER TABLE `fnlocaltest` CHANGE `testparam4` `testparam4` varchar(250);
+ALTER TABLE `fnlocaltest` ADD `testparam4` varchar(250);
+ALTER TABLE `fnlocaltest` CHANGE `testparam5` `testparam5` varchar(250);
+ALTER TABLE `fnlocaltest` ADD `testparam5` varchar(250);
+ALTER TABLE `fnlocaltest` CHANGE `testparam6` `testparam6` varchar(250);
+ALTER TABLE `fnlocaltest` ADD `testparam6` varchar(250);
+ALTER TABLE `fnlocaltest` CHANGE `testparam7` `testparam7` varchar(250);
+ALTER TABLE `fnlocaltest` ADD `testparam7` varchar(250);
+ALTER TABLE `fnlocaltest` CHANGE `testparam8` `testparam8` varchar(250);
+ALTER TABLE `fnlocaltest` ADD `testparam8` varchar(250);
+ALTER TABLE `fnlocaltest` CHANGE `testparam9` `testparam9` varchar(250);
+ALTER TABLE `fnlocaltest` ADD `testparam9` varchar(250);
 ALTER TABLE `fnlocaltest` CHANGE `lastvalue` `lastvalue` float NOT NULL DEFAULT '0';
 ALTER TABLE `fnlocaltest` ADD `lastvalue` float NOT NULL DEFAULT '0';
 ALTER TABLE `fnlocaltest` CHANGE `testinterval` `testinterval` int(10) unsigned NOT NULL DEFAULT '0';
@@ -244,8 +244,8 @@ ALTER TABLE `fnnode` CHANGE `nsenabled` `nsenabled` tinyint(1) NOT NULL DEFAULT 
 ALTER TABLE `fnnode` ADD `nsenabled` tinyint(1) NOT NULL DEFAULT '0';
 ALTER TABLE `fnnode` CHANGE `nsurl` `nsurl` varchar(254) NOT NULL;
 ALTER TABLE `fnnode` ADD `nsurl` varchar(254) NOT NULL;
-ALTER TABLE `fnnode` CHANGE `nskey` `nskey` varchar(128) NOT NULL;
-ALTER TABLE `fnnode` ADD `nskey` varchar(128) NOT NULL;
+ALTER TABLE `fnnode` CHANGE `nskey` `nskey` varchar(250) NOT NULL;
+ALTER TABLE `fnnode` ADD `nskey` varchar(250) NOT NULL;
 ALTER TABLE `fnnode` CHANGE `nspullenabled` `nspullenabled` tinyint(1) NOT NULL DEFAULT '0';
 ALTER TABLE `fnnode` ADD `nspullenabled` tinyint(1) NOT NULL DEFAULT '0';
 ALTER TABLE `fnnode` CHANGE `nspushenabled` `nspushenabled` tinyint(1) NOT NULL DEFAULT '0';
@@ -340,8 +340,8 @@ ALTER TABLE `fnreport` ADD `reportid` bigint(20) unsigned NOT NULL auto_incremen
 ALTER TABLE `fnreport` ADD PRIMARY KEY( `reportid` );
 ALTER TABLE `fnreport` CHANGE `reportname` `reportname` varchar(128) NOT NULL;
 ALTER TABLE `fnreport` ADD `reportname` varchar(128) NOT NULL;
-ALTER TABLE `fnreport` CHANGE `reporttests` `reporttests` text NOT NULL;
-ALTER TABLE `fnreport` ADD `reporttests` text NOT NULL;
+ALTER TABLE `fnreport` CHANGE `reporttests` `reporttests` text;
+ALTER TABLE `fnreport` ADD `reporttests` text;
 -- 
 -- Table: fnrssfeed
 -- DESCRIBE fnrssfeed
@@ -352,8 +352,8 @@ ALTER TABLE `fnrssfeed` CHANGE `feedkey` `feedkey` varchar(254) NOT NULL;
 ALTER TABLE `fnrssfeed` ADD `feedkey` varchar(254) NOT NULL;
 ALTER TABLE `fnrssfeed` CHANGE `feedname` `feedname` varchar(254) NOT NULL;
 ALTER TABLE `fnrssfeed` ADD `feedname` varchar(254) NOT NULL;
-ALTER TABLE `fnrssfeed` CHANGE `feedtype` `feedtype` varchar(32) NOT NULL;
-ALTER TABLE `fnrssfeed` ADD `feedtype` varchar(32) NOT NULL;
+ALTER TABLE `fnrssfeed` CHANGE `feedtype` `feedtype` varchar(254) NOT NULL;
+ALTER TABLE `fnrssfeed` ADD `feedtype` varchar(254) NOT NULL;
 ALTER TABLE `fnrssfeed` CHANGE `typeopt` `typeopt` varchar(254) NOT NULL;
 ALTER TABLE `fnrssfeed` ADD `typeopt` varchar(254) NOT NULL;
 ALTER TABLE `fnrssfeed` CHANGE `feedrange` `feedrange` varchar(32) NOT NULL;
@@ -423,8 +423,8 @@ ALTER TABLE `fntestrun` ADD `startx` bigint(20) unsigned NOT NULL DEFAULT '0';
 ALTER TABLE `fntestrun` CHANGE `finishx` `finishx` bigint(20) unsigned NOT NULL DEFAULT '0';
 ALTER TABLE `fntestrun` ADD `finishx` bigint(20) unsigned NOT NULL DEFAULT '0';
 CREATE INDEX `finishx` ON `fntestrun` ( `finishx` );
-ALTER TABLE `fntestrun` CHANGE `routput` `routput` text NOT NULL;
-ALTER TABLE `fntestrun` ADD `routput` text NOT NULL;
+ALTER TABLE `fntestrun` CHANGE `routput` `routput` text;
+ALTER TABLE `fntestrun` ADD `routput` text;
 ALTER TABLE `fntestrun` CHANGE `fnode` `fnode` varchar(64) NOT NULL;
 ALTER TABLE `fntestrun` ADD `fnode` varchar(64) NOT NULL;
 CREATE INDEX `fnode` ON `fntestrun` ( `fnode` );
@@ -440,8 +440,8 @@ ALTER TABLE `fnuser` CHANGE `realname` `realname` varchar(128) NOT NULL;
 ALTER TABLE `fnuser` ADD `realname` varchar(128) NOT NULL;
 ALTER TABLE `fnuser` CHANGE `userlevel` `userlevel` int(11) NOT NULL DEFAULT '1';
 ALTER TABLE `fnuser` ADD `userlevel` int(11) NOT NULL DEFAULT '1';
-ALTER TABLE `fnuser` CHANGE `grouplock` `grouplock` tinyint(4) NOT NULL;
-ALTER TABLE `fnuser` ADD `grouplock` tinyint(4) NOT NULL;
+ALTER TABLE `fnuser` CHANGE `grouplock` `grouplock` tinyint(4) NOT NULL DEFAULT '0';
+ALTER TABLE `fnuser` ADD `grouplock` tinyint(4) NOT NULL DEFAULT '0';
 -- 
 -- Table: fnview
 -- DESCRIBE fnview
