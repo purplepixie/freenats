@@ -1,4 +1,4 @@
--- FreeNATS freenats-1.19.0a Schema
+-- FreeNATS freenats-1.19.1b Schema
 -- No DROP TABLES - suitable for upgrade
 -- MySQL dump 10.13  Distrib 5.6.35, for osx10.9 (x86_64)
 --
@@ -394,7 +394,7 @@ CREATE TABLE `fnsession` (
   `updatex` bigint(20) unsigned NOT NULL DEFAULT '0',
   `userlevel` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`sessionid`)
-) ENGINE=MyISAM AUTO_INCREMENT=171 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=172 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -485,4 +485,4 @@ CREATE TABLE `fnviewitem` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2017-06-27 23:38:40
+-- Dump completed on 2017-08-31 15:29:34
