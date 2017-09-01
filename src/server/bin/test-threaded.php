@@ -10,7 +10,7 @@ for ($a=1; $a<$argc; $a++)
 echo "test-threaded.sh: spawning node tester processes\n";
 
 $q="SELECT nodeid FROM fnnode WHERE nodeenabled>0";
-if (count($nodelist)>0) 
+if (count($nodelist)>0)
 	{
 	$q.=" AND nodeid IN(";
 	$first=true;
@@ -40,11 +40,10 @@ while ($row=$NATS->DB->Fetch_Array($r))
 		// Test Execution Delay / test.spawndelay
 		if ($spawn_delay>0) usleep($spawn_delay);
 		}
-	$cmd="php ./tester.php ".$row['nodeid']." > /tmp/nr.".$row['nodeid']." &";
+	$cmd="php ./tester.php ".escapeshellarg($row['nodeid'])." > ".escapeshellarg("/tmp/nr.".$row['nodeid'])." &";
 	echo $cmd."\n";
 	exec($cmd);
 	}
 $NATS->DB->Free($r);
 $NATS->Stop();
 ?>
-
