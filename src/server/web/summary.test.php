@@ -137,7 +137,7 @@ if ($nodeid=="*")
 	{
 	//
 	$q="SELECT testid,nodeid FROM fnrecord WHERE recordx>=".ss($startx)." AND recordx<=".ss($finishx);
-	$q.=" GROUP BY testid ORDER BY nodeid";
+	$q.=" GROUP BY testid,nodeid ORDER BY nodeid";
 	}
 else if ($nodeid==" custom") // use nodelist
 	{
@@ -150,14 +150,14 @@ else if ($nodeid==" custom") // use nodelist
 		else $q.=",";
 		$q.="\"".ss($node)."\"";
 		}
-	$q.=" ) GROUP BY testid ORDER BY nodeid";
+	$q.=" ) GROUP BY testid,nodeid ORDER BY nodeid";
 	//echo $q;
 	//exit();
 	}
 else
 	{
 	$q="SELECT testid,nodeid FROM fnrecord WHERE nodeid=\"".ss($nodeid)."\" AND recordx>=".ss($startx)." AND recordx<=".ss($finishx);
-	$q.=" GROUP BY testid";
+	$q.=" GROUP BY testid,nodeid";
 	}
 $r=$NATS->DB->Query($q);
 
