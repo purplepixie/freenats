@@ -6,7 +6,7 @@ if (isset($NATS))
 class FreeNATS_TCP_Debug extends FreeNATS_Local_Test
 	{
 		
-	function DoTest($testname,$param,$hostname,$timeout,$params)
+	function DoTest($testname,$param,$hostname="",$timeout=-1,$params=false)
 		{ 
 		echo "Called for ".$hostname." port ".$param." timeout ".$timeout."\n";
 		$timer=new TFNTimer();

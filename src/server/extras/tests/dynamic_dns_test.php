@@ -81,7 +81,7 @@ global $NATS;
 class Dynamic_DNS_Test extends FreeNATS_Local_Test
 {
 
- function DoTest($testname,$param,$hostname,$timeout,$params)
+ function DoTest($testname,$param,$hostname="",$timeout=-1,$params=false)
  {
  /* parameters: 
  0: hostname

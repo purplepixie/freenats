@@ -66,7 +66,7 @@ if (isset($NATS))
 {
 class FreeNATS_SMTP_Test extends FreeNATS_Local_Test
 	{
-	function DoTest($testname,$param,$hostname,$timeout,$params)
+	function DoTest($testname,$param,$hostname="",$timeout=-1,$params=false)
 		{
 		// Pre-resolve DNS
 		$ip=ip_lookup($params[0]);

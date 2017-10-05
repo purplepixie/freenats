@@ -25,7 +25,7 @@ if (isset($NATS))
 {
 class FreeNATS_DNSAPI_Test extends FreeNATS_Local_Test
 	{
-	function DoTest($testname,$param,$hostname,$timeout,$params)
+	function DoTest($testname,$param,$hostname="",$timeout=-1,$params=false)
 		{
 		$timer=new TFNTimer();
 		if ($param=="") $dnsserver=$hostname;

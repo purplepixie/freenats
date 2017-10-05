@@ -72,7 +72,7 @@ if (isset($NATS))
 {
 class FreeNATS_IMAP_Test extends FreeNATS_Local_Test
 	{
-	function DoTest($testname,$param,$hostname,$timeout,$params)
+	function DoTest($testname,$param,$hostname="",$timeout=-1,$params=false)
 		{ // 0: host, 1: user, 2: pass, 3: protocol, 4: port, 5: ssl (1/0)
 		if ($params[5]==1) $ssl=true;
 		else $ssl=false;

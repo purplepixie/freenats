@@ -26,7 +26,7 @@ if (isset($NATS))
 class FreeNATS_TCP_Test extends FreeNATS_Local_Test
 	{
 		
-	function DoTest($testname,$param,$hostname,$timeout,$params)
+	function DoTest($testname,$param,$hostname="",$timeout=-1,$params=false)
 		{ 
 		global $NATS;
 		$timer=new TFNTimer();

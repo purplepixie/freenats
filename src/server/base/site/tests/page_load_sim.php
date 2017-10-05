@@ -26,7 +26,7 @@ if (isset($NATS))
 {
 class Page_Load_Sim_Test extends FreeNATS_Local_Test
 	{
-	function DoTest($testname,$param,$hostname,$timeout,$params)
+	function DoTest($testname,$param,$hostname="",$timeout=-1,$params=false)
 		{
 		$timer=new TFNTimer();
 		

@@ -133,7 +133,7 @@ global $NATS;
 class Advanced_Pagecheck_Test extends FreeNATS_Local_Test
 {
 
- function DoTest($testname,$param,$hostname,$timeout,$params)
+ $timeout,$params)
  {
  /* parameters:   -- sadly very messy but to do otherwise would break plug+play
  0: url

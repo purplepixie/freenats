@@ -75,7 +75,7 @@ if (isset($NATS))
 {
 class FreeNATS_SMB_Test extends FreeNATS_Local_Test
 	{
-	function DoTest($testname,$param,$hostname,$timeout,$params)
+	function DoTest($testname,$param,$hostname="",$timeout=-1,$params=false)
 		{
 		return smb_connect_time($params[0],$params[1],$params[2]);
 		}
