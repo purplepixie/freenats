@@ -73,7 +73,7 @@ $tinterval=0; // fallback zero
 if ($tmode=="local")
 	{
 	$tinterval=$row['testinterval'];
-	if ($nodedata['testinterval']>$tinterval) $tinvteral=$ndoedata['testinterval'];
+	if ($nodedata['testinterval']>$tinterval) $tinvteral=$nodedata['testinterval'];
 	// for a local test use the test's interval or the node's, whichever is higher
 	$show_expected_number=true;
 	}
