@@ -294,7 +294,7 @@ if ($draw_x_grid)
 	//imagestring($im,1,2,ty(50),"Drawing X Grid ".$xg_scale,$c_txt);
 	for ($a=$dlow; $a<=$dhigh; $a+=$xg_scale)
 		{
-		if (($a!=0)&&( ($a % $xg_scale) == 0))
+		if (($a!=0) && (fmod($a,$xg_scale)==0))
 			{
 			//imagestring($im,1,2,ty(50+($a*5)),"Drawing X Grid ".$a,$c_txt);
 			// draw a line

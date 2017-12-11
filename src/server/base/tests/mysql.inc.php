@@ -260,7 +260,7 @@ if (isset($NATS))
 {
 class FreeNATS_MySQL_Test extends FreeNATS_Local_Test
 	{
-	function DoTest($testname,$param,$hostname,$timeout,$params)
+	function DoTest($testname,$param,$hostname="",$timeout=-1,$params=false)
 		{ // 0: host, 1: user, 2: pass, 3: database, 4: query
 		
 		if ($testname=="mysql")
