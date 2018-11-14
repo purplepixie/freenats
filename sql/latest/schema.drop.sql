@@ -1,9 +1,9 @@
 -- With DROP TABLES - will clean database
--- MySQL dump 10.13  Distrib 5.6.35, for osx10.9 (x86_64)
+-- MySQL dump 10.13  Distrib 5.7.23, for osx10.9 (x86_64)
 --
--- Host: localhost    Database: freenats
+-- Host: 127.0.0.1    Database: freenats
 -- ------------------------------------------------------
--- Server version	5.6.35
+-- Server version	5.7.23
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -412,7 +412,7 @@ CREATE TABLE `fnsession` (
   `updatex` bigint(20) unsigned NOT NULL DEFAULT '0',
   `userlevel` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`sessionid`)
-) ENGINE=MyISAM AUTO_INCREMENT=173 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=174 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -507,4 +507,4 @@ CREATE TABLE `fnviewitem` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2017-09-01 15:09:48
+-- Dump completed on 2018-11-14 12:15:00

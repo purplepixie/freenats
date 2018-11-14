@@ -3,20 +3,23 @@
 // http://www.purplepixie.org
 // v3 26/05/2009
 // MySQL Rough Upgrader
+//
+// Custom updated for FreeNATS 14/11/2018 to implement mysqli functionality
 function myrug($cfg)
 {
 if ($cfg['table']!="")
- $filter=" LIKE \"".mysql_escape_string($cfg['table'])."%\"";
+ $filter=" LIKE \"".mysqli_real_escape_string($cfg['table'])."%\"";
 else
  $filter="";
 
 
- 
-$sql=mysql_connect($cfg['host'],$cfg['username'],$cfg['password'])
- or die("MySQL Error: ".mysql_error()."\n");
+
+$sql=mysqli_connect($cfg['host'],$cfg['username'],$cfg['password'],$cfg['database'])
+ or die("MySQL Error: ".mysqli_error($sql)."\n");
+/*
 mysql_select_db($cfg['database'])
  or die("MySQL Error: ".mysql_error()."\n");
-
+*/
 function c($t="")
 {
 echo "-- ".$t."\n";
@@ -28,19 +31,19 @@ c();
 
 $q="SHOW TABLES".$filter;
 echo "-- ".$q."\n";
-$r=mysql_query($q);
-while ($row=mysql_fetch_array($r))
+$r=mysqli_query($sql,$q);
+while ($row=mysqli_fetch_array($r))
 	{
 	$table=$row[0];
 	echo "-- Table: ".$table."\n";
-	
+
 	$tq="DESCRIBE ".$table;
 	c($tq);
-	$tr=mysql_query($tq);
-	while ($trow=mysql_fetch_array($tr))
+	$tr=mysqli_query($sql,$tq);
+	while ($trow=mysqli_fetch_array($tr))
 		{
-		// Field Type Null Key Default Extra		
-		
+		// Field Type Null Key Default Extra
+
 		$f="ALTER TABLE `".$table."` CHANGE `".$trow['Field']."` `".$trow['Field']."` ".$trow['Type'];
 		if (($trow['Null']=="")||(strtoupper($trow['Null'])=="NO")) $f.=" NOT NULL";
 		if ($trow['Extra']!="") $f.=" ".$trow['Extra'];
@@ -50,7 +53,7 @@ while ($row=mysql_fetch_array($r))
 		$f="ALTER TABLE `".$table."` ADD `".$trow['Field']."` ".$trow['Type'];
 		if (($trow['Null']=="")||(strtoupper($trow['Null'])=="NO")) $f.=" NOT NULL";
 		if ($trow['Extra']!="") $f.=" ".$trow['Extra'];
-		if ($trow['Default']!="") 
+		if ($trow['Default']!="")
 			{
 			/*
 			$typarr=explode("(",$trow['Type']);
@@ -90,10 +93,10 @@ while ($row=mysql_fetch_array($r))
 				// echo "ALTER TABLE `".$table."` ADD INDEX ( `".$trow['Field']."` );\n";
 			}
 		}
-	mysql_free_result($tr);
+	mysqli_free_result($tr);
 	if ($cfg['optimize']) echo "OPTIMIZE TABLE ".$table.";\n";
 	c();
 	}
-mysql_close($sql);
+mysqli_close($sql);
 }
 ?>

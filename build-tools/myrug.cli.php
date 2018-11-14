@@ -31,7 +31,7 @@ $cfg=array(
 	'primarykey' => true,
 	'createindex' => true,
 	'createfield' => true,
-	'alterfield' => true	); 
+	'alterfield' => true	);
 
 function display_help()
 {
@@ -78,25 +78,25 @@ for ($i=1; $i<($argc-1); $i++)
 		case "-u": case "--username": case "--user":
 			$cfg['username']=$val;
 			break;
-			
+
 		case "-p": case "--password": case "--pass":
 			$cfg['password']=$val;
 			break;
-			
+
 		case "-t": case "--table":
 			$cfg['table']=$val;
 			break;
-			
+
 		case "-h": case "--host":
 			$cfg['host']=$val;
 			break;
-			
+
 		case "--optimize": case "--createtables": case "--primarykey": case "--createindex":
 		case "--createfield": case "--alterfield":
 			$name=substr($cmd,2,128);
 			$cfg[$name]=true;
 			break;
-			
+
 		case "--nooptimize": case "--nocreatetables": case "--noprimarykey": case "--nocreateindex":
 		case "--nocreatefield": case "--noalterfield":
 			$name=substr($cmd,4,128);
@@ -110,6 +110,9 @@ for ($i=1; $i<($argc-1); $i++)
 		}
 
 	}
+
+//print_r($cfg);
+
 myrug($cfg);
 //print_r($cfg);
 

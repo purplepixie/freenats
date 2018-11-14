@@ -28,8 +28,8 @@ var $Cfg;
 var $Tests;
 var $Lang;
 var $RSS;
-var $Version="1.19.3";
-var $Release="a";
+var $Version="1.20.1";
+var $Release="b";
 var $EventHandlers=array();
 
 var $PageErrors=array();
