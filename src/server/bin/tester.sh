@@ -1,3 +1,2 @@
 #!/bin/sh
-php -f tester.php $1
-
+php -f tester.php "$@"

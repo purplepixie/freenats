@@ -2,7 +2,7 @@
 /* -------------------------------------------------------------
 This file is part of FreeNATS
 
-FreeNATS is (C) Copyright 2008-2017 PurplePixie Systems
+FreeNATS is (C) Copyright 2008-2018 PurplePixie Systems
 
 FreeNATS is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -20,14 +20,25 @@ along with FreeNATS.  If not, see www.gnu.org/licenses
 For more information see www.purplepixie.org/freenats
 -------------------------------------------------------------- */
 
+$forcetests = false; // force tests regardless of being due
+$forcerun = false; // force running even if suspended, not scheduled, or already running
+$nfilter = ""; // node filter
+
 if ((isset($argc))&&(isset($argv))) // specific node or all nodes
+{
+	for ($i=1; $i<$argc; ++$i)
 	{
-	if ($argc>1)
-		{
-		$nfilter=$argv[1];
+		if (strpos($argv[$i],"--") === 0)
+		{ // switch
+			if ($argv[$i] == "--forcetests")
+				$forcetests=true;
+			elseif ($argv[$i] == "--forcerun")
+				$forcerun=true;
 		}
-	else $nfilter="";
+		else
+			$nfilter = $argv[$i];
 	}
+}
 
 require("include.php");
 
@@ -38,7 +49,7 @@ function db($txt,$nl=true) // debug text
 global $dbt;
 echo $txt;
 $dbt.=$txt;
-if ($nl) 
+if ($nl)
 	{
 	echo "\n";
 	$dbt.=" <br>\n";
@@ -52,7 +63,7 @@ db("NATS Tester Script Starting".$st);
 
 $suspend = $NATS->Cfg->Get("site.tester.suspended",0);
 
-if ($suspend != 1)
+if ($suspend != 1 || $forcerun)
 {
 
 	$highalertlevel=-1;
@@ -67,14 +78,14 @@ if ($suspend != 1)
 		{ // yes there is a testrun session for this node(s)
 		$timelimit=$NATS->Cfg->Get("test.session.limit",60*60);
 		if ( (!is_numeric($timelimit)) || ($timelimit<0) ) $timelimit=60*60; // bogus config value
-		
+
 		// n.b. a timelimit of 0 means the session will never expire so...
 		if ( ($timelimit>0) && ((time()-$runrow['startx'])>$timelimit) )
 			{
 			// valid time limit and the difference is more than the limit so close it
 			$uq="UPDATE fntestrun SET finishx=1 WHERE trid=".$runrow['trid'];
 			$NATS->DB->Query($uq);
-			if ($NATS->DB->Affected_Rows()>0) 
+			if ($NATS->DB->Affected_Rows()>0)
 				{
 				$NATS->Event("Tester Already Running: Cleared",3,"Tester","Stale");
 				db("Tester Already Running: Cleared");
@@ -86,7 +97,7 @@ if ($suspend != 1)
 	$NATS->DB->Free($cr);
 
 	// and if it is then don't continue
-	if ($still_running)
+	if ($still_running && !$forcerun)
 		{
 		$NATS->Event("Tester Already Running: Aborted",1,"Tester","Error");
 		db("Tester Already Running: Aborted");
@@ -107,7 +118,9 @@ if ($suspend != 1)
 
 	$q="SELECT * FROM fnnode WHERE nodeenabled=1";
 	if ($nfilter!="") $q.=" AND nodeid=\"".ss($nfilter)."\"";
-	$q.=" AND nextrunx<=".time();
+
+	if (!$forcetests)
+		$q.=" AND nextrunx<=".time();
 
 	$r=$NATS->DB->Query($q);
 
@@ -122,8 +135,8 @@ if ($suspend != 1)
 		$NATS->Event("Tester ".$trid." Node ".$row['nodeid'],10,"Tester","Node");
 
 		// Scheduling Test In Here - sets dotests to false and alertlevel to -1 untested
-		if ($row['scheduleid']!=0) // has a schedule
-			{
+		if (!$forcerun && $row['scheduleid']!=0) // has a schedule
+		{
 			db(" Has Schedule: Yes - Checking");
 			$run=run_x_in_schedule(time(),$row['scheduleid']);
 			if (!$run)
@@ -134,15 +147,15 @@ if ($suspend != 1)
 				$alertlevel=-1;
 				}
 			else db(" In Schedule: Yes");
-			}
-		
+		}
+
 		$eventdata=array( "nodeid" => $row['nodeid'], "in_schedule" => $dotests );
 		$NATS->EventHandler("node_test_start",$eventdata);
-		
-		
+
+
 		$ptr=0;
 		$pal=0;
-		
+
 
 		// Update lastrun and nextrun regardless of dotests
 		$q="UPDATE fnnode SET lastrunx=".time().",nextrunx=".next_run_x($row['testinterval'])." WHERE nodeid=\"".ss($row['nodeid'])."\"";
@@ -171,20 +184,20 @@ if ($suspend != 1)
 					if ($ptr>0) $a=$att+1; // break out of the loop
 					}
 				}
-				
-			if ($ptr<=0) 
+
+			if ($ptr<=0)
 				{
 				$alertlevel=2;
 				db(" Ping Test: Failed");
 				$alerts[$alertc++]="ping failed";
 				$pal=2;
 				}
-			else 
+			else
 				{
 				db(" Ping Test: Passed");
 				$pingpassed=true;
 				}
-			
+
 			// pingtest output bodge
 			// is there a test entry for ICMP
 			$fq="SELECT localtestid FROM fnlocaltest WHERE nodeid=\"".$row['nodeid']."\" AND testtype=\"ICMP\"";
@@ -205,12 +218,12 @@ if ($suspend != 1)
 				$ltid_icmp=$NATS->DB->Insert_Id();
 				}
 			$NATS->DB->Free($fr);
-			
+
 			// record the ICMP bodge-test here
 			$rq="INSERT INTO fnrecord(testid,recordx,testvalue,alertlevel,nodeid) VALUES(\"L".$ltid_icmp."\",".time().",".$ptr.",".$pal.",\"".$row['nodeid']."\")";
 			$NATS->DB->Query($rq);
 			//echo $rq." ".$NATS->DB->Affected_Rows()."\n";
-			
+
 			}
 		else
 			{ // further ICMP bodge - update to -1 or do nothing if the test doesn't exist
@@ -228,7 +241,7 @@ if ($suspend != 1)
 		 	// do the tests - only actually exec if dotests true
 
 		 	$first_test=true;
-		 	
+
 			db("Doing Local Tests");
 			$NATS->Event("Tester ".$trid." Testing Node ".$row['nodeid'],10,"Tester","Test");
 			$q="SELECT * FROM fnlocaltest WHERE nodeid=\"".$row['nodeid']."\" AND testtype!=\"ICMP\" AND testenabled=1 ORDER BY localtestid ASC";
@@ -237,22 +250,22 @@ if ($suspend != 1)
 				{
 				if ($lrow['nextrunx']<=time()) $testdue=true;
 				else $testdue=false;
-					
+
 				if ($first_test)
 					{
 					$first_test=false;
 					if ($row['pingtest']==1) test_sleep(); // sleep if has done a ping
 					}
 				else test_sleep();
-				
-				if ($testdue)
+
+				if ($forcetests || $testdue)
 					{
-				
+
 					$eventdata=array("nodeid"=>$row['nodeid'],"testid"=>"L".$lrow['testparam'],"testtype"=>$lrow['testtype']);
 					$NATS->EventHandler("localtest_start",$eventdata);
-						
+
 					db(" Test: ".$lrow['testtype']." (".$lrow['testparam'].")");
-					
+
 					// Build parameter array
 					$params=array();
 					$params[0]=$lrow['testparam']; // pass standard param in as 0
@@ -261,7 +274,7 @@ if ($suspend != 1)
 						$parstr="testparam".$a;
 						$params[$a]=$lrow[$parstr];
 						}
-					
+
 					if ($dotests)
 						{
 						$NATS->Event("Tester ".$trid." Node ".$row['nodeid']." Doing ".$lrow['testtype']."(".$lrow['testparam'].")",10,"Tester","Test");
@@ -270,14 +283,14 @@ if ($suspend != 1)
 						db(" Result: ".$result);
 						}
 					else $result=0;
-					
+
 					if ($dotests)
 					{
 					// evaluation
 					if ($lrow['simpleeval']==1) $lvl=SimpleEval($lrow['testtype'],$result);
 					else $lvl=nats_eval("L".$lrow['localtestid'],$result);
 					db(" Eval: ".$lvl);
-					
+
 					// put in the custom retries based on attempts here - we KNOW dotests is on so don't need to worry about untested status
 					$att=$lrow['attempts'];
 					if ( ($lvl!=0) && (is_numeric($att)) && ($att>1) )
@@ -295,9 +308,9 @@ if ($suspend != 1)
 							if ($lvl==0) $a=$att+1; // test passed
 							}
 						}
-					
+
 					// $lvl is now the last lvl regardless of where it came from
-							
+
 					if ($lvl>$alertlevel) $alertlevel=$lvl;
 					if ($lvl>0)
 						{
@@ -321,7 +334,7 @@ if ($suspend != 1)
 						$alerts[$alertc++]=$s;
 						}
 					} else $lvl=-1;
-						
+
 					// record it
 					if ($lrow['testrecord']==1)
 						{
@@ -332,36 +345,36 @@ if ($suspend != 1)
 						db(" Recording Test");
 						}
 					if ((!isset($result))||(!is_numeric($result))) $result=0; // safety net
-						
+
 					// update localtest record
 					$uq="UPDATE fnlocaltest SET lastrunx=".time().",nextrunx=".next_run_x($lrow['testinterval']).",alertlevel=".$lvl.",lastvalue=".$result." WHERE localtestid=".$lrow['localtestid'];
 					$NATS->DB->Query($uq);
-					
+
 					$eventdata=array("nodeid"=>$row['nodeid'],"testid"=>"L".$lrow['testparam'],"testtype"=>$lrow['testtype'],"alertlevel"=>$lvl);
 					$NATS->EventHandler("localtest_finish",$eventdata);
 					}
-					
+
 				else // test not due so take pre-existing level for it
 					{
 					$lvl=$lrow['alertlevel'];
 					if (($lvl>0)&&($lvl>$alertlevel)) $alertlevel=$lvl;
 					}
-				
-				
+
+
 				}
-				
+
 		// Node-side testy magic
 		db("Nodeside Testing");
 		$freshdata=false;
 		if ( $dotests && ($row['nsenabled']==1) && ($row['nspullenabled']==1) ) // should be doing a pull
 			{
 			$pullalert=$row['nspullalert']; // what happened the last time we tried
-			
-			if ($row['nsnextx']<=time()) // the time is right
+
+			if ($forcetests || $row['nsnextx']<=time()) // the time is right
 				{
 				db(" Pulling Data");
 				$pull_result=$NATS->Nodeside_Pull($row['nodeid']);
-				
+
 				if ($pull_result===false) // Pull Failed
 					{
 					db(" Pull Failed");
@@ -375,8 +388,8 @@ if ($suspend != 1)
 					$pullalert=0; // ok
 					db(" Pull Succeeded");
 					}
-					
-					
+
+
 				db(" Updating Pull nslast/nextx and nspullalert");
 				$uq="UPDATE fnnode SET nsnextx=".next_run_x($row['nsinterval']).",nspullalert=".$pullalert.",nslastx=".time()." WHERE nodeid=\"".$row['nodeid']."\"";
 				$NATS->DB->Query($uq);
@@ -394,13 +407,13 @@ if ($suspend != 1)
 				if ($trow['alertlevel']>$alertlevel) $alertlevel=$trow['alertlevel'];
 				}
 			*/
-				
+
 			// and finally again use pullalert - this is either the new value if a pull was attempted or just remains the same as the old one
 			// if pull not scheduled yet
 			if ($pullalert>0) $alertlevel=2; // so mark a failure
 
 			}
-			
+
 		if ( ($dotests && ($row['nsenabled']==1) && ($row['nspullenabled']==1)) ||		// pull and tests are on
 			(($row['nsenabled']==1)&&($row['nspushenabled']==1)) )	// or pushed
 			{
@@ -419,7 +432,7 @@ if ($suspend != 1)
 				else $tname=$trow['testname'];
 				if ($freshdata) // only record text to log if fresh
 					{
-					$s=$tname." ".oText($trow['alertlevel']); 
+					$s=$tname." ".oText($trow['alertlevel']);
 					$result=$trow['lastvalue'];
 					if (is_numeric($result))
 							{
@@ -434,7 +447,7 @@ if ($suspend != 1)
 				if ($trow['alertlevel']>$alertlevel) $alertlevel=$trow['alertlevel'];
 				}
 			}
-				
+
 		$NATS->Event("Tester ".$trid." Finished Node ".$row['nodeid'],10,"Tester","Node");
 
 		$eventdata=array( "nodeid" => $row['nodeid'], "alertlevel" => $alertlevel );
@@ -447,17 +460,17 @@ if ($suspend != 1)
 		db("Alerts: ".$als);
 
 		$NATS->SetAlerts($row['nodeid'],$alertlevel,$alerts);
-		
+
 		// This is where child/slave nodes spawn
-		
+
 		// $pingpassed bool holds if pingtest has passed
 		// $alertlevel holds the overall status
 		$chq="SELECT nodeid,masterjustping FROM fnnode WHERE masterid=\"".$row['nodeid']."\"";
 		//echo $chq;
-		
+
 		$chr=$NATS->DB->Query($chq);
 		$spawnlist=array();
-		
+
 		while ($child=$NATS->DB->Fetch_Array($chr))
 			{
 			if (($child['masterjustping']==1)&&($pingpassed)) $spawnlist[]=$child['nodeid'];
@@ -466,7 +479,7 @@ if ($suspend != 1)
 			// otherwise (pass on any alert) if everything has passed spawn it
 			}
 		$NATS->DB->Free($chr);
-		
+
 		if (count($spawnlist)>0)
 			{
 			$cmd="php ./test-threaded.php";
@@ -476,15 +489,15 @@ if ($suspend != 1)
 			db("Children Spawning: ".$cmd);
 			exec($cmd);
 			}
-		
-		
+
+
 		// End of the node... carry forward highest level
 
 		db(" ");
-		
+
 		if ($alertlevel>$highalertlevel) $highalertlevel=$alertlevel;
 		$talertc+=$alertc;
-		
+
 		}
 
 
@@ -519,4 +532,3 @@ else
 $NATS->Stop();
 db("NATS Stopped... Finished");
 ?>
-
