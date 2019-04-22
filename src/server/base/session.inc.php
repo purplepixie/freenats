@@ -44,7 +44,7 @@ function Create(&$db,$uname,$pword)
 		}
 	return false;
 	}
-	
+
 function Register(&$db,$uname)
 	{
 	$q="SELECT userlevel FROM fnuser WHERE username=\"".ss($uname)."\"";
@@ -68,38 +68,57 @@ function Register(&$db,$uname)
 	$this->auth=true;
 	setcookie("fn_sid",$this->sessionid);
 	setcookie("fn_skey",$this->sessionkey);
-	return $this->sessionid;	
+	return $this->sessionid;
 	}
 
-function Check(&$db,$timeskip=false) // timeskip (1.02.1) avoids checking for or setting time (for live monitor)
-	{
-	if (!isset($_COOKIE['fn_sid'])) return false;
-	if (!isset($_COOKIE['fn_skey'])) return false;
-	
+function Check(&$db,$timeskip=false,$ipcheck=true) // timeskip (1.02.1) avoids checking for or setting time (for live monitor)
+{													// ipcheck validates the same IP address each time
+	$sid = false;
+	$skey = false;
+
+	$headers = getallheaders();
+
+	if (isset($_COOKIE['fn_sid']))
+		$sid = $_COOKIE['sid'];
+	elseif (isset($_REQUEST['fn_sid']))
+		$sid = $_REQUEST['fn_sid'];
+	elseif (isset($headers['X-Auth-SID']))
+		$sid = $headers['X-Auth-SID'];
+
+	if (isset($_COOKIE['fn_skey']))
+		$skey = $_COOKIE['skey'];
+	elseif (isset($_REQUEST['fn_skey']))
+		$skey = $_REQUEST['fn_skey'];
+	elseif (isset($headers['X-Auth-SKEY']))
+		$skey = $headers['X-Auth-SKEY'];
+
+	if ($sid === false || $skey === false)
+		return false;
+
 	$q="SELECT username,userlevel FROM fnsession WHERE ";
-	$q.="sessionid=".ss($_COOKIE['fn_sid'])." AND sessionkey=\"".ss($_COOKIE['fn_skey'])."\" AND ";
-	$q.="ipaddress=\"".ss($_SERVER['REMOTE_ADDR'])."\"";
-	if (!$timeskip) $q.="AND updatex>".(time()-(30*60));
+	$q.="sessionid=".ss($sid)." AND sessionkey=\"".ss($skey)."\"";
+	if ($ipcheck) $q.=" AND ipaddress=\"".ss($_SERVER['REMOTE_ADDR'])."\"";
+	if (!$timeskip) $q.=" AND updatex>".(time()-(30*60));
 	$q.=" LIMIT 0,1";
 	$r=$db->Query($q);
 	if (!$row=$db->Fetch_Array($r)) return false;
-	
-	$this->sessionid=$_COOKIE['fn_sid'];
-	$this->sessionkey=$_COOKIE['fn_skey'];
+
+	$this->sessionid=$sid;
+	$this->sessionkey=$skey;
 	$this->username=$row['username'];
 	$this->userlevel=$row['userlevel'];
 	$this->ipaddress=$_SERVER['REMOTE_ADDR'];
 	$this->auth=true;
-	
+
 	if (!$timeskip)
 		{
 		$q="UPDATE fnsession SET updatex=".time()." WHERE sessionid=".ss($this->sessionid);
 		$db->Query($q);
 		}
-	
+
 	return true;
-	}
-	
+}
+
 function Destroy($db)
 	{
 	$q="DELETE FROM fnsession WHERE sessionid=".ss($this->sessionid)." AND sessionkey=\"".ss($this->sessionkey)."\"";
@@ -108,5 +127,5 @@ function Destroy($db)
 	setcookie("fn_skey","");
 	return true;
 	}
-	
+
 }
