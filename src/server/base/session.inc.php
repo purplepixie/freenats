@@ -79,14 +79,14 @@ function Check(&$db,$timeskip=false,$ipcheck=true) // timeskip (1.02.1) avoids c
 	$headers = getallheaders();
 
 	if (isset($_COOKIE['fn_sid']))
-		$sid = $_COOKIE['sid'];
+		$sid = $_COOKIE['fn_sid'];
 	elseif (isset($_REQUEST['fn_sid']))
 		$sid = $_REQUEST['fn_sid'];
 	elseif (isset($headers['X-Auth-SID']))
 		$sid = $headers['X-Auth-SID'];
 
 	if (isset($_COOKIE['fn_skey']))
-		$skey = $_COOKIE['skey'];
+		$skey = $_COOKIE['fn_skey'];
 	elseif (isset($_REQUEST['fn_skey']))
 		$skey = $_REQUEST['fn_skey'];
 	elseif (isset($headers['X-Auth-SKEY']))

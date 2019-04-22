@@ -30,10 +30,10 @@ class TNATS_DB
 	{
 	var $connected=false;
 	var $sql=0;
-	
+
 	var $LastError=0;
 	var $LastErrorString="";
-	
+
 	function Connect()
 		{
 		global $fnCfg;
@@ -44,7 +44,7 @@ class TNATS_DB
 		$this->connected=true;
 		return $this->sql;
 		}
-		
+
 	function Disconnect()
 		{
 		mysqli_close($this->sql);
@@ -56,7 +56,7 @@ class TNATS_DB
 	{
 		return mysqli_real_escape_string($this->sql,$s);
 	}
-		
+
 	function Query($query,$debugerror=true)
 		{
 		global $NATS;
@@ -72,7 +72,7 @@ class TNATS_DB
 				}
 			else $this->ErrorString="";
 			}
-			
+
 		if (mysqli_errno($this->sql)>0)
 			{
 			$err=mysqli_error($this->sql)." (".mysqli_errno($this->sql).")";
@@ -84,43 +84,48 @@ class TNATS_DB
 			}
 		return $result;
 		}
-		
+
 	function Free(&$result)
 		{
 		mysqli_free_result($result);
 		}
-		
+
 	function Fetch_Array(&$result)
 		{
 		return mysqli_fetch_array($result);
 		}
-		
+
+	function Fetch_Assoc(&$result)
+		{
+		return mysqli_fetch_assoc($result);
+		}
+
 	function Affected_Rows()
 		{
 		return mysqli_affected_rows($this->sql);
 		}
-		
+
 	function Insert_Id()
 		{
 		return mysqli_insert_id($this->sql);
 		}
-		
+
 	function Num_Rows(&$result)
 		{
 		return mysqli_num_rows($result);
 		}
-		
+
 	function Error()
 		{
 		if ($this->LastError==0) return false;
 		return true;
 		}
-		
+
 	function Error_Number()
 		{
 		return $this->LastError;
 		}
-		
+
 	function Error_String()
 		{
 		return $this->ErrorString;

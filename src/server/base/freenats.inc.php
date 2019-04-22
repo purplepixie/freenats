@@ -550,7 +550,7 @@ function GetNode($nodeid)
 	$return_row=false;
 	$q="SELECT * FROM fnnode WHERE nodeid=\"".ss($nodeid)."\" LIMIT 0,1";
 	$r=$this->DB->Query($q);
-	if ($row=$this->DB->Fetch_Array($r))
+	if ($row=$this->DB->Fetch_Assoc($r))
 		$return_row=true;
 
 	$this->DB->Free($r);
@@ -579,7 +579,7 @@ function GetNodes()
 	$q="SELECT * FROM fnnode";
 	$r=$this->DB->Query($q);
 
-	while ($row=$this->DB->Fetch_Array($r))
+	while ($row=$this->DB->Fetch_Assoc($r))
 	{
 		if ($row['nodename']!="") $row['name']=$row['nodename']; // make a "nice" name for it
 		else $row['name']=$row['nodeid'];
@@ -607,7 +607,7 @@ function GetNodeTests($nodeid)
 	// local tests
 	$q="SELECT localtestid FROM fnlocaltest WHERE testenabled=1 AND nodeid=\"".ss($nodeid)."\" ORDER BY localtestid ASC";
 	$r=$this->DB->Query($q);
-	while ($row=$this->DB->Fetch_Array($r))
+	while ($row=$this->DB->Fetch_Assoc($r))
 		{
 		$tests[]="L".$row['localtestid'];
 		}
@@ -616,7 +616,7 @@ function GetNodeTests($nodeid)
 	// nodeside
 	$q="SELECT nstestid FROM fnnstest WHERE testenabled=1 AND nodeid=\"".ss($nodeid)."\" ORDER BY testtype ASC";
 	$r=$this->DB->Query($q);
-	while ($row=$this->DB->Fetch_Array($r))
+	while ($row=$this->DB->Fetch_Assoc($r))
 		{
 		$tests[]="N".$row['nstestid'];
 		}
@@ -731,7 +731,7 @@ function GetTest($testid,$protect=false)
 
 	$r=$this->DB->Query($q);
 
-	if (!$row=$this->DB->Fetch_Array($r)) return false;
+	if (!$row=$this->DB->Fetch_Assoc($r)) return false;
 
 	$row['class']=$class;
 	$row['testid']=$testid;

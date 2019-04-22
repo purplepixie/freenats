@@ -42,6 +42,12 @@ function throw_api_error($httpcode, $errorcode, $message)
 	exit();
 }
 
+function api_response($response)
+{
+	echo json_encode($response);
+	exit();
+}
+
 // CORS allow
 if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS')
 {
@@ -77,6 +83,34 @@ header('Content-Type: application/json');
 $abs=GetAbsolute();
 $headers = getallheaders();
 
+$uri = $_SERVER['REQUEST_URI'];
+$route = substr($uri,strpos($uri,"jsonapi.php")+strlen("jsonapi.php"));
+if ($route[0] == "/")
+	$route=substr($route,1);
+if (strpos($route,"?")!==false)
+	$route=substr($route,0,strpos($route,"?"));
+$routeparts = explode("/",$route);
+$mainroute = $routeparts[0];
+
+
+// Unauthenticated route - login
+if ($route == "login")
+{
+	$username = isset($_REQUEST['username']) ? $_REQUEST['username'] : (isset($_REQUEST['naun']) ? $_REQUEST['naun'] : "");
+	$password = isset($_REQUEST['password']) ? $_REQUEST['password'] : (isset($_REQUEST['napw']) ? $_REQUEST['napw'] : "");
+
+
+
+	$res = $NATS_Session->Create($NATS->DB,$username,$password);
+	if ($res === false) // login failed
+		throw_api_error(403,"LOGINFAILED","Failed to login with username and password provided");
+	else
+	{
+		$response['skey']=$NATS_Session->sessionkey;
+		$response['sid']=$NATS_Session->sessionid;
+		api_response($response);
+	}
+}
 // api.public - is available without session auth
 // api.key - usage key used if public and no session (if set)
 
@@ -100,3 +134,71 @@ else if (!$session) // IS PUBLIC and not logged in
 		}
 	}
 }
+
+// ROUTES
+if ($mainroute == "alerts")
+{
+	$alerts=$NATS->GetAlerts();
+	$response['alertcount']=count($alerts);
+	$response['alerts']=$alerts;
+	api_response($response);
+}
+elseif ($mainroute == "nodes")
+{
+	$nodes=$NATS->GetNodes();
+	$response['nodecount']=count($nodes);
+	$response['nodes']=$nodes;
+	api_response($response);
+}
+elseif ($mainroute == "node")
+{
+	$nodeid = isset($routeparts[1]) ? $routeparts[1] : false;
+	$node = $NATS->GetNode($nodeid);
+	if ($node === false)
+		throw_api_error(404,"NONODE","Node not found");
+	$tests = $NATS->GetNodeTests($nodeid);
+	$response['nodeid']=$node['nodeid'];
+	$response['node']=$node;
+	$response['testcount']=count($tests);
+
+	$response['tests']=array();
+	foreach($tests as $testid)
+	{
+		$test=$NATS->GetTest($testid,true);
+		$response['tests'][]=$test;
+	}
+
+	api_response($response);
+}
+elseif ($mainroute == "test")
+{
+	$testid = isset($routeparts[1]) ? $routeparts[1] : false;
+	$test = $NATS->GetTest($testid, true);
+	if ($test === false)
+		throw_api_error(404,"NOTEST","Test not found");
+	$response['testid']=$testid;
+	$response['nodeid']=$test['nodeid'];
+	$response['test']=$test;
+
+	api_response($response);
+}
+elseif ($mainroute == "version")
+{
+	$v=$NATS->Version;
+	$r=$NATS->Release;
+	$vp=explode(".",$v);
+	$response['version']=$v;
+	$response['release']=$r;
+	$response['compound']=$v.$r;
+	$response['major']=$vp[0];
+	$response['minor']=$vp[1];
+	$response['patch']=$vp[2];
+	api_response($response);
+}
+
+
+
+
+
+// We get here so route not found
+throw_api_error(404,"NOROUTE","Route not found or not provided");
