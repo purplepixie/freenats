@@ -193,7 +193,7 @@ CREATE TABLE `fnlocaltest` (
   `nextrunx` bigint(20) unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (`localtestid`),
   KEY `nodeid` (`nodeid`)
-) ENGINE=MyISAM AUTO_INCREMENT=32 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=33 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -212,7 +212,7 @@ CREATE TABLE `fnlog` (
   `loglevel` int(11) NOT NULL DEFAULT '1',
   `logevent` varchar(250) NOT NULL DEFAULT '',
   PRIMARY KEY (`logid`)
-) ENGINE=MyISAM AUTO_INCREMENT=60 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=148 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -322,7 +322,7 @@ CREATE TABLE `fnrecord` (
   PRIMARY KEY (`recordid`),
   KEY `testid` (`testid`),
   KEY `recordx` (`recordx`)
-) ENGINE=MyISAM AUTO_INCREMENT=4768915 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=4768954 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -412,7 +412,7 @@ CREATE TABLE `fnsession` (
   `updatex` bigint(20) unsigned NOT NULL DEFAULT '0',
   `userlevel` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`sessionid`)
-) ENGINE=MyISAM AUTO_INCREMENT=174 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=175 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -431,7 +431,7 @@ CREATE TABLE `fntestrun` (
   PRIMARY KEY (`trid`),
   KEY `finishx` (`finishx`),
   KEY `fnode` (`fnode`)
-) ENGINE=MyISAM AUTO_INCREMENT=52 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=96 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -507,4 +507,4 @@ CREATE TABLE `fnviewitem` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-11-14 12:15:00
+-- Dump completed on 2018-11-15 14:47:34
