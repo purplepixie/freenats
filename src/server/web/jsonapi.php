@@ -67,6 +67,7 @@ $NATS->Start();
 $session=true;
 if (!$NATS_Session->Check($NATS->DB,false,false))
 {
+    die("No session");
 	$session=false;
 }
 
