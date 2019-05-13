@@ -95,14 +95,13 @@ function Check(&$db,$timeskip=false,$ipcheck=true) // timeskip (1.02.1) avoids c
 	if ($sid === false || $skey === false)
 		return false;
 
-	die($sid."/".$skey);
-
 	$q="SELECT username,userlevel FROM fnsession WHERE ";
 	$q.="sessionid=".ss($sid)." AND sessionkey=\"".ss($skey)."\"";
 	if ($ipcheck) $q.=" AND ipaddress=\"".ss($_SERVER['REMOTE_ADDR'])."\"";
 	if (!$timeskip) $q.=" AND updatex>".(time()-(30*60));
 	$q.=" LIMIT 0,1";
 	$r=$db->Query($q);
+	die($q);
 	if (!$row=$db->Fetch_Array($r)) return false;
 
 	$this->sessionid=$sid;
