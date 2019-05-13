@@ -1148,5 +1148,35 @@ function isUserAllowedNode($username, $nodeid)
 	return false;
 }
 
+function GetTestData($testid,$startx,$finishx)
+{
+	// get data and draw
+	$q="SELECT testvalue,alertlevel,recordx FROM fnrecord WHERE testid=\"".ss($testid)."\" ";
+	$q.="AND recordx>=".ss($startx)." AND recordx<=".ss($finishx)." ORDER BY recordx ASC";
+	//$q.="LIMIT 0,100";
+	$r=$this->DB->Query($q);
+	$lastx=0;
+	$lasty=0;
+
+	$startval=0;
+	$finishval=0;
+
+	$output = array();
+
+	while ($row=mysqli_fetch_array($r))
+	{
+
+		$output[] = array(
+			"recordx" => $row['recordx'],
+			"recorddt" => nicedt($row['recordx']),
+			"value" => $row['testvalue'],
+			"alertlevel" => $row['alertlevel']
+		);
+	}
+	mysqli_free_result($r);
+
+	return $output;
+}
+
 }
 ?>

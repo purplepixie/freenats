@@ -172,13 +172,42 @@ elseif ($mainroute == "node")
 }
 elseif ($mainroute == "test")
 {
+    $data=false;
+
 	$testid = isset($routeparts[1]) ? $routeparts[1] : false;
+
+    if (isset($routeparts[2]) && $routeparts[2]=="data")
+        $data=true;
+
 	$test = $NATS->GetTest($testid, true);
 	if ($test === false)
 		throw_api_error(404,"NOTEST","Test not found");
 	$response['testid']=$testid;
 	$response['nodeid']=$test['nodeid'];
 	$response['test']=$test;
+
+    if ($data) // fetch test data
+    {
+        $startx = isset($_REQUEST['startx']) && is_numeric($_REQUEST['startx']) ? $_REQUEST['startx'] : 0-(60*60*24);
+        $finishx = isset($_REQUEST['finishx']) && is_numeric($_REQUEST['finishx']) ? $_REQUEST['finishx'] : 0;
+        $nowx = time();
+        if ($startx <= 0)
+            $startx = $nowx + $startx;
+        if ($finishx <= 0)
+            $finishx = $nowx + $finishx;
+
+        $response['period']=array(
+                "startx" => $startx,
+                "startdt" => nicedt($startx),
+                "startago" => dtago($startx),
+                "finishx" => $finishx,
+                "finishdt" => nicedt($finishx),
+                "finishago" => dtago($finishx)
+        );
+
+        $response['data']=$NATS->GetTestData($testid,$startx,$finishx);
+        $response['datapoints']=count($response['data']);
+    }
 
 	api_response($response);
 }
