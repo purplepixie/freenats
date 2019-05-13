@@ -101,7 +101,7 @@ function Check(&$db,$timeskip=false,$ipcheck=true) // timeskip (1.02.1) avoids c
 	if (!$timeskip) $q.=" AND updatex>".(time()-(30*60));
 	$q.=" LIMIT 0,1";
 	$r=$db->Query($q);
-	die($q);
+	
 	if (!$row=$db->Fetch_Array($r)) return false;
 
 	$this->sessionid=$sid;
