@@ -153,22 +153,41 @@ elseif ($mainroute == "nodes")
 elseif ($mainroute == "node")
 {
 	$nodeid = isset($routeparts[1]) ? $routeparts[1] : false;
-	$node = $NATS->GetNode($nodeid);
-	if ($node === false)
-		throw_api_error(404,"NONODE","Node not found");
-	$tests = $NATS->GetNodeTests($nodeid);
-	$response['nodeid']=$node['nodeid'];
-	$response['node']=$node;
-	$response['testcount']=count($tests);
 
-	$response['tests']=array();
-	foreach($tests as $testid)
-	{
-		$test=$NATS->GetTest($testid,true);
-		$response['tests'][]=$test;
-	}
+    $node = $NATS->GetNode($nodeid);
+    if ($node === false)
+        throw_api_error(404,"NONODE","Node not found");
 
-	api_response($response);
+    if (count($routeparts)<=2) // just /node/X
+    {
+    	$tests = $NATS->GetNodeTests($nodeid);
+    	$response['nodeid']=$node['nodeid'];
+    	$response['node']=$node;
+    	$response['testcount']=count($tests);
+
+    	$response['tests']=array();
+    	foreach($tests as $testid)
+    	{
+    		$test=$NATS->GetTest($testid,true);
+    		$response['tests'][]=$test;
+    	}
+
+    	api_response($response);
+    }
+    elseif($routeparts[2]=="enable" || $routeparts[2]=="disable")
+    {
+        if (!$session)
+            throw_api_error(403,"FORBIDDEN","Not logged in cannot change node");
+        if ($NATS_Session->userlevel<5)
+            throw_api_error(403,"FORBIDDEN","Insufficient access to change node");
+        $response['success'] = "true";
+        $enable = $routeparts[2]=="enable" ? true : false;
+        $NATS->EnableNode($nodeid,$enable);
+        $response['enabled']=$enable;
+        api_response($response);
+    }
+    else
+        throw_api_error(400,"REQERROR","Cannot understand request");
 }
 elseif ($mainroute == "test")
 {
@@ -224,10 +243,53 @@ elseif ($mainroute == "version")
 	$response['patch']=$vp[2];
 	api_response($response);
 }
+elseif ($mainroute == "groups")
+{
+    $response['groups']=$NATS->GetGroupsArray();
+    api_response($response);
+}
+elseif ($mainroute == "group")
+{
+    $groupid = isset($routeparts[1]) ? $routeparts[1] : false;
+    $group = $NATS->GetGroup($groupid,true);
+    if ($group === false)
+        throw_api_error(404,"NOGROUP","Group not found");
+    $response['groupid'] = $groupid;
+    $response['group'] = $group;
+    api_response($response);
+}
+elseif ($mainroute == "sysvar")
+{
+    if (!$session || $NATS_Session->userlevel<9)
+        throw_api_error(403,"FORBIDDEN","Insufficient access for sysvar route");
+    if (count($routeparts) != 2)
+        throw_api_error(400,"REQERROR","Cannot understand request");
+
+    if ($routeparts[1] == "site.tester.suspended")
+    {
+        $response['variable'] = $routeparts[1];
+        if ($_SERVER['REQUEST_METHOD']==="GET")
+        {
+            $response['value'] = $NATS->Cfg->Get($routeparts[1],0);
+            api_response($response);
+        }
+        elseif ($_SERVER['REQUEST_METHOD']==="POST")
+        {
+            if (isset($_POST['value']))
+                $NATS->Cfg->Set($routeparts[1],$_POST['value']);
+            else
+                throw_api_error(400,"NOVALUE","No value item provided in POST data");
+            api_response($response);
+        }
+    }
+
+    throw_api_error(404,"NOSYSVAR","The system variable requested is not accessible via the API");
+
+}
 
 
 
 
 
 // We get here so route not found
-throw_api_error(404,"NOROUTE","Route not found or not provided");
+throw_api_error(404,"NOROUTE","Route not found or not provided (".$mainroute.")");

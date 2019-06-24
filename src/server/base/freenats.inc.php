@@ -28,7 +28,7 @@ var $Cfg;
 var $Tests;
 var $Lang;
 var $RSS;
-var $Version="1.20.2";
+var $Version="1.20.3";
 var $Release="a";
 var $EventHandlers=array();
 
@@ -669,15 +669,30 @@ function SetNodeSchedule($nodeid,$scheduleid)
 	return $this->SetNode($nodeid,$data);
 	}
 
-function GetGroup($groupid)
+function GetGroup($groupid,$members=false)
 	{
 	$q="SELECT * FROM fngroup WHERE groupid=".ss($groupid)." LIMIT 0,1";
 	$r=$this->DB->Query($q);
-	if (!$row=$this->DB->Fetch_Array($r)) return false;
+	if (!$row=$this->DB->Fetch_Assoc($r)) return false;
 
 	$this->DB->Free($r);
 	$row['alertlevel']=$this->GroupAlertLevel($groupid);
 	$row['alerttext']=oText($row['alertlevel']);
+	if ($members)
+	{
+		$row['nodes']=array();
+		$q="select fngrouplink.nodeid as nodeid from fngrouplink left join fnnode on fngrouplink.nodeid=fnnode.nodeid where fngrouplink.groupid=".ss($groupid)." order by fnnode.weight";
+		$r=$this->DB->Query($q);
+		while($n=$this->DB->Fetch_Assoc($r))
+		{
+			$node=array(
+				"nodeid" => $n['nodeid'],
+				"alertlevel" => $this->NodeAlertLevel($n['nodeid']),
+				"alerttext" => oText($this->NodeAlertLevel($n['nodeid']))
+			);
+			$row['nodes'][]=$node;
+		}
+	}
 	return $row;
 	}
 
@@ -692,6 +707,23 @@ function GetGroups()
 		$row['alertlevel']=$this->GroupAlertLevel($row['groupid']);
 		$row['alerttext']=oText($row['alertlevel']);
 		$out[$row['groupid']]=$row;
+	}
+
+	$this->DB->Free($r);
+	return $out;
+}
+
+function GetGroupsArray() // "nicer" output in array without keys
+{
+	$out=array();
+	$q="SELECT * FROM fngroup";
+	$r=$this->DB->Query($q);
+
+	while ($row=$this->DB->Fetch_Assoc($r))
+	{
+		$row['alertlevel']=$this->GroupAlertLevel($row['groupid']);
+		$row['alerttext']=oText($row['alertlevel']);
+		$out[]=$row;
 	}
 
 	$this->DB->Free($r);
