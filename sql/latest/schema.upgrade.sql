@@ -226,7 +226,7 @@ ALTER TABLE `fnnode` CHANGE `pingfatal` `pingfatal` tinyint(1) NOT NULL DEFAULT 
 ALTER TABLE `fnnode` ADD `pingfatal` tinyint(1) NOT NULL DEFAULT '0';
 ALTER TABLE `fnnode` CHANGE `alertlevel` `alertlevel` int(11) NOT NULL DEFAULT '-1';
 ALTER TABLE `fnnode` ADD `alertlevel` int(11) NOT NULL DEFAULT '-1';
-ALTER TABLE `fnnode` CHANGE `nodeicon` `nodeicon` varchar(64) NOT NULL;
+ALTER TABLE `fnnode` CHANGE `nodeicon` `nodeicon` varchar(64) NOT NULL DEFAULT '';
 ALTER TABLE `fnnode` ADD `nodeicon` varchar(64) NOT NULL;
 ALTER TABLE `fnnode` CHANGE `weight` `weight` int(10) unsigned NOT NULL DEFAULT '0';
 ALTER TABLE `fnnode` ADD `weight` int(10) unsigned NOT NULL DEFAULT '0';
