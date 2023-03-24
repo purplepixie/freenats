@@ -21,43 +21,36 @@ For more information see www.purplepixie.org/freenats
 -------------------------------------------------------------- */
 
 /* Description:
-
 This is a custom event handler for FreeNATS v1 and relies on the following
 event types: alert_action
-
 It also relies on the following FreeNATS class methods:
-	TFreeNATS::AddEventHandler
-
+TFreeNATS::AddEventHandler
 USAGE INSTRUCTIONS:
-
 Place into the server/base/site/events directory being sure to keep a .php
 extension on the end of the file. Enable the system variable site.include.events
 (set to 1) to enable inclusion.
-
 Create an alert action of type message queue and the name "_console" (without
 the quotes). Alerts to this action will be echo'd to the /dev/console device.
-
 Note this will almost certainly never work for the "test" option owing to
 security limitations but will work within a test cycle.
-
 */
 
 
 
 
 global $NATS;
-if (isset($NATS))
-{
+if (isset($NATS)) {
 
-function alert_action_console($data)
-{
-	if ($data['name']!="_console") return false;
-	$cmd="echo \"FreeNATS: ".$data['data']."\" > /dev/console";
-	@exec($cmd);
-	return true;
-}
+	function alert_action_console($data)
+	{
+		if ($data['name'] != "_console")
+			return false;
+		$cmd = "echo \"FreeNATS: " . $data['data'] . "\" > /dev/console";
+		@exec($cmd);
+		return true;
+	}
 
-$NATS->AddEventHandler("alert_action","alert_action_console");
+	$NATS->AddEventHandler("alert_action", "alert_action_console");
 
 
 

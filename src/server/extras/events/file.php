@@ -21,47 +21,41 @@ For more information see www.purplepixie.org/freenats
 -------------------------------------------------------------- */
 
 /* Description:
-
 This is a custom event handler for FreeNATS v1 and relies on the following
 event types: alert_action
-
 It also relies on the following FreeNATS class methods:
-	TFreeNATS::AddEventHandler
-
+TFreeNATS::AddEventHandler
 USAGE INSTRUCTIONS:
-
 Place into the server/base/site/events directory being sure to keep a .php
 extension on the end of the file. Enable the system variable site.include.events
 (set to 1) to enable inclusion.
-
 Create an alert action of type message queue with the name of "_fileoutput"
 (without the quotes).
-
 Alerts sent to this action will be written to a file (/tmp/fndebug).
-
 */
 
 
 
 
 global $NATS;
-if (isset($NATS))
-{
+if (isset($NATS)) {
 
 
-function alert_action_file($data)
-{
-	if ($data['name']=="_fileoutput") $file="/tmp/fndebug";
-	else return false;
-	$fp=fopen($file,"a");
-	fputs($fp,"-- ".date("Y-m-d H:i:s")." --\n");
-	fputs($fp,$data['data']);
-	fputs($fp,"\n-- ENDS --\n");
-	fclose($fp);
-	return true;
-}
+	function alert_action_file($data)
+	{
+		if ($data['name'] == "_fileoutput")
+			$file = "/tmp/fndebug";
+		else
+			return false;
+		$fp = fopen($file, "a");
+		fputs($fp, "-- " . date("Y-m-d H:i:s") . " --\n");
+		fputs($fp, $data['data']);
+		fputs($fp, "\n-- ENDS --\n");
+		fclose($fp);
+		return true;
+	}
 
-$NATS->AddEventHandler("alert_action","alert_action_file");
+	$NATS->AddEventHandler("alert_action", "alert_action_file");
 
 
 
