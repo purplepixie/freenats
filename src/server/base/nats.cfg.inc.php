@@ -21,51 +21,49 @@ For more information see www.purplepixie.org/freenats
 -------------------------------------------------------------- */
 
 class TNATS_Cfg
-	{
-	var $loaded=false;
-	var $data=array();
-	var $default="";
-	
+{
+	var $loaded = false;
+	var $data = array();
+	var $default = "";
+
 	function Load($nats_db)
-		{
-		$q="SELECT * FROM fnconfig";
-		$r=$nats_db->Query($q);
-		while ($row=$nats_db->Fetch_Array($r))
-			{
-			$this->data[$row['fnc_var']]=$row['fnc_val'];
+	{
+		$q = "SELECT * FROM fnconfig";
+		$r = $nats_db->Query($q);
+		while ($row = $nats_db->Fetch_Array($r)) {
+			$this->data[$row['fnc_var']] = $row['fnc_val'];
 			//echo $row['fnc_var']."=".$row['fnc_val']."\n<br>";
-			}
+		}
 		$nats_db->Free($r);
-		}
-		
-	function Get($var,$def="")
-		{
-		if (isset($this->data[$var])) return $this->data[$var];
+	}
+
+	function Get($var, $def = "")
+	{
+		if (isset($this->data[$var]))
+			return $this->data[$var];
 		return $def;
-		}
-		
+	}
+
 	function DumpToScreen()
-		{
-		$keys=array_keys($this->data);
-		foreach($keys as $key)
-			{
-			echo $key."=".$this->data[$key]."<br>\n";
-			}
+	{
+		$keys = array_keys($this->data);
+		foreach ($keys as $key) {
+			echo $key . "=" . $this->data[$key] . "<br>\n";
 		}
-	function Set($var,$val,$perm=true)
-		{
+	}
+	function Set($var, $val, $perm = true)
+	{
 		global $NATS;
-		$this->data[$var]=$val;
-		if ($perm)
-			{
+		$this->data[$var] = $val;
+		if ($perm) {
 			global $NATS;
-			$q="UPDATE fnconfig SET fnc_val=\"".ss($val)."\" WHERE fnc_var=\"".ss($var)."\"";
+			$q = "UPDATE fnconfig SET fnc_val=\"" . ss($val) . "\" WHERE fnc_var=\"" . ss($var) . "\"";
 			$NATS->DB->Query($q);
-			if ($NATS->DB->Affected_Rows()<=0) // not already existing
-				{
-				$q="INSERT INTO fnconfig(fnc_var,fnc_val) VALUES(\"".ss($var)."\",\"".ss($val)."\")";
+			if ($NATS->DB->Affected_Rows() <= 0) // not already existing
+			{
+				$q = "INSERT INTO fnconfig(fnc_var,fnc_val) VALUES(\"" . ss($var) . "\",\"" . ss($val) . "\")";
 				$NATS->DB->Query($q);
-				}
 			}
 		}
 	}
+}
