@@ -1080,10 +1080,13 @@ class TFreeNATS
 
 	function StripGPC($data)
 	{
+		/* -- deprecated
 		if (get_magic_quotes_gpc())
 			return stripslashes($data);
 		else
 			return $data;
+		*/
+		return $data;
 	}
 
 	function PageError($code, $desc)
