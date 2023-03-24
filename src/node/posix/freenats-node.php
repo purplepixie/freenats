@@ -102,7 +102,7 @@ function AddTest($name,$desc,$val,$lvl=-1)
 	$this->AddLine("");
 }
 
-function FreeNATS_XML_Node()
+function __construct()
 {
 global $nodeCfg;
 $this->AddLine("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
