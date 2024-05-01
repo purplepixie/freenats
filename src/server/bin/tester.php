@@ -86,6 +86,7 @@ if ($suspend != 1 || $forcerun) {
 	}
 	$NATS->DB->Free($cr);
 
+
 	// and if it is then don't continue
 	if ($still_running && !$forcerun) {
 		$NATS->Event("Tester Already Running: Aborted", 1, "Tester", "Error");
@@ -111,6 +112,8 @@ if ($suspend != 1 || $forcerun) {
 	if (!$forcetests)
 		$q .= " AND nextrunx<=" . time();
 
+
+	//echo $q."\n";
 	$r = $NATS->DB->Query($q);
 
 
