@@ -73,7 +73,7 @@ class DNSResult
 	var $data;
 	var $domain;
 	var $string;
-	var $extas=array();
+	var $extras=array();
 }
 
 class DNSAnswer
