@@ -20,124 +20,121 @@ along with FreeNATS.  If not, see www.gnu.org/licenses
 For more information see www.purplepixie.org/freenats
 -------------------------------------------------------------- */
 
-$ranges=array();
-$actranges=array();
-$rangecount=0;
-$recorded=0;
-$webprobe=false;
-$live=false;
-$debug=false;
-$outfile="discover.xml";
-$output="";
+$ranges = array();
+$actranges = array();
+$rangecount = 0;
+$recorded = 0;
+$webprobe = false;
+$live = false;
+$debug = false;
+$outfile = "discover.xml";
+$output = "";
 
 
 
-function AddNode($nodeid,$hostname,$description="")
+function AddNode($nodeid, $hostname, $description = "")
 {
-global $output;
-$output.="<node NODEID=\"".$nodeid."\">\n";
-$output.=" <nodeid>".$nodeid."</nodeid>\n";
-$output.=" <hostname>".$hostname."</hostname>\n";
-$output.=" <nodedesc>".$description."</nodedesc>\n";
-$output.="</node>\n\n";
+	global $output;
+	$output .= "<node NODEID=\"" . $nodeid . "\">\n";
+	$output .= " <nodeid>" . $nodeid . "</nodeid>\n";
+	$output .= " <hostname>" . $hostname . "</hostname>\n";
+	$output .= " <nodedesc>" . $description . "</nodedesc>\n";
+	$output .= "</node>\n\n";
 }
 
-function AddLocaltest($nodeid,$testtype,$param)
+function AddLocaltest($nodeid, $testtype, $param)
 {
-global $output,$recorded;
-$output.="<localtest>\n";
-$output.=" <nodeid>".$nodeid."</nodeid>\n";
-$output.=" <testtype>".$testtype."</testtype>\n";
-$output.=" <testparam>".$param."</testparam>\n";
-$output.="</localtest>\n\n";
+	global $output, $recorded;
+	$output .= "<localtest>\n";
+	$output .= " <nodeid>" . $nodeid . "</nodeid>\n";
+	$output .= " <testtype>" . $testtype . "</testtype>\n";
+	$output .= " <testparam>" . $param . "</testparam>\n";
+	$output .= "</localtest>\n\n";
 }
 
- function DiscovericmpChecksum($data)
-    {
-    if (strlen($data)%2)
-    $data .= "\x00";
-    
-    $bit = unpack('n*', $data);
-    $sum = array_sum($bit);
-    
-    while ($sum >> 16)
-    $sum = ($sum >> 16) + ($sum & 0xffff);
-    
-    return pack('n*', ~$sum);
-    }
-   
+function DiscovericmpChecksum($data)
+{
+	if (strlen($data) % 2)
+		$data .= "\x00";
+
+	$bit = unpack('n*', $data);
+	$sum = array_sum($bit);
+
+	while ($sum >> 16)
+		$sum = ($sum >> 16) + ($sum & 0xffff);
+
+	return pack('n*', ~$sum);
+}
+
 function DiscoverPing($host)
-	{
-    // Make Package
-    $type= "\x08";
-    $code= "\x00";
-    $checksum= "\x00\x00";
-    $identifier = "\x00\x00";
-    $seqNumber = "\x00\x00";
-    $data= "FreeNATS";
-    $package = $type.$code.$checksum.$identifier.$seqNumber.$data;
-    $checksum = DiscovericmpChecksum($package); // Calculate the checksum
-    $package = $type.$code.$checksum.$identifier.$seqNumber.$data;
-    
-    // Return s or ms(s*1000)
-    $returnsecs=true;
-    
+{
+	// Make Package
+	$type = "\x08";
+	$code = "\x00";
+	$checksum = "\x00\x00";
+	$identifier = "\x00\x00";
+	$seqNumber = "\x00\x00";
+	$data = "FreeNATS";
+	$package = $type . $code . $checksum . $identifier . $seqNumber . $data;
+	$checksum = DiscovericmpChecksum($package); // Calculate the checksum
+	$package = $type . $code . $checksum . $identifier . $seqNumber . $data;
+
+	// Return s or ms(s*1000)
+	$returnsecs = true;
+
 
 	// Timeout Values
-    $timeout=10;
-    
-    // Create Socket
-    $socket = @socket_create(AF_INET, SOCK_RAW, 1);
-    	//or die(socket_strerror(socket_last_error()));
-    if (!$socket) return -1;
-    
-    // Set Non-Blocking
-    @socket_set_nonblock($socket);
-    	
-    // Connect Socket
-    $sconn=@socket_connect($socket, $host, null);
-    if (!$sconn) return -1;
-    
-    // Send Data
-    @socket_send($socket, $package, strLen($package), 0);
-        
-    $startTime=microtime(true);
-    
+	$timeout = 10;
 
-    // Read Data
-    $keepon=true;
+	// Create Socket
+	$socket = @socket_create(AF_INET, SOCK_RAW, 1);
+	//or die(socket_strerror(socket_last_error()));
+	if (!$socket) return -1;
 
-    while( (!(@socket_read($socket, 255))) && $keepon)
-    	{ // basically just kill time
-    	// consider putting some sort of sleepy thing here to lower load but would f* with figures!
-    	
-    	if ( (microtime(true) - $startTime) > $timeout )
-    		$keepon=false;
-		}
-    	
-	if ($keepon) // didn't time out - read data
-    	{
-	 
-	    @socket_close($socket);
-    	
-    	return 1;
-    	
-    	}
-    	
-    // Socket timed out
-    @socket_close($socket);
-    return 0;
+	// Set Non-Blocking
+	@socket_set_nonblock($socket);
+
+	// Connect Socket
+	$sconn = @socket_connect($socket, $host, null);
+	if (!$sconn) return -1;
+
+	// Send Data
+	@socket_send($socket, $package, strLen($package), 0);
+
+	$startTime = microtime(true);
+
+
+	// Read Data
+	$keepon = true;
+
+	while ((!(@socket_read($socket, 255))) && $keepon) { // basically just kill time
+		// consider putting some sort of sleepy thing here to lower load but would f* with figures!
+
+		if ((microtime(true) - $startTime) > $timeout)
+			$keepon = false;
 	}
+
+	if ($keepon) // didn't time out - read data
+	{
+
+		@socket_close($socket);
+
+		return 1;
+	}
+
+	// Socket timed out
+	@socket_close($socket);
+	return 0;
+}
 
 
 function ddt($txt) // discovery debug text
 {
-global $debug;
-if ($debug) echo $txt."\n";
+	global $debug;
+	if ($debug) echo $txt . "\n";
 }
 
-if ($argc<2)
-	{
+if ($argc < 2) {
 	echo "FreeNATS Discovery Tool\n";
 	echo "Usage: php discover.php <IP/RANGE> [<IP/RANGE> ...] [options]\n\n";
 	echo "Goes through IPs or ranges and discovers nodes, outputting an XML file for\n";
@@ -153,89 +150,81 @@ if ($argc<2)
 	echo " --recorded - set the record data flag for any discovered tests by default\n\n";
 	echo "See www.purplepixie.org/freenats for more information.\n\n";
 	exit();
-	}
+}
 
-for ($ac=1; $ac<$argc; $ac++)
-	{
-	$arg=$argv[$ac];
-	if ($arg=="--live") $live=true;
-	else if ($arg=="--debug") $debug=true;
-	else if ($arg=="--file") $outfile=$argv[++$ac];
-	else if ($arg=="--webprobe") $webprobe=true;
-	else if ($arg=="--recorded") $recorded=1;
-	else 
+for ($ac = 1; $ac < $argc; $ac++) {
+	$arg = $argv[$ac];
+	if ($arg == "--live") $live = true;
+	else if ($arg == "--debug") $debug = true;
+	else if ($arg == "--file") $outfile = $argv[++$ac];
+	else if ($arg == "--webprobe") $webprobe = true;
+	else if ($arg == "--recorded") $recorded = 1;
+	else {
+		$ranges[$rangecount] = $arg;
+		$actranges[$rangecount]['start'] = 0;
+		$actranges[$rangecount]['finish'] = 0;
+
+		if (strpos($arg, "-") !== false) // range
 		{
-		$ranges[$rangecount]=$arg;
-		$actranges[$rangecount]['start']=0;
-		$actranges[$rangecount]['finish']=0;
-		
-		if (strpos($arg,"-")!==false) // range
-			{
-			$pos=strpos($arg,"-");
-			$from=substr($arg,0,$pos);
-			$to=substr($arg,$pos+1);
-			$actranges[$rangecount]['start']=ip2long($from);
-			$actranges[$rangecount]['finish']=ip2long($to);
-			}
-		else if (strpos($arg,"/")!==false) // mask delimited
-			{
-			$pos=strpos($arg,"/");
-			$ip=substr($arg,0,$pos);
-			$mask=substr($arg,$pos+1);
+			$pos = strpos($arg, "-");
+			$from = substr($arg, 0, $pos);
+			$to = substr($arg, $pos + 1);
+			$actranges[$rangecount]['start'] = ip2long($from);
+			$actranges[$rangecount]['finish'] = ip2long($to);
+		} else if (strpos($arg, "/") !== false) // mask delimited
+		{
+			$pos = strpos($arg, "/");
+			$ip = substr($arg, 0, $pos);
+			$mask = substr($arg, $pos + 1);
 			if (is_numeric($mask)) // numeric mask
-				{
-				ddt("Numeric Netmask ".$mask);
-				$netmask=0;
-				for ($a=0; $a<$mask; $a++)
-					{
-					$val=pow(2,(32-$a-1));
-					ddt("Numeric Netmask: Pos ".$a." Adding ".$val);
-					$netmask+=$val;
-					}
-				ddt("Numeric Netmask ".long2ip($netmask)." ".$netmask);
-				$netmask=ip2long(long2ip($netmask)); // weirdness avoidance!!
-				//
+			{
+				ddt("Numeric Netmask " . $mask);
+				$netmask = 0;
+				for ($a = 0; $a < $mask; $a++) {
+					$val = pow(2, (32 - $a - 1));
+					ddt("Numeric Netmask: Pos " . $a . " Adding " . $val);
+					$netmask += $val;
 				}
-			else $netmask=ip2long($mask);
-			ddt("Netmask ".$netmask);
-			$ipaddr=ip2long($ip);
-			ddt("IP ".$ipaddr." (".$ip.")");
-			$network=($ipaddr & $netmask);
-			$firsthost=$network+1;
-			
-			$broadcast=($network | (~$netmask));
-			$lasthost=$broadcast-1;
-			
-			$actranges[$rangecount]['start']=$firsthost;
-			
-			$actranges[$rangecount]['finish']=$lasthost;
-			
-			}
-		else
-			{ // single host
-			$actranges[$rangecount]['start']=ip2long($arg);
-			$actranges[$rangecount]['finish']=ip2long($arg);
-			}
-		
-		$rangecount++;
+				ddt("Numeric Netmask " . long2ip($netmask) . " " . $netmask);
+				$netmask = ip2long(long2ip($netmask)); // weirdness avoidance!!
+				//
+			} else $netmask = ip2long($mask);
+			ddt("Netmask " . $netmask);
+			$ipaddr = ip2long($ip);
+			ddt("IP " . $ipaddr . " (" . $ip . ")");
+			$network = ($ipaddr & $netmask);
+			$firsthost = $network + 1;
+
+			$broadcast = ($network | (~$netmask));
+			$lasthost = $broadcast - 1;
+
+			$actranges[$rangecount]['start'] = $firsthost;
+
+			$actranges[$rangecount]['finish'] = $lasthost;
+		} else { // single host
+			$actranges[$rangecount]['start'] = ip2long($arg);
+			$actranges[$rangecount]['finish'] = ip2long($arg);
 		}
+
+		$rangecount++;
 	}
-	
+}
 
-$output.="<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
-$output.="<freenats-data>\n\n";
 
-$output.="<default TYPE=\"node\">\n";
-$output.=" <nodeenabled>1</nodeenabled>\n";
-$output.=" <pingtest>0</pingtest>\n";
-$output.="</default>\n\n";
+$output .= "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
+$output .= "<freenats-data>\n\n";
 
-$output.="<default TYPE=\"localtest\">\n";
-$output.=" <testenabled>1</testenabled>\n";
-$output.=" <testrecord>".$recorded."</testrecord>\n";
-$output.="</default>\n\n";
+$output .= "<default TYPE=\"node\">\n";
+$output .= " <nodeenabled>1</nodeenabled>\n";
+$output .= " <pingtest>0</pingtest>\n";
+$output .= "</default>\n\n";
 
-	
+$output .= "<default TYPE=\"localtest\">\n";
+$output .= " <testenabled>1</testenabled>\n";
+$output .= " <testrecord>" . $recorded . "</testrecord>\n";
+$output .= "</default>\n\n";
+
+
 
 echo "FreeNATS Discover Started\n";
 echo " Live: ";
@@ -244,81 +233,65 @@ else echo "No";
 echo "    Debug: ";
 if ($debug) echo "Yes";
 else echo "No";
-echo "\n File: ".$outfile;
+echo "\n File: " . $outfile;
 echo "\n\n";
-echo "Ranges: ".$rangecount."\n";
-if ($rangecount<=0)
-	{
+echo "Ranges: " . $rangecount . "\n";
+if ($rangecount <= 0) {
 	echo "\nNo ranges or IP addresses specified\n";
-	}
-	
-for($a=0; $a<$rangecount; $a++)
- {
- echo " ".$ranges[$a]." ".$actranges[$a]['start']."-".$actranges[$a]['finish']." ".long2ip($actranges[$a]['start'])."-".long2ip($actranges[$a]['finish'])."\n";
- }
+}
+
+for ($a = 0; $a < $rangecount; $a++) {
+	echo " " . $ranges[$a] . " " . $actranges[$a]['start'] . "-" . $actranges[$a]['finish'] . " " . long2ip($actranges[$a]['start']) . "-" . long2ip($actranges[$a]['finish']) . "\n";
+}
 echo "\n";
 
-for($a=0; $a<$rangecount; $a++)
-	{
-	$start=$actranges[$a]['start'];
-	$finish=$actranges[$a]['finish'];
-	echo "+ ".long2ip($start)." - ".long2ip($finish)."\n";
-	for ($ip=$start; $ip<=$finish; $ip++)
-		{
-		ddt("- ".long2ip($ip)." (".$ip.")");
-		$res=DiscoverPing(long2ip($ip));
-		if ($res<0)
-			{
+for ($a = 0; $a < $rangecount; $a++) {
+	$start = $actranges[$a]['start'];
+	$finish = $actranges[$a]['finish'];
+	echo "+ " . long2ip($start) . " - " . long2ip($finish) . "\n";
+	for ($ip = $start; $ip <= $finish; $ip++) {
+		ddt("- " . long2ip($ip) . " (" . $ip . ")");
+		$res = DiscoverPing(long2ip($ip));
+		if ($res < 0) {
 			echo "Fatal Error: Could Not Open ICMP Connection (Ping Send Failed)\n\n";
 			exit();
-			}
-		else if ($res==0)
-			{
+		} else if ($res == 0) {
 			ddt("- No Reply for Ping");
-			}
-		else
-			{
+		} else {
 			echo "- Ping Returned - Host Active\n";
-			$hostname=gethostbyaddr(long2ip($ip));
-			echo "- Name: ".$hostname."\n";
-			$ipaddr=long2ip($ip);
-			if ($hostname==$ipaddr)
-				{
-				$nodeid=$ipaddr;
-				}
-			else
-				{
-				$exp=explode(".",$hostname);
-				$nodeid=$exp[0];
-				}
-			echo "- NodeID: ".$nodeid."\n";
-			AddNode($nodeid,$ipaddr,$hostname);
-			if ($webprobe)
-				{
-				$url="http://".$ipaddr."/";
-				echo "- Web Probe: ".$url."... ";
-				$fp=@fopen($url,"r");
-				if ($fp<=0) echo "Failed\n";
-				else
-					{
+			$hostname = gethostbyaddr(long2ip($ip));
+			echo "- Name: " . $hostname . "\n";
+			$ipaddr = long2ip($ip);
+			if ($hostname == $ipaddr) {
+				$nodeid = $ipaddr;
+			} else {
+				$exp = explode(".", $hostname);
+				$nodeid = $exp[0];
+			}
+			echo "- NodeID: " . $nodeid . "\n";
+			AddNode($nodeid, $ipaddr, $hostname);
+			if ($webprobe) {
+				$url = "http://" . $ipaddr . "/";
+				echo "- Web Probe: " . $url . "... ";
+				$fp = @fopen($url, "r");
+				if ($fp <= 0) echo "Failed\n";
+				else {
 					echo "Succeeded\n";
 					fclose($fp);
-					AddLocaltest($nodeid,"webtime",$url);
-					echo "- Adding Web Test ".$url."\n";
-					}
+					AddLocaltest($nodeid, "webtime", $url);
+					echo "- Adding Web Test " . $url . "\n";
 				}
 			}
-		echo "\n";
 		}
-	echo "\n";
+		echo "\n";
 	}
-	
-$output.="\n</freenats-data>";
+	echo "\n";
+}
+
+$output .= "\n</freenats-data>";
 
 echo "\nFinish... Writing File... ";
-$fp=fopen($outfile,"w");
-fputs($fp,$output,strlen($output));
+$fp = fopen($outfile, "w");
+fputs($fp, $output, strlen($output));
 fclose($fp);
 echo "\n";
-
-?>
