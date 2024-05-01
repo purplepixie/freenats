@@ -2,7 +2,7 @@
 /* -------------------------------------------------------------
 This file is part of FreeNATS
 
-FreeNATS is (C) Copyright 2008-20117PurplePixie Systems
+FreeNATS is (C) Copyright 2008-2017 PurplePixie Systems
 
 FreeNATS is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -24,55 +24,48 @@ For more information see www.purplepixie.org/freenats
  * alert if it's been so long we think the node isn't responding
 */
 
-if (isset($NATS))
-{
+if (isset($NATS)) {
 	class FreeNATS_NSLast_Test extends FreeNATS_Local_Test
 	{
-			
-		function DoTest($testname,$param,$hostname="",$timeout=-1,$params=false)
-		{ 
-			global $NATS;
-			
-			$q="SELECT nsenabled,nslastx FROM fnnode WHERE nodeid=\"".ss($param)."\" LIMIT 0,1";
-			$r=$NATS->DB->Query($q);
 
-			if ($row=$NATS->DB->Fetch_Array($r))
-			{
+		function DoTest($testname, $param, $hostname = "", $timeout = -1, $params = false)
+		{
+			global $NATS;
+
+			$q = "SELECT nsenabled,nslastx FROM fnnode WHERE nodeid=\"" . ss($param) . "\" LIMIT 0,1";
+			$r = $NATS->DB->Query($q);
+
+			if ($row = $NATS->DB->Fetch_Array($r)) {
 				if ($row['nsenabled'] != 1)
 					return -2; // nodeside not enabled
 				$last = $row['nslastx'];
 				$elapsed = time() - $last;
 				return $elapsed;
-			}
-			else
+			} else
 				return -1; // nodeid not found
 		}
-			
-		function Evaluate($result) 
+
+		function Evaluate($result)
 		{
-			if ($result<0) return 2; // failure (test failed for reason)
-			else if ($result>(60*60)) return 2; // an hour
-			else if ($result>(20*60)) return 1; // over 20 mins warning
+			if ($result < 0) return 2; // failure (test failed for reason)
+			else if ($result > (60 * 60)) return 2; // an hour
+			else if ($result > (20 * 60)) return 1; // over 20 mins warning
 			else return 0; //passed
 		}
-		
+
 		function DisplayForm(&$row)
 		{
 			echo "<table border=0>";
 			echo "<tr><td align=left>";
 			echo "Node ID :";
 			echo "</td><td align=left>";
-			echo "<input type=text name=testparam size=30 maxlength=128 value=\"".$row['nodeid']."\">";
+			echo "<input type=text name=testparam size=30 maxlength=128 value=\"" . $row['nodeid'] . "\">";
 			echo "</td></tr>";
 			echo "<tr><td>&nbsp;</td><td align=\"left\">(will default to the nodeid of this node)</td></tr>";
 		}
-			
 	}
-		
-	$params=array();
-	$NATS->Tests->Register("nslast","FreeNATS_NSLast_Test",$params,"Nodelast Last Data",1,"FreeNATS Nodeside Data Tester");
-	$NATS->Tests->SetUnits("nslast","Seconds","s");
+
+	$params = array();
+	$NATS->Tests->Register("nslast", "FreeNATS_NSLast_Test", $params, "Nodelast Last Data", 1, "FreeNATS Nodeside Data Tester");
+	$NATS->Tests->SetUnits("nslast", "Seconds", "s");
 }
-
-
-?>

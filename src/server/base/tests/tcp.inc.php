@@ -21,52 +21,47 @@ For more information see www.purplepixie.org/freenats
 -------------------------------------------------------------- */
 
 
-if (isset($NATS))
-{
-class FreeNATS_TCP_Test extends FreeNATS_Local_Test
+if (isset($NATS)) {
+	class FreeNATS_TCP_Test extends FreeNATS_Local_Test
 	{
-		
-	function DoTest($testname,$param,$hostname="",$timeout=-1,$params=false)
-		{ 
-		global $NATS;
-		$timer=new TFNTimer();
-		if ($timeout<=0) $timeout=$NATS->Cfg->Get("test.tcp.timeout",0); // if no test-specific param use sys default
-		if ($timeout<=0) $timeout=60; // if sys default is <=0 then default to 60 seconds
-		$ip=ip_lookup($hostname);
-		if ($ip=="0") return -2; // lookup failed
-		$errno=0;
-		$errstr="";
-		$timer->Start();
-		$fp=@fsockopen($ip,$param,$errno,$errstr,$timeout);
-		$elapsed=$timer->Stop();
-		if ($fp===false) return -1; // open failed
-		@fclose($fp);
-		return $elapsed;
-		}
-		
-	function Evaluate($result) 
+
+		function DoTest($testname, $param, $hostname = "", $timeout = -1, $params = false)
 		{
-		if ($result<0) return 2; // failure
-		return 0; // else success
+			global $NATS;
+			$timer = new TFNTimer();
+			if ($timeout <= 0) $timeout = $NATS->Cfg->Get("test.tcp.timeout", 0); // if no test-specific param use sys default
+			if ($timeout <= 0) $timeout = 60; // if sys default is <=0 then default to 60 seconds
+			$ip = ip_lookup($hostname);
+			if ($ip == "0") return -2; // lookup failed
+			$errno = 0;
+			$errstr = "";
+			$timer->Start();
+			$fp = @fsockopen($ip, $param, $errno, $errstr, $timeout);
+			$elapsed = $timer->Stop();
+			if ($fp === false) return -1; // open failed
+			@fclose($fp);
+			return $elapsed;
 		}
-	
-	function DisplayForm(&$row)
+
+		function Evaluate($result)
 		{
-		echo "<table border=0>";
-		echo "<tr><td align=left>";
-		echo "TCP Port :";
-		echo "</td><td align=left>";
-		echo "<input type=text name=testparam size=30 maxlength=128 value=\"".$row['testparam']."\">";
-		echo "</td></tr>";
-		echo "</table>";
+			if ($result < 0) return 2; // failure
+			return 0; // else success
 		}
-		
+
+		function DisplayForm(&$row)
+		{
+			echo "<table border=0>";
+			echo "<tr><td align=left>";
+			echo "TCP Port :";
+			echo "</td><td align=left>";
+			echo "<input type=text name=testparam size=30 maxlength=128 value=\"" . $row['testparam'] . "\">";
+			echo "</td></tr>";
+			echo "</table>";
+		}
 	}
-	
-$params=array();
-$NATS->Tests->Register("tcp","FreeNATS_TCP_Test",$params,"TCP Connect",1,"FreeNATS TCP Tester");
-$NATS->Tests->SetUnits("tcp","Seconds","s");
+
+	$params = array();
+	$NATS->Tests->Register("tcp", "FreeNATS_TCP_Test", $params, "TCP Connect", 1, "FreeNATS TCP Tester");
+	$NATS->Tests->SetUnits("tcp", "Seconds", "s");
 }
-
-
-?>
