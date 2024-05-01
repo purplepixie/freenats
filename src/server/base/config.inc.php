@@ -22,9 +22,9 @@ For more information see www.purplepixie.org/freenats
 
 $fnCfg=array();
 
-$fnCfg['db.server']		=	"127.0.0.1";
-$fnCfg['db.username']	=	"root";
-$fnCfg['db.password']	=	"root";
+$fnCfg['db.server']		=	"localhost";
+$fnCfg['db.username']	=	"freenats";
+$fnCfg['db.password']	=	"freenats";
 $fnCfg['db.database']	=	"freenats";
 
 /* -- ok from version 1.01.9 onwards you can just drop new icons into the server/web/icons directory and they will
