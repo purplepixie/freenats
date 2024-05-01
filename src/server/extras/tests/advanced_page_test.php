@@ -83,7 +83,6 @@ function extended_page_checker($url, $text, $notext, $user = "", $pass = "", $ti
 
 		if ($ctr == 0)
 			$ctr = "0.0001";
-
 	} else { // no CURL - use fopen()	
 		$fp = @fopen($url, "r");
 		if ($fp <= 0) {
@@ -226,5 +225,3 @@ $NATS->Tests->Register(
 	// the revision number of the test
 	"Advanced Page Checker"
 ); // extended description for the test module used in overview
-
-?>

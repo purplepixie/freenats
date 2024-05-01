@@ -163,7 +163,6 @@ if (isset($NATS)) {
 			$NATS->Event("Unable to find action " . $detail_alert_config["alertaction"], 10, "Extras", "Detail Alert");
 			return false; // failed to find
 		}
-
 	}
 
 	$NATS->AddEventHandler("alert_open", "detail_alert_handler");
@@ -172,5 +171,3 @@ if (isset($NATS)) {
 
 
 } // end of NATS block
-
-?>

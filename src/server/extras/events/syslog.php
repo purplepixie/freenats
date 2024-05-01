@@ -51,7 +51,7 @@ if (isset($NATS)) {
 			return false;
 		$lvl = LOG_ERR;
 
-		define_syslog_variables();
+		//define_syslog_variables();
 		openlog("FreeNATS", LOG_PID | LOG_PERROR, LOG_LOCAL0);
 
 		if (syslog($lvl, $data['data']) === false)
@@ -64,9 +64,4 @@ if (isset($NATS)) {
 	}
 
 	$NATS->AddEventHandler("alert_action", "alert_action_syslog");
-
-
-
-
 } // end of isset($NATS) block
-?>

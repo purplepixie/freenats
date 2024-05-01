@@ -56,9 +56,4 @@ if (isset($NATS)) {
 	}
 
 	$NATS->AddEventHandler("alert_action", "alert_action_file");
-
-
-
-
 } // end of isset($NATS) block
-?>
