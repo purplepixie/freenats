@@ -28,7 +28,7 @@ class TFreeNATS
 	var $Tests;
 	var $Lang;
 	var $RSS;
-	var $Version = "1.20.2";
+	var $Version = "1.30.0";
 	var $Release = "a";
 	var $EventHandlers = array();
 
@@ -230,7 +230,6 @@ class TFreeNATS
 					$this->Event("Alert Action Limit Reached - Skipping", 2, "Flush", "Action");
 					$doalert = false;
 				}
-
 			}
 
 
@@ -321,12 +320,8 @@ class TFreeNATS
 								$this->Event("phpMailer Sent Email To " . $toaddr, 4, "Flush", "Email");
 							}
 						}
-
 					}
 				}
-
-
-
 			} else if ($row['atype'] == "url") {
 				// url send
 				if ($row['etype'] == 0)
@@ -361,8 +356,6 @@ class TFreeNATS
 						$this->Event("URL Alert " . $url, 4, "Flush", "URL");
 					}
 				}
-
-
 			} else if ($row['atype'] == "mqueue") {
 				// message queue
 				$eventdata = array("aaid" => $row['aaid'], "name" => $row['aname'], "data" => $row['mdata']);
@@ -376,7 +369,6 @@ class TFreeNATS
 				} else
 					$this->Event("Queue Cleared for AAID " . $row['aaid'] . " by Handler", 4, "Flush", "MQueue");
 			}
-
 		}
 	}
 
@@ -489,9 +481,6 @@ class TFreeNATS
 		}
 
 		$this->AlertAction($nodeid, $alertlevel, $alertlevel - $cal, $at);
-
-
-
 	}
 
 	function NodeAlertLevel($nodeid)
@@ -993,7 +982,6 @@ class TFreeNATS
 					$this->DB->Query($uq);
 					if ($this->DB->Affected_Rows() <= 0)
 						$this->Event("Nodeside " . $row['testtype'] . " Failed to Update or Same Values", 5, "Node", "Process");
-
 				}
 
 				// check to see if the desc has changed
@@ -1001,7 +989,6 @@ class TFreeNATS
 					$duq = "UPDATE fnnstest SET testdesc=\"" . ss($xmlobj->Catalogue[$row['testtype']]['DESC']) . "\" WHERE nstestid=" . $row['nstestid'];
 					$this->DB->Query($duq);
 				}
-
 			} else {
 				// test in the DB but NOT in the catalogue
 				//$xmlobj->Catalogue[$row['testtype']]['incat']=false;
@@ -1043,8 +1030,6 @@ class TFreeNATS
 
 		$eventdata = array("nodeid" => $nodeid, "alertlevel" => $alvl);
 		$this->EventHandler("nodeside_process", $eventdata);
-
-
 	}
 
 
@@ -1144,6 +1129,4 @@ class TFreeNATS
 
 		return false;
 	}
-
 }
-?>

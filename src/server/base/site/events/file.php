@@ -45,26 +45,20 @@ Alerts sent to this action will be written to a file (/tmp/fndebug).
 
 
 global $NATS;
-if (isset($NATS))
-{
+if (isset($NATS)) {
 
 
-function alert_action_file($data)
-{
-	if ($data['name']=="_fileoutput") $file="/tmp/fndebug";
-	else return false;
-	$fp=fopen($file,"a");
-	fputs($fp,"-- ".date("Y-m-d H:i:s")." --\n");
-	fputs($fp,$data['data']);
-	fputs($fp,"\n-- ENDS --\n");
-	fclose($fp);
-	return true;
-}
+	function alert_action_file($data)
+	{
+		if ($data['name'] == "_fileoutput") $file = "/tmp/fndebug";
+		else return false;
+		$fp = fopen($file, "a");
+		fputs($fp, "-- " . date("Y-m-d H:i:s") . " --\n");
+		fputs($fp, $data['data']);
+		fputs($fp, "\n-- ENDS --\n");
+		fclose($fp);
+		return true;
+	}
 
-$NATS->AddEventHandler("alert_action","alert_action_file");
-
-
-
-
+	$NATS->AddEventHandler("alert_action", "alert_action_file");
 } // end of isset($NATS) block
-?>

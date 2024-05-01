@@ -41,14 +41,6 @@ extension on the end of the file. Enable the system variable site.include.events
 
 
 global $NATS;
-if (isset($NATS))
-{
-
-
-
-
-
-
-
+if (isset($NATS)) {
+    
 } // end of isset($NATS) block
-?>

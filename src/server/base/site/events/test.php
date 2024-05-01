@@ -71,4 +71,3 @@ function alert_action_file($data)
 
 $NATS->AddEventHandler("alert_action","alert_action_file");
 */
-?>

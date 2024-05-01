@@ -46,22 +46,15 @@ security limitations but will work within a test cycle.
 
 
 global $NATS;
-if (isset($NATS))
-{
+if (isset($NATS)) {
 
-function alert_action_console($data)
-{
-	if ($data['name']!="_console") return false;
-	$cmd="echo \"FreeNATS: ".$data['data']."\" > /dev/console";
-	@exec($cmd);
-	return true;
-}
+	function alert_action_console($data)
+	{
+		if ($data['name'] != "_console") return false;
+		$cmd = "echo \"FreeNATS: " . $data['data'] . "\" > /dev/console";
+		@exec($cmd);
+		return true;
+	}
 
-$NATS->AddEventHandler("alert_action","alert_action_console");
-
-
-
-
-
+	$NATS->AddEventHandler("alert_action", "alert_action_console");
 } // end of isset($NATS) block
-?>
