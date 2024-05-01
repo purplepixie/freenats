@@ -153,62 +153,52 @@ ha("Var:retain.syslog","Days to retain log entries for (default 30 if 0 or unset
 ha("Var:freenats.tracker","Participate in the automated feedback process - 1 for yes low level, 2 for detailed, 0 for disabled (default 0)");
 ha("Var:freenats.tracker.usid","Unique Site ID for FreeNATS tracker to anonymise data capture (only if {Var:freenats.tracker|freenats.tracker} set to 1");
 */
-function hdisp($id,$html=true)
+function hdisp($id, $html = true)
 {
-global $NATS;
-$t=$NATS->Lang->Item("help.".strtoupper($id));
-$o="";
-$mode="text";
-$linktext=false;
-for ($a=0; $a<strlen($t); $a++)
-	{
-	$c=$t[$a];
-	
-	if ($c=="{") // start of a link
+	global $NATS;
+	$t = $NATS->Lang->Item("help." . strtoupper($id));
+	$o = "";
+	$mode = "text";
+	$linktxt = "";
+	$linkid = "";
+	$linktext = false;
+	for ($a = 0; $a < strlen($t); $a++) {
+		$c = $t[$a];
+
+		if ($c == "{") // start of a link
 		{
-		$mode="link";
-		$linktext=false;
-		$linkid="";
-		$linktxt="";
-		}
-		
-	else if ( ($mode=="link") && ($c=="|") ) // in a link and move into text mode...
+			$mode = "link";
+			$linktext = false;
+		} else if (($mode == "link") && ($c == "|")) // in a link and move into text mode...
 		{
-		$linktext=true;
-		}
-		
-	else if ( ($mode=="link") && ($c=="}") ) // in a link and the end of the link
+			$linktext = true;
+		} else if (($mode == "link") && ($c == "}")) // in a link and the end of the link
 		{
-		if (!$linktext) $linktxt=$linkid;
-		if ($html) $o.="<a href=\"help.php?id=".$linkid."\">";
-		$o.=$linktxt;
-		if ($html) $o.="</a>";
-		$mode="text";
-		}
-		
-	else if ( $mode=="link" ) // in a link
+			if (!$linktext) $linktxt = $linkid;
+			if ($html) $o .= "<a href=\"help.php?id=" . $linkid . "\">";
+			$o .= $linktxt;
+			if ($html) $o .= "</a>";
+			$mode = "text";
+		} else if ($mode == "link") // in a link
 		{
-		if ($linktext) $linktxt.=$c;
-		else $linkid.=$c;
-		}
-		
-	else // in text
-		$o.=$c;
+			if ($linktext) $linktxt .= $c;
+			else $linkid .= $c;
+		} else // in text
+			$o .= $c;
 	}
-return $o;
+	return $o;
 }
 
-function hlink($id,$size=16)
+function hlink($id, $size = 16)
 {
-global $NATS;
-if (isset($NATS->Lang->items["help.".strtoupper($id)]))
-	return "<a href=\"javascript:freenats_help('".$id."')\"><img src=\"images/info".$size.".gif\" title=\"".hdisp($id,false)."\" border=0></a>";
-	
-return "<img src=\"images/info".$size."g.gif\" border=0 title=\"".$NATS->Lang->Item("nohelp")." (".$id.")\">";
+	global $NATS;
+	if (isset($NATS->Lang->items["help." . strtoupper($id)]))
+		return "<a href=\"javascript:freenats_help('" . $id . "')\"><img src=\"images/info" . $size . ".gif\" title=\"" . hdisp($id, false) . "\" border=0></a>";
+
+	return "<img src=\"images/info" . $size . "g.gif\" border=0 title=\"" . $NATS->Lang->Item("nohelp") . " (" . $id . ")\">";
 }
 
-function ph($id,$size=16)
+function ph($id, $size = 16)
 {
-echo hlink($id,$size);
+	echo hlink($id, $size);
 }
-?>

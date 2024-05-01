@@ -33,6 +33,7 @@ class TNATS_DB
 
 	var $LastError = 0;
 	var $LastErrorString = "";
+	var $ErrorString = "";
 
 	function Connect()
 	{

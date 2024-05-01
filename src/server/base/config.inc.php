@@ -22,7 +22,7 @@ For more information see www.purplepixie.org/freenats
 
 $fnCfg=array();
 
-$fnCfg['db.server']		=	"localhost";
+$fnCfg['db.server']	=	"localhost";
 $fnCfg['db.username']	=	"freenats";
 $fnCfg['db.password']	=	"freenats";
 $fnCfg['db.database']	=	"freenats";

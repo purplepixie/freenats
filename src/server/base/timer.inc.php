@@ -56,5 +56,3 @@ class TFNTimer
 		return $this->SafeElapsed;
 	}
 }
-
-?>

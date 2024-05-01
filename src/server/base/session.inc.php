@@ -111,5 +111,4 @@ class TNATS_Session
 		setcookie("fn_skey", "");
 		return true;
 	}
-
 }

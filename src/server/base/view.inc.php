@@ -103,7 +103,7 @@ function ViewItemTxt($type, $option)
 			//$tt=substr($option,0,1);
 			//$tid=substr($option,1,128);
 			return "Test Detail </b>for<b> " . GetTestDesc($option);
-		//return "Detail for Test (".$option.")";
+			//return "Detail for Test (".$option.")";
 		case "testgraph":
 
 			$tid = $option;
@@ -117,12 +117,8 @@ function ViewItemTxt($type, $option)
 			if ($hrs == "")
 				$hrs = "default";
 			return "Test Graph <b>for</b> " . GetTestDesc($tid) . " (" . $hrs . " hours)";
-		//return "History Graph for Test (".$option.")";
+			//return "History Graph for Test (".$option.")";
 		default:
 			return "Unknown Item Type (" . $type . "/" . $option . ")";
 	}
 }
-
-
-
-?>

@@ -105,7 +105,7 @@ function test_sleep()
 function url_lookup($url)
 {
 	// Sod regular expressions here as we'd have to do it twice or with cleverness I lack
-// Is it a URL?
+	// Is it a URL?
 	$colon = strpos($url, ":");
 	if ($colon != 0) // exists so it a URL
 	{
@@ -207,7 +207,6 @@ function WebTest($url, $timeout = -1)
 
 		if ($ctr == 0)
 			$ctr = "0.0001";
-
 	} else { // no CURL - use fopen()	
 		$oldagent = ini_set("user_agent", "MSIE 4\.0b2;"); // MSIE 4.0b2 is HTTP/1.0 only just like fopen http wrapper
 		$fp = @fopen($url, "r");
@@ -246,7 +245,7 @@ function DoTest($test, $param, $hostname = "", $timeout = -1, $params = 0, $node
 			// Don't bother with pre-resolution as size only
 			return WebTest($param, $timeout);
 			break;
-		/* -- modularised
+			/* -- modularised
 		case "tcp": // nb TCP does not support timeouts currently
 		$ip=ip_lookup($hostname);
 		if ($ip=="0") return 0;
@@ -325,7 +324,6 @@ function DoTest($test, $param, $hostname = "", $timeout = -1, $params = 0, $node
 					return $NATS->Tests->Tests[$test]->instance->DoTest($test, $param, $hostname, $timeout, $params);
 				}
 			}
-
 	}
 	return -1; // did not run any test so untested
 }
@@ -343,7 +341,7 @@ function SimpleEval($test, $result)
 			if ($result <= 0)
 				return 2;
 			return 0;
-		/*
+			/*
 		case "tcp":
 		if ($result==1) return 0;
 		return 2;
@@ -352,7 +350,7 @@ function SimpleEval($test, $result)
 			if ($result < 0)
 				return 2;
 			return 0;
-		/*
+			/*
 		case "mysql":
 		if ($result<=0) return 2;
 		return 0;
@@ -385,7 +383,7 @@ function SimpleEval($test, $result)
 function aText($al)
 {
 	return oText($al); // uses function in tests.inc.php with site config support	
-/* -- depreciated
+	/* -- depreciated
 switch($al)
 	{
 	case -1: return "Untested";
@@ -396,4 +394,3 @@ switch($al)
 	}
 */
 }
-?>

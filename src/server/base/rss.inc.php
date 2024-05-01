@@ -247,7 +247,6 @@ class NATS_RSS
 					$q[] = "SELECT * FROM fnalert WHERE nodeid=\"" . ss($node['nodeid']) . "\" ORDER BY LENGTH(closedx) ASC, closedx DESC LIMIT 0,1";
 				}
 				break;
-
 		}
 		if (!is_array($q))
 			$q = array($q);
@@ -287,7 +286,4 @@ class NATS_RSS
 
 		return $out;
 	}
-
-
 }
-?>

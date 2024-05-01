@@ -21,7 +21,7 @@ function lText($test)
 	switch ($test) {
 		case "web":
 			return $NATS->Lang->Item("web.size");
-		//case "tcp": return "TCP Port Test";
+			//case "tcp": return "TCP Port Test";
 		case "testloop":
 			return $NATS->Lang->Item("test.loop");
 		case "wtime":
@@ -32,13 +32,13 @@ function lText($test)
 			return $NATS->Lang->Item("remote.ping");
 		case "testrand":
 			return $NATS->Lang->Item("test.random");
-		//case "mysql": return "MySQL";
-		//case "mysqlrows": return "MySQL Rows";
-		//case "imap": return "IMAP";
-		//case "smtp": return "SMTP";
+			//case "mysql": return "MySQL";
+			//case "mysqlrows": return "MySQL Rows";
+			//case "imap": return "IMAP";
+			//case "smtp": return "SMTP";
 		case "host":
 			return $NATS->Lang->Item("dns.host");
-		//case "dns": return "DNS Query";
+			//case "dns": return "DNS Query";
 		default:
 			if (isset($NATS)) {
 				if (isset($NATS->Tests->QuickList[$test]))
@@ -55,7 +55,7 @@ function lUnit($test)
 		case "web":
 		case "wsize":
 			return "KiloBytes";
-		//case "tcp": return "Pass/Fail";
+			//case "tcp": return "Pass/Fail";
 		case "testloop":
 			return "";
 		case "wtime":
@@ -69,13 +69,13 @@ function lUnit($test)
 
 		case "testrand":
 			return "";
-		//case "imap": return "Seconds";
-		//case "smtp": return "Seconds";
-		//case "mysql": return "Seconds";
-		//case "mysqlrows": return "Rows";
+			//case "imap": return "Seconds";
+			//case "smtp": return "Seconds";
+			//case "mysql": return "Seconds";
+			//case "mysqlrows": return "Rows";
 		case "host":
 			return "Seconds";
-		//case "dns": return "Seconds";
+			//case "dns": return "Seconds";
 		default:
 			if (isset($NATS))
 				return $NATS->Tests->Units($test);
@@ -113,4 +113,3 @@ function oText($val)
 			return $NATS->Lang->Item("unknown");
 	}
 }
-?>

@@ -74,7 +74,4 @@ class TNATS_Lang
 			return "ULE{" . $item . "}";
 		}
 	}
-
 }
-
-?>

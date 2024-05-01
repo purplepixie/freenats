@@ -110,5 +110,3 @@ function run_x_in_schedule($timex, $scheduleid) // note this is not is_x_in_sche
 	} else // not found in schedule
 		return $default; // so use the default
 }
-
-?>

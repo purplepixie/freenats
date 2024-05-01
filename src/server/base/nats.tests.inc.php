@@ -104,7 +104,4 @@ class TNATS_Tests
 		else
 			return $this->UnitList[$type]['short'];
 	}
-
-
 }
-?>

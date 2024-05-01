@@ -124,7 +124,7 @@ class TNodeXML
 
 	function Parse($xml)
 	{
-		global $NATS,$debug_log;
+		global $NATS, $debug_log;
 		/* -- deprecated
 		if (get_magic_quotes_gpc())
 			$xml = stripslashes($xml);
@@ -166,7 +166,4 @@ class TNodeXML
 		fclose($fp);
 		return $this->Parse($data);
 	}
-
-
 }
-?>
