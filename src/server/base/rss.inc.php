@@ -19,7 +19,7 @@ class NATS_RSS
 {
 	var $NATS = false;
 
-	function _construct()
+	function __construct()
 	{
 		global $NATS;
 		$this->NATS = &$NATS;
