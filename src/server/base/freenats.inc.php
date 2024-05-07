@@ -32,7 +32,7 @@ class TFreeNATS
 	var $Tests;
 	var $Lang;
 	var $RSS;
-	var $Version = "1.30.4";
+	var $Version = "1.30.5";
 	var $Release = "a";
 	var $EventHandlers = array();
 
@@ -318,7 +318,16 @@ class TFreeNATS
 								$mail->Password = $smtppassword;
 							}
 							if ($smtpsec != "")
+							{
 								$mail->SMTPSecure = $smtpsec;
+								$mail->SMTPOptions = array( // disable certificate checking
+									'ssl' => array(
+										'verify_peer' => false,
+										'verify_peer_name' => false,
+										'allow_self_signed' => true
+									)
+								);
+							}
 							if (!$mail->Send()) { // failed
 								$this->Event("phpMailer to " . $toaddr . " failed", 1, "Flush", "Email");
 								$this->Event("phpMailer Error: " . $mail->ErrorInfo, 1, "Flush", "Email");
