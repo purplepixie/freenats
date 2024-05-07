@@ -1,18 +1,13 @@
 <?php
 // myrug.inc.php - Copyright 2008 PurplePixie Systems, all rights reserved.
 // http://www.purplepixie.org
-// v3 26/05/2009
+// v4 07/05/2024
 // MySQL Rough Upgrader
 //
 // Custom updated for FreeNATS 14/11/2018 to implement mysqli functionality
+// Custom updated for FreeNATS 07/05/2024 to implement '' DEFAULT fields
 function myrug($cfg)
 {
-if ($cfg['table']!="")
- $filter=" LIKE \"".mysqli_real_escape_string($cfg['table'])."%\"";
-else
- $filter="";
-
-
 
 $sql=mysqli_connect($cfg['host'],$cfg['username'],$cfg['password'],$cfg['database'])
  or die("MySQL Error: ".mysqli_error($sql)."\n");
@@ -20,6 +15,12 @@ $sql=mysqli_connect($cfg['host'],$cfg['username'],$cfg['password'],$cfg['databas
 mysql_select_db($cfg['database'])
  or die("MySQL Error: ".mysql_error()."\n");
 */
+
+if ($cfg['table']!="")
+ $filter=" LIKE \"".mysqli_real_escape_string($sql,$cfg['table'])."%\"";
+else
+ $filter="";
+
 function c($t="")
 {
 echo "-- ".$t."\n";
@@ -47,13 +48,13 @@ while ($row=mysqli_fetch_array($r))
 		$f="ALTER TABLE `".$table."` CHANGE `".$trow['Field']."` `".$trow['Field']."` ".$trow['Type'];
 		if (($trow['Null']=="")||(strtoupper($trow['Null'])=="NO")) $f.=" NOT NULL";
 		if ($trow['Extra']!="") $f.=" ".$trow['Extra'];
-		if ($trow['Default']!="") $f.=" DEFAULT '".$trow['Default']."'";
+		if ($trow['Default']!="NULL") $f.=" DEFAULT '".$trow['Default']."'";
 		if ($cfg['alterfield']) echo $f.";\n";
 
 		$f="ALTER TABLE `".$table."` ADD `".$trow['Field']."` ".$trow['Type'];
 		if (($trow['Null']=="")||(strtoupper($trow['Null'])=="NO")) $f.=" NOT NULL";
 		if ($trow['Extra']!="") $f.=" ".$trow['Extra'];
-		if ($trow['Default']!="")
+		if ($trow['Default']!="NULL")
 			{
 			/*
 			$typarr=explode("(",$trow['Type']);
