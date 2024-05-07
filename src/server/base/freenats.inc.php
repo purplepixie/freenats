@@ -32,7 +32,7 @@ class TFreeNATS
 	var $Tests;
 	var $Lang;
 	var $RSS;
-	var $Version = "1.30.3";
+	var $Version = "1.30.4";
 	var $Release = "a";
 	var $EventHandlers = array();
 
