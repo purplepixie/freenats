@@ -75,7 +75,7 @@ CREATE TABLE `fnalertlog` (
   `logentry` varchar(250) DEFAULT NULL,
   PRIMARY KEY (`alid`),
   KEY `alertid` (`alertid`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -212,7 +212,7 @@ CREATE TABLE `fnlog` (
   `loglevel` int(11) NOT NULL DEFAULT '1',
   `logevent` varchar(250) NOT NULL,
   PRIMARY KEY (`logid`)
-) ENGINE=InnoDB AUTO_INCREMENT=78 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=92 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -322,7 +322,7 @@ CREATE TABLE `fnrecord` (
   PRIMARY KEY (`recordid`),
   KEY `testid` (`testid`),
   KEY `recordx` (`recordx`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -431,7 +431,7 @@ CREATE TABLE `fntestrun` (
   PRIMARY KEY (`trid`),
   KEY `finishx` (`finishx`),
   KEY `fnode` (`fnode`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -507,4 +507,4 @@ CREATE TABLE `fnviewitem` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-05-07 15:47:35
+-- Dump completed on 2024-05-07 15:53:12
