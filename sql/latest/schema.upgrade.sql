@@ -1,4 +1,4 @@
--- FreeNATS freenats-1.30.0a Schema
+-- FreeNATS freenats-1.30.3a Schema
 -- Experimental Upgrade SQL - run after schema.sql (not drop!)
 -- Both will generate many many errors - run with --force, ignore errors
 -- myrug -- PurplePixie Systems
@@ -115,6 +115,16 @@ ALTER TABLE `fngrouplink` ADD `groupid` bigint(20) unsigned NOT NULL DEFAULT '0'
 CREATE INDEX `groupid` ON `fngrouplink` ( `groupid` );
 ALTER TABLE `fngrouplink` CHANGE `nodeid` `nodeid` varchar(64) NOT NULL;
 ALTER TABLE `fngrouplink` ADD `nodeid` varchar(64) NOT NULL;
+-- 
+-- Table: fngrouplock
+-- DESCRIBE fngrouplock
+ALTER TABLE `fngrouplock` CHANGE `glid` `glid` bigint(20) unsigned NOT NULL auto_increment;
+ALTER TABLE `fngrouplock` ADD `glid` bigint(20) unsigned NOT NULL auto_increment;
+ALTER TABLE `fngrouplock` ADD PRIMARY KEY( `glid` );
+ALTER TABLE `fngrouplock` CHANGE `username` `username` varchar(64) NOT NULL;
+ALTER TABLE `fngrouplock` ADD `username` varchar(64) NOT NULL;
+ALTER TABLE `fngrouplock` CHANGE `groupid` `groupid` bigint(20) NOT NULL DEFAULT '0';
+ALTER TABLE `fngrouplock` ADD `groupid` bigint(20) NOT NULL DEFAULT '0';
 -- 
 -- Table: fnlocaltest
 -- DESCRIBE fnlocaltest
@@ -276,6 +286,35 @@ ALTER TABLE `fnnode` ADD `ulink2_title` varchar(254) NOT NULL DEFAULT 'Web';
 ALTER TABLE `fnnode` CHANGE `ulink2_url` `ulink2_url` varchar(254) NOT NULL DEFAULT 'http://{HOSTNAME}';
 ALTER TABLE `fnnode` ADD `ulink2_url` varchar(254) NOT NULL DEFAULT 'http://{HOSTNAME}';
 -- 
+-- Table: fnnstest
+-- DESCRIBE fnnstest
+ALTER TABLE `fnnstest` CHANGE `nstestid` `nstestid` bigint(20) unsigned NOT NULL auto_increment;
+ALTER TABLE `fnnstest` ADD `nstestid` bigint(20) unsigned NOT NULL auto_increment;
+ALTER TABLE `fnnstest` ADD PRIMARY KEY( `nstestid` );
+ALTER TABLE `fnnstest` CHANGE `nodeid` `nodeid` varchar(64) NOT NULL;
+ALTER TABLE `fnnstest` ADD `nodeid` varchar(64) NOT NULL;
+CREATE INDEX `nodeid` ON `fnnstest` ( `nodeid` );
+ALTER TABLE `fnnstest` CHANGE `alertlevel` `alertlevel` int(11) NOT NULL DEFAULT '-1';
+ALTER TABLE `fnnstest` ADD `alertlevel` int(11) NOT NULL DEFAULT '-1';
+ALTER TABLE `fnnstest` CHANGE `lastrunx` `lastrunx` bigint(20) unsigned NOT NULL DEFAULT '0';
+ALTER TABLE `fnnstest` ADD `lastrunx` bigint(20) unsigned NOT NULL DEFAULT '0';
+ALTER TABLE `fnnstest` CHANGE `testtype` `testtype` varchar(128) NOT NULL;
+ALTER TABLE `fnnstest` ADD `testtype` varchar(128) NOT NULL;
+ALTER TABLE `fnnstest` CHANGE `testdesc` `testdesc` varchar(250);
+ALTER TABLE `fnnstest` ADD `testdesc` varchar(250);
+ALTER TABLE `fnnstest` CHANGE `testrecord` `testrecord` tinyint(1) NOT NULL DEFAULT '0';
+ALTER TABLE `fnnstest` ADD `testrecord` tinyint(1) NOT NULL DEFAULT '0';
+ALTER TABLE `fnnstest` CHANGE `simpleeval` `simpleeval` tinyint(1) NOT NULL DEFAULT '1';
+ALTER TABLE `fnnstest` ADD `simpleeval` tinyint(1) NOT NULL DEFAULT '1';
+ALTER TABLE `fnnstest` CHANGE `testname` `testname` varchar(64) NOT NULL;
+ALTER TABLE `fnnstest` ADD `testname` varchar(64) NOT NULL;
+ALTER TABLE `fnnstest` CHANGE `testenabled` `testenabled` tinyint(1) NOT NULL DEFAULT '0';
+ALTER TABLE `fnnstest` ADD `testenabled` tinyint(1) NOT NULL DEFAULT '0';
+ALTER TABLE `fnnstest` CHANGE `lastvalue` `lastvalue` varchar(128) NOT NULL;
+ALTER TABLE `fnnstest` ADD `lastvalue` varchar(128) NOT NULL;
+ALTER TABLE `fnnstest` CHANGE `testalerts` `testalerts` tinyint(1) NOT NULL DEFAULT '1';
+ALTER TABLE `fnnstest` ADD `testalerts` tinyint(1) NOT NULL DEFAULT '1';
+-- 
 -- Table: fnrecord
 -- DESCRIBE fnrecord
 ALTER TABLE `fnrecord` CHANGE `recordid` `recordid` bigint(20) unsigned NOT NULL auto_increment;
@@ -293,6 +332,68 @@ ALTER TABLE `fnrecord` ADD `recordx` bigint(20) unsigned NOT NULL DEFAULT '0';
 CREATE INDEX `recordx` ON `fnrecord` ( `recordx` );
 ALTER TABLE `fnrecord` CHANGE `nodeid` `nodeid` varchar(64) NOT NULL;
 ALTER TABLE `fnrecord` ADD `nodeid` varchar(64) NOT NULL;
+-- 
+-- Table: fnreport
+-- DESCRIBE fnreport
+ALTER TABLE `fnreport` CHANGE `reportid` `reportid` bigint(20) unsigned NOT NULL auto_increment;
+ALTER TABLE `fnreport` ADD `reportid` bigint(20) unsigned NOT NULL auto_increment;
+ALTER TABLE `fnreport` ADD PRIMARY KEY( `reportid` );
+ALTER TABLE `fnreport` CHANGE `reportname` `reportname` varchar(128) NOT NULL;
+ALTER TABLE `fnreport` ADD `reportname` varchar(128) NOT NULL;
+ALTER TABLE `fnreport` CHANGE `reporttests` `reporttests` text;
+ALTER TABLE `fnreport` ADD `reporttests` text;
+-- 
+-- Table: fnrssfeed
+-- DESCRIBE fnrssfeed
+ALTER TABLE `fnrssfeed` CHANGE `feedid` `feedid` bigint(20) unsigned NOT NULL auto_increment;
+ALTER TABLE `fnrssfeed` ADD `feedid` bigint(20) unsigned NOT NULL auto_increment;
+ALTER TABLE `fnrssfeed` ADD PRIMARY KEY( `feedid` );
+ALTER TABLE `fnrssfeed` CHANGE `feedkey` `feedkey` varchar(254) NOT NULL;
+ALTER TABLE `fnrssfeed` ADD `feedkey` varchar(254) NOT NULL;
+ALTER TABLE `fnrssfeed` CHANGE `feedname` `feedname` varchar(254) NOT NULL;
+ALTER TABLE `fnrssfeed` ADD `feedname` varchar(254) NOT NULL;
+ALTER TABLE `fnrssfeed` CHANGE `feedtype` `feedtype` varchar(254) NOT NULL;
+ALTER TABLE `fnrssfeed` ADD `feedtype` varchar(254) NOT NULL;
+ALTER TABLE `fnrssfeed` CHANGE `typeopt` `typeopt` varchar(254) NOT NULL;
+ALTER TABLE `fnrssfeed` ADD `typeopt` varchar(254) NOT NULL;
+ALTER TABLE `fnrssfeed` CHANGE `feedrange` `feedrange` varchar(32) NOT NULL;
+ALTER TABLE `fnrssfeed` ADD `feedrange` varchar(32) NOT NULL;
+ALTER TABLE `fnrssfeed` CHANGE `rangeopt` `rangeopt` varchar(254) NOT NULL;
+ALTER TABLE `fnrssfeed` ADD `rangeopt` varchar(254) NOT NULL;
+-- 
+-- Table: fnscheditem
+-- DESCRIBE fnscheditem
+ALTER TABLE `fnscheditem` CHANGE `scheditemid` `scheditemid` bigint(20) NOT NULL auto_increment;
+ALTER TABLE `fnscheditem` ADD `scheditemid` bigint(20) NOT NULL auto_increment;
+ALTER TABLE `fnscheditem` ADD PRIMARY KEY( `scheditemid` );
+ALTER TABLE `fnscheditem` CHANGE `scheduleid` `scheduleid` bigint(20) NOT NULL DEFAULT '0';
+ALTER TABLE `fnscheditem` ADD `scheduleid` bigint(20) NOT NULL DEFAULT '0';
+ALTER TABLE `fnscheditem` CHANGE `dayofweek` `dayofweek` varchar(8) NOT NULL;
+ALTER TABLE `fnscheditem` ADD `dayofweek` varchar(8) NOT NULL;
+ALTER TABLE `fnscheditem` CHANGE `dayofmonth` `dayofmonth` int(11) NOT NULL DEFAULT '0';
+ALTER TABLE `fnscheditem` ADD `dayofmonth` int(11) NOT NULL DEFAULT '0';
+ALTER TABLE `fnscheditem` CHANGE `monthofyear` `monthofyear` int(11) NOT NULL DEFAULT '0';
+ALTER TABLE `fnscheditem` ADD `monthofyear` int(11) NOT NULL DEFAULT '0';
+ALTER TABLE `fnscheditem` CHANGE `year` `year` int(11) NOT NULL DEFAULT '0';
+ALTER TABLE `fnscheditem` ADD `year` int(11) NOT NULL DEFAULT '0';
+ALTER TABLE `fnscheditem` CHANGE `starthour` `starthour` int(11) NOT NULL DEFAULT '0';
+ALTER TABLE `fnscheditem` ADD `starthour` int(11) NOT NULL DEFAULT '0';
+ALTER TABLE `fnscheditem` CHANGE `startmin` `startmin` int(11) NOT NULL DEFAULT '0';
+ALTER TABLE `fnscheditem` ADD `startmin` int(11) NOT NULL DEFAULT '0';
+ALTER TABLE `fnscheditem` CHANGE `finishhour` `finishhour` int(11) NOT NULL DEFAULT '23';
+ALTER TABLE `fnscheditem` ADD `finishhour` int(11) NOT NULL DEFAULT '23';
+ALTER TABLE `fnscheditem` CHANGE `finishmin` `finishmin` int(11) NOT NULL DEFAULT '59';
+ALTER TABLE `fnscheditem` ADD `finishmin` int(11) NOT NULL DEFAULT '59';
+-- 
+-- Table: fnschedule
+-- DESCRIBE fnschedule
+ALTER TABLE `fnschedule` CHANGE `scheduleid` `scheduleid` bigint(20) unsigned NOT NULL auto_increment;
+ALTER TABLE `fnschedule` ADD `scheduleid` bigint(20) unsigned NOT NULL auto_increment;
+ALTER TABLE `fnschedule` ADD PRIMARY KEY( `scheduleid` );
+ALTER TABLE `fnschedule` CHANGE `schedulename` `schedulename` varchar(128) NOT NULL;
+ALTER TABLE `fnschedule` ADD `schedulename` varchar(128) NOT NULL;
+ALTER TABLE `fnschedule` CHANGE `defaultaction` `defaultaction` tinyint(1) NOT NULL DEFAULT '1';
+ALTER TABLE `fnschedule` ADD `defaultaction` tinyint(1) NOT NULL DEFAULT '1';
 -- 
 -- Table: fnsession
 -- DESCRIBE fnsession
@@ -341,4 +442,57 @@ ALTER TABLE `fnuser` CHANGE `userlevel` `userlevel` int(11) NOT NULL DEFAULT '1'
 ALTER TABLE `fnuser` ADD `userlevel` int(11) NOT NULL DEFAULT '1';
 ALTER TABLE `fnuser` CHANGE `grouplock` `grouplock` tinyint(4) NOT NULL DEFAULT '0';
 ALTER TABLE `fnuser` ADD `grouplock` tinyint(4) NOT NULL DEFAULT '0';
+-- 
+-- Table: fnview
+-- DESCRIBE fnview
+ALTER TABLE `fnview` CHANGE `viewid` `viewid` bigint(20) unsigned NOT NULL auto_increment;
+ALTER TABLE `fnview` ADD `viewid` bigint(20) unsigned NOT NULL auto_increment;
+ALTER TABLE `fnview` ADD PRIMARY KEY( `viewid` );
+ALTER TABLE `fnview` CHANGE `vtitle` `vtitle` varchar(128) NOT NULL;
+ALTER TABLE `fnview` ADD `vtitle` varchar(128) NOT NULL;
+ALTER TABLE `fnview` CHANGE `vstyle` `vstyle` varchar(32) NOT NULL;
+ALTER TABLE `fnview` ADD `vstyle` varchar(32) NOT NULL;
+ALTER TABLE `fnview` CHANGE `vpublic` `vpublic` tinyint(1) NOT NULL DEFAULT '0';
+ALTER TABLE `fnview` ADD `vpublic` tinyint(1) NOT NULL DEFAULT '0';
+ALTER TABLE `fnview` CHANGE `vclick` `vclick` varchar(32) NOT NULL;
+ALTER TABLE `fnview` ADD `vclick` varchar(32) NOT NULL;
+ALTER TABLE `fnview` CHANGE `vrefresh` `vrefresh` int(11) NOT NULL DEFAULT '0';
+ALTER TABLE `fnview` ADD `vrefresh` int(11) NOT NULL DEFAULT '0';
+ALTER TABLE `fnview` CHANGE `vlinkv` `vlinkv` bigint(20) unsigned NOT NULL DEFAULT '0';
+ALTER TABLE `fnview` ADD `vlinkv` bigint(20) unsigned NOT NULL DEFAULT '0';
+ALTER TABLE `fnview` CHANGE `vcolumns` `vcolumns` smallint(6) NOT NULL DEFAULT '0';
+ALTER TABLE `fnview` ADD `vcolumns` smallint(6) NOT NULL DEFAULT '0';
+ALTER TABLE `fnview` CHANGE `vcolon` `vcolon` tinyint(1) NOT NULL DEFAULT '1';
+ALTER TABLE `fnview` ADD `vcolon` tinyint(1) NOT NULL DEFAULT '1';
+ALTER TABLE `fnview` CHANGE `vdashes` `vdashes` tinyint(1) NOT NULL DEFAULT '1';
+ALTER TABLE `fnview` ADD `vdashes` tinyint(1) NOT NULL DEFAULT '1';
+ALTER TABLE `fnview` CHANGE `vtimeago` `vtimeago` tinyint(1) NOT NULL DEFAULT '1';
+ALTER TABLE `fnview` ADD `vtimeago` tinyint(1) NOT NULL DEFAULT '1';
+-- 
+-- Table: fnviewitem
+-- DESCRIBE fnviewitem
+ALTER TABLE `fnviewitem` CHANGE `viewitemid` `viewitemid` bigint(20) unsigned NOT NULL auto_increment;
+ALTER TABLE `fnviewitem` ADD `viewitemid` bigint(20) unsigned NOT NULL auto_increment;
+ALTER TABLE `fnviewitem` ADD PRIMARY KEY( `viewitemid` );
+ALTER TABLE `fnviewitem` CHANGE `viewid` `viewid` bigint(20) unsigned NOT NULL DEFAULT '0';
+ALTER TABLE `fnviewitem` ADD `viewid` bigint(20) unsigned NOT NULL DEFAULT '0';
+CREATE INDEX `viewid` ON `fnviewitem` ( `viewid` );
+ALTER TABLE `fnviewitem` CHANGE `itype` `itype` varchar(128) NOT NULL;
+ALTER TABLE `fnviewitem` ADD `itype` varchar(128) NOT NULL;
+ALTER TABLE `fnviewitem` CHANGE `ioption` `ioption` varchar(250) NOT NULL;
+ALTER TABLE `fnviewitem` ADD `ioption` varchar(250) NOT NULL;
+ALTER TABLE `fnviewitem` CHANGE `icolour` `icolour` tinyint(1) NOT NULL DEFAULT '1';
+ALTER TABLE `fnviewitem` ADD `icolour` tinyint(1) NOT NULL DEFAULT '1';
+ALTER TABLE `fnviewitem` CHANGE `itextstatus` `itextstatus` tinyint(1) NOT NULL DEFAULT '0';
+ALTER TABLE `fnviewitem` ADD `itextstatus` tinyint(1) NOT NULL DEFAULT '0';
+ALTER TABLE `fnviewitem` CHANGE `idetail` `idetail` smallint(5) unsigned NOT NULL DEFAULT '0';
+ALTER TABLE `fnviewitem` ADD `idetail` smallint(5) unsigned NOT NULL DEFAULT '0';
+ALTER TABLE `fnviewitem` CHANGE `iweight` `iweight` int(10) unsigned NOT NULL DEFAULT '0';
+ALTER TABLE `fnviewitem` ADD `iweight` int(10) unsigned NOT NULL DEFAULT '0';
+ALTER TABLE `fnviewitem` CHANGE `isize` `isize` smallint(6) NOT NULL DEFAULT '0';
+ALTER TABLE `fnviewitem` ADD `isize` smallint(6) NOT NULL DEFAULT '0';
+ALTER TABLE `fnviewitem` CHANGE `igraphic` `igraphic` smallint(6) NOT NULL DEFAULT '0';
+ALTER TABLE `fnviewitem` ADD `igraphic` smallint(6) NOT NULL DEFAULT '0';
+ALTER TABLE `fnviewitem` CHANGE `iname` `iname` varchar(64) NOT NULL;
+ALTER TABLE `fnviewitem` ADD `iname` varchar(64) NOT NULL;
 -- 

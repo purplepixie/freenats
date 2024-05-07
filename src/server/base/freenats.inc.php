@@ -20,6 +20,10 @@ along with FreeNATS.  If not, see www.gnu.org/licenses
 For more information see www.purplepixie.org/freenats
 -------------------------------------------------------------- */
 
+// Namespaces for PHPMailer
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\SMTP;
+use PHPMailer\PHPMailer\Exception;
 class TFreeNATS
 {
 	var $init = false;
@@ -28,7 +32,7 @@ class TFreeNATS
 	var $Tests;
 	var $Lang;
 	var $RSS;
-	var $Version = "1.30.1";
+	var $Version = "1.30.3";
 	var $Release = "a";
 	var $EventHandlers = array();
 
@@ -283,7 +287,9 @@ class TFreeNATS
 							}
 						} else // use phpmailer direct SMTP delivery
 						{
-							include_once($BaseDir . "phpmailer/class.phpmailer.php");
+							include_once($BaseDir . "phpmailer/PHPMailer.php");
+							include_once($BaseDir . "phpmailer/SMTP.php");
+							include_once($BaseDir . "phpmailer/Exception.php");
 							$fromname = $this->Cfg->Get("mail.fromname", "");
 							if ($fromname == "")
 								$fromname = "FreeNATS";
