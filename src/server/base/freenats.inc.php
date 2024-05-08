@@ -32,7 +32,7 @@ class TFreeNATS
 	var $Tests;
 	var $Lang;
 	var $RSS;
-	var $Version = "1.30.9";
+	var $Version = "1.30.10";
 	var $Release = "a";
 	var $EventHandlers = array();
 
@@ -301,6 +301,7 @@ class TFreeNATS
 							$smtppassword = $this->Cfg->Get("mail.smtppassword", ""); // removed .
 							$smtphostname = $this->Cfg->Get("mail.smtphostname", ""); // removed .
 							$smtpsec = $this->Cfg->Get("mail.smtpsecure", "");
+							$smtpautotls = $this->Cfg->Get("mail.smtpautotls","");
 							$mail = new PHPMailer();
 							$mail->IsSMTP();
 							$mail->Host = $smtpserver;
@@ -327,6 +328,11 @@ class TFreeNATS
 										'allow_self_signed' => true
 									)
 								);
+							}
+							else // not secure
+							{
+								if ($smtpsec === 0)
+									$mail->SMTPAutoTLS = false;
 							}
 							if (!$mail->Send()) { // failed
 								$this->Event("phpMailer to " . $toaddr . " failed", 1, "Flush", "Email");
