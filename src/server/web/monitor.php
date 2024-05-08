@@ -327,7 +327,7 @@ else
 echo "<b>Sorry - unknown display style type</b><br><br>";
 }
 
-mt_srand(microtime()*1000000);
+mt_srand(microtime(true)*1000000);
 if (mt_rand(0,100)==50) $track_if_enabled=true;
 else $track_if_enabled=false;
 
