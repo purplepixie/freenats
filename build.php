@@ -23,6 +23,10 @@ For more information see www.purplepixie.org/freenats
 /*
 
 Build a Packaged Release
+
+Standard for mac build is: php build.php -dc -u
+build, dotclean and upload
+
 */
 function UsageMessage()
 {
@@ -225,7 +229,7 @@ if (!$Config_Dummy) // Compress File
 	else
 	{
 		$Build_File = $BuildDir.".tar";
-		$cmd[]="COPYFILE_DISABLE=1 tar -c -C ".$Config_Dir." ".$Build_ID." > ".$Build_File;
+		$cmd[]="COPYFILE_DISABLE=1 tar --no-xattrs -c -C ".$Config_Dir." ".$Build_ID." > ".$Build_File;
 		$cmd[]="gzip ".$Build_File;
 		$Build_File.=".gz";
 	}

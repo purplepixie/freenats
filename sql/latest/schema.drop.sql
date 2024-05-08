@@ -246,7 +246,7 @@ CREATE TABLE `fnnode` (
   `pingtest` tinyint(1) NOT NULL DEFAULT '0',
   `pingfatal` tinyint(1) NOT NULL DEFAULT '0',
   `alertlevel` int(11) NOT NULL DEFAULT '-1',
-  `nodeicon` varchar(64) NOT NULL,
+  `nodeicon` varchar(64) NOT NULL DEFAULT '',
   `weight` int(10) unsigned NOT NULL DEFAULT '0',
   `nodealert` tinyint(1) NOT NULL DEFAULT '1',
   `scheduleid` bigint(20) NOT NULL DEFAULT '0',
@@ -507,4 +507,4 @@ CREATE TABLE `fnviewitem` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-05-07 15:53:12
+-- Dump completed on 2024-05-08 15:48:49
