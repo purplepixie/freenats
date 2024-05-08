@@ -57,9 +57,14 @@ class TNATS_Cfg
 		$this->data[$var] = $val;
 		if ($perm) {
 			global $NATS;
-			$q = "UPDATE fnconfig SET fnc_val=\"" . ss($val) . "\" WHERE fnc_var=\"" . ss($var) . "\"";
-			$NATS->DB->Query($q);
-			if ($NATS->DB->Affected_Rows() <= 0) // not already existing
+			$q = "SELECT * FROM fnconfig WHERE fnc_var=\"".ss($var)."\"";
+			$r=$NATS->DB->Query($q);
+			if ($NATS->DB->Num_Rows($r)>0) // exists in DB so update
+			{
+				$q = "UPDATE fnconfig SET fnc_val=\"" . ss($val) . "\" WHERE fnc_var=\"" . ss($var) . "\"";
+				$NATS->DB->Query($q);
+			}
+			else // not already existing so insert
 			{
 				$q = "INSERT INTO fnconfig(fnc_var,fnc_val) VALUES(\"" . ss($var) . "\",\"" . ss($val) . "\")";
 				$NATS->DB->Query($q);
