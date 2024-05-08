@@ -229,7 +229,7 @@ if (!$Config_Dummy) // Compress File
 	else
 	{
 		$Build_File = $BuildDir.".tar";
-		$cmd[]="COPYFILE_DISABLE=1 tar --no-xattrs -c -C ".$Config_Dir." ".$Build_ID." > ".$Build_File;
+		$cmd[]="COPYFILE_DISABLE=1 tar --no-xattrs --exclude=\".*\" -c -C ".$Config_Dir." ".$Build_ID." > ".$Build_File;
 		$cmd[]="gzip ".$Build_File;
 		$Build_File.=".gz";
 	}
