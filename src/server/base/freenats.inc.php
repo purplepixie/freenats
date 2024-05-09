@@ -287,9 +287,9 @@ class TFreeNATS
 							}
 						} else // use phpmailer direct SMTP delivery
 						{
-							include_once($BaseDir . "phpmailer/PHPMailer.php");
-							include_once($BaseDir . "phpmailer/SMTP.php");
-							include_once($BaseDir . "phpmailer/Exception.php");
+							include_once($BaseDir . "thirdparty/phpmailer/PHPMailer.php");
+							include_once($BaseDir . "thirdparty/phpmailer/SMTP.php");
+							include_once($BaseDir . "thirdparty/phpmailer/Exception.php");
 							$fromname = $this->Cfg->Get("mail.fromname", "");
 							if ($fromname == "")
 								$fromname = "FreeNATS";

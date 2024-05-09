@@ -2,7 +2,7 @@
 /* -------------------------------------------------------------
 This file is part of FreeNATS
 
-FreeNATS is (C) Copyright 2008 PurplePixie Systems
+FreeNATS is (C) Copyright 2008-2024 PurplePixie Systems
 
 FreeNATS is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -20,9 +20,11 @@ along with FreeNATS.  If not, see www.gnu.org/licenses
 For more information see www.purplepixie.org/freenats
 -------------------------------------------------------------- */
 
-function imap_test_connect($host, $user, $pass, $timeout = -1, $protocol = "imap", $port = -1, $ssl = false, $debug = false)
+use Ddeboer\Imap\Server;
+
+function imap_test_connect($host, $user, $pass, $timeout = -1, $protocol = "imap", $port = -1, $ssl = false, $debug = false, $laminas = false)
 {
-	global $NATS;
+	global $NATS,$BaseDir;
 	if ($timeout > 0) $timeout = $timeout; // use specific for test if set
 	else {
 		// otherwise use system if available
@@ -30,7 +32,9 @@ function imap_test_connect($host, $user, $pass, $timeout = -1, $protocol = "imap
 		if ($timeout <= 0) $timeout = 0; // unset specifically or in environment
 	}
 
-	if ($timeout > 0) imap_timeout(IMAP_OPENTIMEOUT, $timeout);
+	// Determine if php-imap is installed and/or should be used
+	$thirdparty = $usedde || !function_exists("imap_open") ? true : false;
+
 
 	if ($port <= 0) {
 		$port = 143; // default
@@ -41,15 +45,24 @@ function imap_test_connect($host, $user, $pass, $timeout = -1, $protocol = "imap
 		}
 	}
 
-	$mailbox = "{" . $host . ":" . $port . "/service=" . $protocol;
-	if ($ssl) $mailbox .= "/ssl";
-	$mailbox .= "/novalidate-cert";
-	$mailbox .= "}INBOX";
-	if ($debug) echo $user . ":" . $pass . "@" . $mailbox . "\n";
-	$imap = @imap_open($mailbox, $user, $pass);
-	if ($imap === false) return -1; // failed to connect/open
+	if ($thirdparty) // use Laminas IMAP library in thirdparty - https://github.com/laminas/laminas-mail
+	{
+		require_once($BaseDir . "thirdparty/imap/src/Server.php");
+	}
+	else // use php-imap
+	{
+		if ($timeout > 0) imap_timeout(IMAP_OPENTIMEOUT, $timeout);
+		$mailbox = "{" . $host . ":" . $port . "/service=" . $protocol;
+		if ($ssl) $mailbox .= "/ssl";
+		$mailbox .= "/novalidate-cert";
+		$mailbox .= "}INBOX";
+		if ($debug) echo $user . ":" . $pass . "@" . $mailbox . "\n";
+		$imap = @imap_open($mailbox, $user, $pass);
+		if ($imap === false) return -1; // failed to connect/open
+		@imap_close($imap);
+	}
 
-	@imap_close($imap);
+	// got this far so all must be good!
 	return 1;
 }
 
@@ -134,6 +147,14 @@ if (isset($NATS)) {
 			else $s = "";
 			echo "<input type=checkbox name=testparam5 value=1" . $s . ">";
 			echo "</td></tr>";
+			echo "<tr><td align=left>";
+			echo "Always use Laminas :";
+			echo "</td><td align=left>";
+			if ($row['testparam6'] == 1) $s = " checked";
+			else $s = "";
+			echo "<input type=checkbox name=testparam6 value=1" . $s . ">";
+			echo "</td></tr>";
+			echo "<tr><td colspan=2><i>If unchecked will use php-imap if available</i></td></tr>";
 			echo "</table>";
 		}
 	}
