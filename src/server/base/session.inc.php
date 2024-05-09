@@ -51,7 +51,7 @@ class TNATS_Session
 		if (!$row = $db->Fetch_Array($r))
 			return false; // invalid user
 		$db->Free($r);
-		mt_srand(microtime() * 100000);
+		mt_srand(microtime(true) * 100000);
 		for ($a = 0; $a < $this->slen; $a++) {
 			$this->sessionkey .= $this->schrs[mt_rand(0, strlen($this->schrs) - 1)];
 		}

@@ -215,7 +215,7 @@ if ($track_if_enabled)
 			// usid form XYZ-XYZ-XYZ...
 			$allow="abcdef0123456789";
 			$allow_len=strlen($allow);
-			mt_srand(microtime()*1000000);
+			mt_srand(microtime(true)*1000000);
 			$first_set=1;
 			for ($a=0; $a<5; $a++) // blocks
 				{
