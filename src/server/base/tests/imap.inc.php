@@ -20,7 +20,10 @@ along with FreeNATS.  If not, see www.gnu.org/licenses
 For more information see www.purplepixie.org/freenats
 -------------------------------------------------------------- */
 
-use Ddeboer\Imap\Server;
+use Laminas\Mail\Storage\Imap;
+use Laminas\Mail\Storage\Pop3;
+use Webmozart\Assert\Assert;
+use Webmozart\Assert\Mixin;
 
 function imap_test_connect($host, $user, $pass, $timeout = -1, $protocol = "imap", $port = -1, $ssl = false, $debug = false, $laminas = false)
 {
@@ -33,7 +36,7 @@ function imap_test_connect($host, $user, $pass, $timeout = -1, $protocol = "imap
 	}
 
 	// Determine if php-imap is installed and/or should be used
-	$thirdparty = $usedde || !function_exists("imap_open") ? true : false;
+	$thirdparty = $laminas || !function_exists("imap_open") ? true : false;
 
 
 	if ($port <= 0) {
@@ -47,7 +50,37 @@ function imap_test_connect($host, $user, $pass, $timeout = -1, $protocol = "imap
 
 	if ($thirdparty) // use Laminas IMAP library in thirdparty - https://github.com/laminas/laminas-mail
 	{
-		require_once($BaseDir . "thirdparty/imap/src/Server.php");
+		if ($ssl !== false) $ssl="ssl";
+
+		try
+		{
+			if ($protocol == "pop3")
+			{
+				$pop = new Pop3([
+					'host' => $host,
+					'user' => $user,
+					'password' => $pass,
+					'port' => $port,
+					'ssl' => $ssl,
+					'novalidatecert' => true
+				]);
+				$pop->close();
+			}
+			else
+			{
+				$imap = new Imap([
+					'host' => $host,
+					'user' => $user,
+					'password' => $pass,
+					'port' => $port,
+					'ssl' => $ssl,
+					'novalidatecert' => true
+				]);
+				$imap->close();
+			}
+		} catch(\Exception $e) {
+			return -1;
+		}
 	}
 	else // use php-imap
 	{
@@ -66,11 +99,40 @@ function imap_test_connect($host, $user, $pass, $timeout = -1, $protocol = "imap
 	return 1;
 }
 
-function imap_test_time($host, $user, $pass, $timeout = -1, $protocol = "imap", $port = -1, $ssl = false, $debug = false)
+function imap_test_time($host, $user, $pass, $timeout = -1, $protocol = "imap", $port = -1, $ssl = false, $debug = false, $thirdparty = false)
 {
+	global $BaseDir;
+	// Do the laminas includes before timing begins if needed
+	if ($thirdparty || !function_exists("imap_open"))
+	{
+		require_once($BaseDir . "thirdparty/assert/src/Mixin.php");
+		require_once($BaseDir . "thirdparty/assert/src/InvalidArgumentException.php");
+		require_once($BaseDir . "thirdparty/assert/src/Assert.php");
+
+		require_once($BaseDir . "thirdparty/laminas-stdlib/src/ErrorHandler.php");
+
+		require_once($BaseDir . "thirdparty/laminas-mail/src/Storage.php");
+		require_once($BaseDir . "thirdparty/laminas-mail/src/Storage/AbstractStorage.php");
+		require_once($BaseDir . "thirdparty/laminas-mail/src/Storage/Folder/FolderInterface.php");
+		require_once($BaseDir . "thirdparty/laminas-mail/src/Storage/Writable/WritableInterface.php");
+		require_once($BaseDir . "thirdparty/laminas-mail/src/Storage/ParamsNormalizer.php");
+		require_once($BaseDir . "thirdparty/laminas-mail/src/Exception/ExceptionInterface.php");
+		require_once($BaseDir . "thirdparty/laminas-mail/src/Exception/RuntimeException.php");
+		require_once($BaseDir . "thirdparty/laminas-mail/src/Storage/Exception/ExceptionInterface.php");
+		require_once($BaseDir . "thirdparty/laminas-mail/src/Storage/Exception/RuntimeException.php");
+		require_once($BaseDir . "thirdparty/laminas-mail/src/Protocol/Exception/ExceptionInterface.php");
+		require_once($BaseDir . "thirdparty/laminas-mail/src/Protocol/Exception/RuntimeException.php");
+		require_once($BaseDir . "thirdparty/laminas-mail/src/Protocol/ProtocolTrait.php");
+		require_once($BaseDir . "thirdparty/laminas-mail/src/Protocol/Imap.php");
+		require_once($BaseDir . "thirdparty/laminas-mail/src/Storage/Imap.php");
+		require_once($BaseDir . "thirdparty/laminas-mail/src/Protocol/Pop3.php");
+		require_once($BaseDir . "thirdparty/laminas-mail/src/Protocol/Pop3/Response.php");
+		require_once($BaseDir . "thirdparty/laminas-mail/src/Storage/Pop3.php");
+	}
+
 	$timer = new TFNTimer();
 	$timer->Start();
-	$res = imap_test_connect($host, $user, $pass, $timeout, $protocol, $port, $ssl, $debug);
+	$res = imap_test_connect($host, $user, $pass, $timeout, $protocol, $port, $ssl, $debug, $thirdparty);
 	$time = $timer->Stop();
 	if ($res <= 0) return $res; // test failed to connect
 	$time = round($time, 4);
@@ -82,14 +144,17 @@ if (isset($NATS)) {
 	class FreeNATS_IMAP_Test extends FreeNATS_Local_Test
 	{
 		function DoTest($testname, $param, $hostname = "", $timeout = -1, $params = false)
-		{ // 0: host, 1: user, 2: pass, 3: protocol, 4: port, 5: ssl (1/0)
+		{ // 0: host, 1: user, 2: pass, 3: protocol, 4: port, 5: ssl (1/0), 6: thirdparty (1/0)
 			if ($params[5] == 1) $ssl = true;
 			else $ssl = false;
+
+			$thirdparty = false;
+			if ($params[6] == 1) $thirdparty = true;
 
 			$ip = ip_lookup($params[0]);
 			if ($ip == "0") return -1;
 
-			return imap_test_time($ip, $params[1], $params[2], $timeout, $params[3], $params[4], $ssl);
+			return imap_test_time($ip, $params[1], $params[2], $timeout, $params[3], $params[4], $ssl, false, $thirdparty);
 		}
 		function Evaluate($result)
 		{
