@@ -89,7 +89,7 @@ function extended_page_checker($url, $text, $notext, $user = "", $pass = "", $ti
 			return -1;
 		}
 		$ctr = 0;
-		while ($output .= @fgets($fp, 1024)) $ctr += sizeof($body);
+		while ($output .= @fgets($fp, 1024)) $ctr += strlen($output);
 		@fclose($fp);
 	}
 

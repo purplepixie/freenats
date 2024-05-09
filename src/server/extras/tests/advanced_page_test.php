@@ -92,8 +92,8 @@ function extended_page_checker($url, $text, $notext, $user = "", $pass = "", $ti
 		}
 		$ctr = 0;
 		$body = "";
-		while ($output .= @fgets($fp, 1024))
-			$ctr += sizeof($body);
+		while ($body .= @fgets($fp, 1024))
+			$ctr += strlen($body);
 		@fclose($fp);
 		$output = $body;
 	}

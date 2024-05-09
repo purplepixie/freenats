@@ -218,7 +218,7 @@ function WebTest($url, $timeout = -1)
 		}
 		$ctr = 0;
 		while ($body = @fgets($fp, 1024))
-			$ctr += sizeof($body);
+			$ctr += strlen($body);
 		@fclose($fp);
 		ini_set("user_agent", $oldagent);
 	}

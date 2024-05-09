@@ -61,7 +61,8 @@ function get_external_ip($url = "")
 			return -1;
 		}
 		$ctr = 0;
-		while ($output .= @fgets($fp, 1024)) $ctr += sizeof($body);
+		$output = "";
+		while ($output .= @fgets($fp, 1024)) $ctr += strlen($output);
 		@fclose($fp);
 	}
 

@@ -103,8 +103,8 @@ CREATE TABLE `fneval` (
   `evalid` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `testid` varchar(128) NOT NULL,
   `weight` int(11) NOT NULL DEFAULT '0',
-  `eoperator` varchar(32) NOT NULL,
-  `evalue` varchar(128) NOT NULL,
+  `eoperator` varchar(32) NOT NULL DEFAULT '',
+  `evalue` varchar(128) NOT NULL DEFAULT '',
   `eoutcome` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`evalid`),
   KEY `testid` (`testid`)
@@ -120,9 +120,9 @@ DROP TABLE IF EXISTS `fngroup`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `fngroup` (
   `groupid` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-  `groupname` varchar(128) NOT NULL,
-  `groupdesc` varchar(250) NOT NULL,
-  `groupicon` varchar(64) NOT NULL,
+  `groupname` varchar(128) NOT NULL DEFAULT '',
+  `groupdesc` varchar(250) NOT NULL DEFAULT '',
+  `groupicon` varchar(64) NOT NULL DEFAULT '',
   `weight` int(10) unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (`groupid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -172,10 +172,10 @@ CREATE TABLE `fnlocaltest` (
   `alertlevel` int(11) NOT NULL DEFAULT '-1',
   `lastrunx` bigint(20) unsigned NOT NULL DEFAULT '0',
   `testtype` varchar(128) NOT NULL,
-  `testparam` varchar(250) DEFAULT NULL,
+  `testparam` varchar(250) DEFAULT '',
   `testrecord` tinyint(1) NOT NULL DEFAULT '0',
   `simpleeval` tinyint(1) NOT NULL DEFAULT '1',
-  `testname` varchar(64) NOT NULL,
+  `testname` varchar(64) NOT NULL DEFAULT '',
   `attempts` int(11) NOT NULL DEFAULT '0',
   `timeout` int(11) NOT NULL DEFAULT '0',
   `testenabled` tinyint(1) NOT NULL DEFAULT '1',
@@ -206,11 +206,11 @@ DROP TABLE IF EXISTS `fnlog`;
 CREATE TABLE `fnlog` (
   `logid` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `postedx` bigint(20) unsigned NOT NULL DEFAULT '0',
-  `modid` varchar(32) NOT NULL,
-  `catid` varchar(32) NOT NULL,
-  `username` varchar(64) NOT NULL,
+  `modid` varchar(32) NOT NULL DEFAULT '',
+  `catid` varchar(32) NOT NULL DEFAULT '',
+  `username` varchar(64) NOT NULL DEFAULT '',
   `loglevel` int(11) NOT NULL DEFAULT '1',
-  `logevent` varchar(250) NOT NULL,
+  `logevent` varchar(250) NOT NULL DEFAULT '',
   PRIMARY KEY (`logid`)
 ) ENGINE=InnoDB AUTO_INCREMENT=93 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -239,9 +239,9 @@ DROP TABLE IF EXISTS `fnnode`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `fnnode` (
   `nodeid` varchar(64) NOT NULL,
-  `nodename` varchar(128) NOT NULL,
-  `nodedesc` varchar(254) NOT NULL,
-  `hostname` varchar(254) NOT NULL,
+  `nodename` varchar(128) NOT NULL DEFAULT '',
+  `nodedesc` varchar(254) NOT NULL DEFAULT '',
+  `hostname` varchar(254) NOT NULL DEFAULT '',
   `nodeenabled` tinyint(1) NOT NULL DEFAULT '0',
   `pingtest` tinyint(1) NOT NULL DEFAULT '0',
   `pingfatal` tinyint(1) NOT NULL DEFAULT '0',
@@ -254,17 +254,17 @@ CREATE TABLE `fnnode` (
   `testinterval` int(10) unsigned NOT NULL DEFAULT '5',
   `nextrunx` bigint(20) unsigned NOT NULL DEFAULT '0',
   `nsenabled` tinyint(1) NOT NULL DEFAULT '0',
-  `nsurl` varchar(254) NOT NULL,
-  `nskey` varchar(250) NOT NULL,
+  `nsurl` varchar(254) NOT NULL DEFAULT '',
+  `nskey` varchar(250) NOT NULL DEFAULT '',
   `nspullenabled` tinyint(1) NOT NULL DEFAULT '0',
   `nspushenabled` tinyint(1) NOT NULL DEFAULT '0',
-  `nspuship` varchar(128) NOT NULL,
+  `nspuship` varchar(128) NOT NULL DEFAULT '',
   `nsinterval` int(10) unsigned NOT NULL DEFAULT '15',
   `nslastx` bigint(20) unsigned NOT NULL DEFAULT '0',
   `nsnextx` bigint(20) unsigned NOT NULL DEFAULT '0',
   `nspullalert` tinyint(1) NOT NULL DEFAULT '0',
   `nsfreshpush` tinyint(1) NOT NULL DEFAULT '0',
-  `masterid` varchar(64) NOT NULL,
+  `masterid` varchar(64) NOT NULL DEFAULT '',
   `masterjustping` tinyint(1) NOT NULL DEFAULT '1',
   `ulink0` tinyint(1) NOT NULL DEFAULT '0',
   `ulink0_title` varchar(254) NOT NULL DEFAULT 'VNC',
@@ -292,7 +292,7 @@ CREATE TABLE `fnnstest` (
   `nodeid` varchar(64) NOT NULL,
   `alertlevel` int(11) NOT NULL DEFAULT '-1',
   `lastrunx` bigint(20) unsigned NOT NULL DEFAULT '0',
-  `testtype` varchar(128) NOT NULL,
+  `testtype` varchar(128) NOT NULL DEFAULT '',
   `testdesc` varchar(250) DEFAULT NULL,
   `testrecord` tinyint(1) NOT NULL DEFAULT '0',
   `simpleeval` tinyint(1) NOT NULL DEFAULT '1',
@@ -334,7 +334,7 @@ DROP TABLE IF EXISTS `fnreport`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `fnreport` (
   `reportid` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-  `reportname` varchar(128) NOT NULL,
+  `reportname` varchar(128) DEFAULT NULL,
   `reporttests` text,
   PRIMARY KEY (`reportid`)
 ) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
@@ -349,12 +349,12 @@ DROP TABLE IF EXISTS `fnrssfeed`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `fnrssfeed` (
   `feedid` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-  `feedkey` varchar(254) NOT NULL,
-  `feedname` varchar(254) NOT NULL,
-  `feedtype` varchar(254) NOT NULL,
-  `typeopt` varchar(254) NOT NULL,
-  `feedrange` varchar(32) NOT NULL,
-  `rangeopt` varchar(254) NOT NULL,
+  `feedkey` varchar(254) DEFAULT NULL,
+  `feedname` varchar(254) DEFAULT NULL,
+  `feedtype` varchar(254) DEFAULT NULL,
+  `typeopt` varchar(254) DEFAULT NULL,
+  `feedrange` varchar(32) DEFAULT NULL,
+  `rangeopt` varchar(254) DEFAULT NULL,
   PRIMARY KEY (`feedid`)
 ) ENGINE=MyISAM AUTO_INCREMENT=12 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -369,14 +369,14 @@ DROP TABLE IF EXISTS `fnscheditem`;
 CREATE TABLE `fnscheditem` (
   `scheditemid` bigint(20) NOT NULL AUTO_INCREMENT,
   `scheduleid` bigint(20) NOT NULL DEFAULT '0',
-  `dayofweek` varchar(8) NOT NULL,
-  `dayofmonth` int(11) NOT NULL DEFAULT '0',
-  `monthofyear` int(11) NOT NULL DEFAULT '0',
-  `year` int(11) NOT NULL DEFAULT '0',
-  `starthour` int(11) NOT NULL DEFAULT '0',
-  `startmin` int(11) NOT NULL DEFAULT '0',
-  `finishhour` int(11) NOT NULL DEFAULT '23',
-  `finishmin` int(11) NOT NULL DEFAULT '59',
+  `dayofweek` varchar(8) DEFAULT NULL,
+  `dayofmonth` int(11) DEFAULT '0',
+  `monthofyear` int(11) DEFAULT '0',
+  `year` int(11) DEFAULT '0',
+  `starthour` int(11) DEFAULT '0',
+  `startmin` int(11) DEFAULT '0',
+  `finishhour` int(11) DEFAULT '23',
+  `finishmin` int(11) DEFAULT '59',
   PRIMARY KEY (`scheditemid`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -390,7 +390,7 @@ DROP TABLE IF EXISTS `fnschedule`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `fnschedule` (
   `scheduleid` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-  `schedulename` varchar(128) NOT NULL,
+  `schedulename` varchar(128) NOT NULL DEFAULT '',
   `defaultaction` tinyint(1) NOT NULL DEFAULT '1',
   PRIMARY KEY (`scheduleid`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
@@ -412,7 +412,7 @@ CREATE TABLE `fnsession` (
   `updatex` bigint(20) unsigned NOT NULL DEFAULT '0',
   `userlevel` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`sessionid`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -444,7 +444,7 @@ DROP TABLE IF EXISTS `fnuser`;
 CREATE TABLE `fnuser` (
   `username` varchar(64) NOT NULL,
   `password` varchar(64) NOT NULL,
-  `realname` varchar(128) NOT NULL,
+  `realname` varchar(128) NOT NULL DEFAULT '',
   `userlevel` int(11) NOT NULL DEFAULT '1',
   `grouplock` tinyint(4) NOT NULL DEFAULT '0',
   PRIMARY KEY (`username`)
@@ -460,10 +460,10 @@ DROP TABLE IF EXISTS `fnview`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `fnview` (
   `viewid` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-  `vtitle` varchar(128) NOT NULL,
-  `vstyle` varchar(32) NOT NULL,
+  `vtitle` varchar(128) NOT NULL DEFAULT '',
+  `vstyle` varchar(32) NOT NULL DEFAULT '',
   `vpublic` tinyint(1) NOT NULL DEFAULT '0',
-  `vclick` varchar(32) NOT NULL,
+  `vclick` varchar(32) NOT NULL DEFAULT '',
   `vrefresh` int(11) NOT NULL DEFAULT '0',
   `vlinkv` bigint(20) unsigned NOT NULL DEFAULT '0',
   `vcolumns` smallint(6) NOT NULL DEFAULT '0',
@@ -485,7 +485,7 @@ CREATE TABLE `fnviewitem` (
   `viewitemid` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `viewid` bigint(20) unsigned NOT NULL DEFAULT '0',
   `itype` varchar(128) NOT NULL,
-  `ioption` varchar(250) NOT NULL,
+  `ioption` varchar(250) NOT NULL DEFAULT '',
   `icolour` tinyint(1) NOT NULL DEFAULT '1',
   `itextstatus` tinyint(1) NOT NULL DEFAULT '0',
   `idetail` smallint(5) unsigned NOT NULL DEFAULT '0',
@@ -507,4 +507,4 @@ CREATE TABLE `fnviewitem` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-05-08 20:36:13
+-- Dump completed on 2024-05-09 12:38:07

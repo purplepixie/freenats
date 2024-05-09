@@ -1,4 +1,4 @@
--- FreeNATS freenats-1.30.10a Schema
+-- FreeNATS freenats-1.30.12a Schema
 -- Experimental Upgrade SQL - run after schema.sql (not drop!)
 -- Both will generate many many errors - run with --force, ignore errors
 -- myrug -- PurplePixie Systems
@@ -338,8 +338,8 @@ ALTER TABLE `fnrecord` ADD `nodeid` varchar(64) NOT NULL DEFAULT '';
 ALTER TABLE `fnreport` CHANGE `reportid` `reportid` bigint(20) unsigned NOT NULL auto_increment DEFAULT '';
 ALTER TABLE `fnreport` ADD `reportid` bigint(20) unsigned NOT NULL auto_increment DEFAULT '';
 ALTER TABLE `fnreport` ADD PRIMARY KEY( `reportid` );
-ALTER TABLE `fnreport` CHANGE `reportname` `reportname` varchar(128) NOT NULL DEFAULT '';
-ALTER TABLE `fnreport` ADD `reportname` varchar(128) NOT NULL DEFAULT '';
+ALTER TABLE `fnreport` CHANGE `reportname` `reportname` varchar(128) DEFAULT '';
+ALTER TABLE `fnreport` ADD `reportname` varchar(128) DEFAULT '';
 ALTER TABLE `fnreport` CHANGE `reporttests` `reporttests` text DEFAULT '';
 ALTER TABLE `fnreport` ADD `reporttests` text DEFAULT '';
 -- 
@@ -348,18 +348,18 @@ ALTER TABLE `fnreport` ADD `reporttests` text DEFAULT '';
 ALTER TABLE `fnrssfeed` CHANGE `feedid` `feedid` bigint(20) unsigned NOT NULL auto_increment DEFAULT '';
 ALTER TABLE `fnrssfeed` ADD `feedid` bigint(20) unsigned NOT NULL auto_increment DEFAULT '';
 ALTER TABLE `fnrssfeed` ADD PRIMARY KEY( `feedid` );
-ALTER TABLE `fnrssfeed` CHANGE `feedkey` `feedkey` varchar(254) NOT NULL DEFAULT '';
-ALTER TABLE `fnrssfeed` ADD `feedkey` varchar(254) NOT NULL DEFAULT '';
-ALTER TABLE `fnrssfeed` CHANGE `feedname` `feedname` varchar(254) NOT NULL DEFAULT '';
-ALTER TABLE `fnrssfeed` ADD `feedname` varchar(254) NOT NULL DEFAULT '';
-ALTER TABLE `fnrssfeed` CHANGE `feedtype` `feedtype` varchar(254) NOT NULL DEFAULT '';
-ALTER TABLE `fnrssfeed` ADD `feedtype` varchar(254) NOT NULL DEFAULT '';
-ALTER TABLE `fnrssfeed` CHANGE `typeopt` `typeopt` varchar(254) NOT NULL DEFAULT '';
-ALTER TABLE `fnrssfeed` ADD `typeopt` varchar(254) NOT NULL DEFAULT '';
-ALTER TABLE `fnrssfeed` CHANGE `feedrange` `feedrange` varchar(32) NOT NULL DEFAULT '';
-ALTER TABLE `fnrssfeed` ADD `feedrange` varchar(32) NOT NULL DEFAULT '';
-ALTER TABLE `fnrssfeed` CHANGE `rangeopt` `rangeopt` varchar(254) NOT NULL DEFAULT '';
-ALTER TABLE `fnrssfeed` ADD `rangeopt` varchar(254) NOT NULL DEFAULT '';
+ALTER TABLE `fnrssfeed` CHANGE `feedkey` `feedkey` varchar(254) DEFAULT '';
+ALTER TABLE `fnrssfeed` ADD `feedkey` varchar(254) DEFAULT '';
+ALTER TABLE `fnrssfeed` CHANGE `feedname` `feedname` varchar(254) DEFAULT '';
+ALTER TABLE `fnrssfeed` ADD `feedname` varchar(254) DEFAULT '';
+ALTER TABLE `fnrssfeed` CHANGE `feedtype` `feedtype` varchar(254) DEFAULT '';
+ALTER TABLE `fnrssfeed` ADD `feedtype` varchar(254) DEFAULT '';
+ALTER TABLE `fnrssfeed` CHANGE `typeopt` `typeopt` varchar(254) DEFAULT '';
+ALTER TABLE `fnrssfeed` ADD `typeopt` varchar(254) DEFAULT '';
+ALTER TABLE `fnrssfeed` CHANGE `feedrange` `feedrange` varchar(32) DEFAULT '';
+ALTER TABLE `fnrssfeed` ADD `feedrange` varchar(32) DEFAULT '';
+ALTER TABLE `fnrssfeed` CHANGE `rangeopt` `rangeopt` varchar(254) DEFAULT '';
+ALTER TABLE `fnrssfeed` ADD `rangeopt` varchar(254) DEFAULT '';
 -- 
 -- Table: fnscheditem
 -- DESCRIBE fnscheditem
@@ -368,22 +368,22 @@ ALTER TABLE `fnscheditem` ADD `scheditemid` bigint(20) NOT NULL auto_increment D
 ALTER TABLE `fnscheditem` ADD PRIMARY KEY( `scheditemid` );
 ALTER TABLE `fnscheditem` CHANGE `scheduleid` `scheduleid` bigint(20) NOT NULL DEFAULT '0';
 ALTER TABLE `fnscheditem` ADD `scheduleid` bigint(20) NOT NULL DEFAULT '0';
-ALTER TABLE `fnscheditem` CHANGE `dayofweek` `dayofweek` varchar(8) NOT NULL DEFAULT '';
-ALTER TABLE `fnscheditem` ADD `dayofweek` varchar(8) NOT NULL DEFAULT '';
-ALTER TABLE `fnscheditem` CHANGE `dayofmonth` `dayofmonth` int(11) NOT NULL DEFAULT '0';
-ALTER TABLE `fnscheditem` ADD `dayofmonth` int(11) NOT NULL DEFAULT '0';
-ALTER TABLE `fnscheditem` CHANGE `monthofyear` `monthofyear` int(11) NOT NULL DEFAULT '0';
-ALTER TABLE `fnscheditem` ADD `monthofyear` int(11) NOT NULL DEFAULT '0';
-ALTER TABLE `fnscheditem` CHANGE `year` `year` int(11) NOT NULL DEFAULT '0';
-ALTER TABLE `fnscheditem` ADD `year` int(11) NOT NULL DEFAULT '0';
-ALTER TABLE `fnscheditem` CHANGE `starthour` `starthour` int(11) NOT NULL DEFAULT '0';
-ALTER TABLE `fnscheditem` ADD `starthour` int(11) NOT NULL DEFAULT '0';
-ALTER TABLE `fnscheditem` CHANGE `startmin` `startmin` int(11) NOT NULL DEFAULT '0';
-ALTER TABLE `fnscheditem` ADD `startmin` int(11) NOT NULL DEFAULT '0';
-ALTER TABLE `fnscheditem` CHANGE `finishhour` `finishhour` int(11) NOT NULL DEFAULT '23';
-ALTER TABLE `fnscheditem` ADD `finishhour` int(11) NOT NULL DEFAULT '23';
-ALTER TABLE `fnscheditem` CHANGE `finishmin` `finishmin` int(11) NOT NULL DEFAULT '59';
-ALTER TABLE `fnscheditem` ADD `finishmin` int(11) NOT NULL DEFAULT '59';
+ALTER TABLE `fnscheditem` CHANGE `dayofweek` `dayofweek` varchar(8) DEFAULT '';
+ALTER TABLE `fnscheditem` ADD `dayofweek` varchar(8) DEFAULT '';
+ALTER TABLE `fnscheditem` CHANGE `dayofmonth` `dayofmonth` int(11) DEFAULT '0';
+ALTER TABLE `fnscheditem` ADD `dayofmonth` int(11) DEFAULT '0';
+ALTER TABLE `fnscheditem` CHANGE `monthofyear` `monthofyear` int(11) DEFAULT '0';
+ALTER TABLE `fnscheditem` ADD `monthofyear` int(11) DEFAULT '0';
+ALTER TABLE `fnscheditem` CHANGE `year` `year` int(11) DEFAULT '0';
+ALTER TABLE `fnscheditem` ADD `year` int(11) DEFAULT '0';
+ALTER TABLE `fnscheditem` CHANGE `starthour` `starthour` int(11) DEFAULT '0';
+ALTER TABLE `fnscheditem` ADD `starthour` int(11) DEFAULT '0';
+ALTER TABLE `fnscheditem` CHANGE `startmin` `startmin` int(11) DEFAULT '0';
+ALTER TABLE `fnscheditem` ADD `startmin` int(11) DEFAULT '0';
+ALTER TABLE `fnscheditem` CHANGE `finishhour` `finishhour` int(11) DEFAULT '23';
+ALTER TABLE `fnscheditem` ADD `finishhour` int(11) DEFAULT '23';
+ALTER TABLE `fnscheditem` CHANGE `finishmin` `finishmin` int(11) DEFAULT '59';
+ALTER TABLE `fnscheditem` ADD `finishmin` int(11) DEFAULT '59';
 -- 
 -- Table: fnschedule
 -- DESCRIBE fnschedule

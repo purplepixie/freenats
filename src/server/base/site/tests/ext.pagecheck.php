@@ -54,7 +54,7 @@ function extended_check_page_text_2($url, $text, $notext, $user = "", $pass = ""
 			return -1;
 		}
 		$ctr = 0;
-		while ($output .= @fgets($fp, 1024)) $ctr += sizeof($body);
+		while ($output .= @fgets($fp, 1024)) $ctr += strlen($output);
 		@fclose($fp);
 	}
 
