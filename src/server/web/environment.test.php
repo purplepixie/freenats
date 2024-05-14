@@ -47,9 +47,11 @@ function test_mod($mod, $funcs)
 
 if (!isset($env_test_web)) // PHP CLI Test
 {
+	/* // don't test IMAP now, will use laminas mail
 	if (!test_mod("IMAP", "imap_open")) {
 		echo "IMAP is not supported - don't configure IMAP tests or your environment will hang<br>";
 	}
+	*/
 	if (!test_mod("Sockets", "fsockopen")) {
 		echo "Sockets are not supported - fatal error<br>";
 	}
