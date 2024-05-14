@@ -29,12 +29,19 @@ class TNATS_Cfg
 	function Load($nats_db)
 	{
 		$q = "SELECT * FROM fnconfig";
-		$r = $nats_db->Query($q);
-		while ($row = $nats_db->Fetch_Array($r)) {
-			$this->data[$row['fnc_var']] = $row['fnc_val'];
-			//echo $row['fnc_var']."=".$row['fnc_val']."\n<br>";
+		try
+		{
+			$r = $nats_db->Query($q);
+			while ($row = $nats_db->Fetch_Array($r)) {
+				$this->data[$row['fnc_var']] = $row['fnc_val'];
+				//echo $row['fnc_var']."=".$row['fnc_val']."\n<br>";
+			}
+			$nats_db->Free($r);
 		}
-		$nats_db->Free($r);
+		catch(\Exception $e)
+		{
+			// consider logging but this is silent for firstrun issues
+		}
 	}
 
 	function Get($var, $def = "")
