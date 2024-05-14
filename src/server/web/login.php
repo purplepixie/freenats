@@ -24,46 +24,39 @@ ob_start();
 require("include.php");
 $NATS->Start();
 
-if ($NATS->Cfg->Get("site.auth","")=="http") // HTTP-AUTH
+if ($NATS->Cfg->Get("site.auth", "") == "http") // HTTP-AUTH
 {
-	if (!isset($_SERVER['PHP_AUTH_USER']))
-	{
-		$realm="FreeNATS ".date("Y-m-d H:i:s");
-		header("WWW-Authenticate: Basic realm=\"".$realm."\"");
+	if (!isset($_SERVER['PHP_AUTH_USER'])) {
+		$realm = "FreeNATS " . date("Y-m-d H:i:s");
+		header("WWW-Authenticate: Basic realm=\"" . $realm . "\"");
 		header("HTTP/1.0 401 Unauthorized");
 		echo $NATS->Lang->Item("msg.loginfailed");
 		exit();
-	}
-	else
-	{
+	} else {
 		$username = $_SERVER['PHP_AUTH_USER'];
 		$password = $_SERVER['PHP_AUTH_PW'];
 	}
-}
-else
-{
-	if (isset($_REQUEST['naun'])) $username=$_REQUEST['naun'];
-	else $username="";
-	if (isset($_REQUEST['napw'])) $password=$_REQUEST['napw'];
-	else $password="";
+} else {
+	if (isset($_REQUEST['naun'])) $username = $_REQUEST['naun'];
+	else $username = "";
+	if (isset($_REQUEST['napw'])) $password = $_REQUEST['napw'];
+	else $password = "";
 }
 
-if ($NATS_Session->Create($NATS->DB,$username,$password))
-	{
-	if ( isset($_REQUEST['nala']) && ($_REQUEST['nala']!="") )
-		setcookie("fn_lang",$_REQUEST['nala']);
-		
-	$loc="main.php";
-	if ($NATS->Cfg->Get("site.login.nocheck",0)!="1")
-		$loc.="?check_updates=1&quiet_check=1";
-	if (isset($_REQUEST['url'])) $loc=$_REQUEST['url'];
-	
-	if ($NATS->Cfg->Get("freenats.firstrun")=="1") $loc="welcome.php";
-	
-	header("Location: ".$loc);
+if ($NATS_Session->Create($NATS->DB, $username, $password)) {
+	if (isset($_REQUEST['nala']) && ($_REQUEST['nala'] != ""))
+		setcookie("fn_lang", $_REQUEST['nala']);
+
+	$loc = "main.php";
+	if ($NATS->Cfg->Get("site.login.nocheck", 0) != "1")
+		$loc .= "?check_updates=1&quiet_check=1";
+	if (isset($_REQUEST['url'])) $loc = $_REQUEST['url'];
+
+	if ($NATS->Cfg->Get("freenats.firstrun") == "1") $loc = "welcome.php";
+
+	header("Location: " . $loc);
 	exit();
-	}
-	
+}
+
 header("Location: ./?msg=2");
 exit();
-?>

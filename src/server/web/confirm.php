@@ -23,17 +23,15 @@ For more information see www.purplepixie.org/freenats
 ob_start();
 require("include.php");
 $NATS->Start();
-if (!$NATS_Session->Check($NATS->DB))
-	{
+if (!$NATS_Session->Check($NATS->DB)) {
 	header("Location: ./?login_msg=Invalid+Or+Expired+Session");
 	exit();
-	}
+}
 
 ob_end_flush();
-Screen_Header("Confirm ".$_REQUEST['action'],1);
+Screen_Header("Confirm " . $_REQUEST['action'], 1);
 
 echo "<br><b class=\"minortitle\">Please Confirm You Wish to Continue</b><br><br>";
-echo "Action: <b>".$_REQUEST['action']."</b><br>";
-echo "<b><a href=".$_REQUEST['back'].">Confirm Action</a></b> | <a href=main.php>Abort Action</a><br><br>";
+echo "Action: <b>" . $_REQUEST['action'] . "</b><br>";
+echo "<b><a href=" . $_REQUEST['back'] . ">Confirm Action</a></b> | <a href=main.php>Abort Action</a><br><br>";
 Screen_Footer();
-?>

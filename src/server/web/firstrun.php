@@ -21,80 +21,69 @@ For more information see www.purplepixie.org/freenats
 -------------------------------------------------------------- */
 
 require("include.php");
-$sn=$_SERVER['SCRIPT_NAME'];
-$script="";
-for ($a=strlen($sn)-1; $a>0; $a--)
-	{
-	$c=$sn[$a];
-	if ($c=="/") $a=-1;
-	else $script=$c.$script;
-	}
-if ($script!="firstrun.php")
-	{
-	echo "<b>Error:</b> This script is not correctly named. In order to run it please rename &quot;".$script."&quot; to &quot;firstrun.php&quot;.";
+$sn = $_SERVER['SCRIPT_NAME'];
+$script = "";
+for ($a = strlen($sn) - 1; $a > 0; $a--) {
+	$c = $sn[$a];
+	if ($c == "/") $a = -1;
+	else $script = $c . $script;
+}
+if ($script != "firstrun.php") {
+	echo "<b>Error:</b> This script is not correctly named. In order to run it please rename &quot;" . $script . "&quot; to &quot;firstrun.php&quot;.";
 	echo "<br><br>";
 	exit();
-	}
-if (isset($_REQUEST['stage'])) $stage=$_REQUEST['stage'];
-else $stage=0;
+}
+if (isset($_REQUEST['stage'])) $stage = $_REQUEST['stage'];
+else $stage = 0;
 
-function sqlfile($file,$sql)
+function sqlfile($file, $sql)
 {
-global $BaseDir;
-$fn=$BaseDir."sql/".$file.".sql";
-echo "Processing ".$fn."<br><br>";
-$fp=fopen($fn,"r");
-if ($fp<=0)
-	{
-	echo "<b>ERROR: Cannot Open File!</b><br><br>";
-	return false;
+	global $BaseDir;
+	$fn = $BaseDir . "sql/" . $file . ".sql";
+	echo "Processing " . $fn . "<br><br>";
+	$fp = fopen($fn, "r");
+	if ($fp <= 0) {
+		echo "<b>ERROR: Cannot Open File!</b><br><br>";
+		return false;
 	}
-$q="";
-$qc=0;
-$qok=0;
-$qerr=0;
-while ($s=fgets($fp,1024))
-	{
-	if ($s[0]!="-")
-		{
-		for ($a=0; $a<strlen($s); $a++)
-			{
-			$c=$s[$a];
-			if ($c==";")
-				{
-				mysqli_query($sql,$q);
-				$qc++;
-				if (mysqli_errno($sql)!=0)
-					{
-					echo "<b>Warning/Error</b><br>";
-					echo "<b>SQL:</b> ".$q."<br>";
-					echo "<b>Error:</b> ".mysqli_error($sql)." (Code ".mysqli_errno($sql).")<br><br>";
-					$qerr++;
-					}
-				else $qok++;
-				$q="";
-				}
-			else
-				$q.=$c;
+	$q = "";
+	$qc = 0;
+	$qok = 0;
+	$qerr = 0;
+	while ($s = fgets($fp, 1024)) {
+		if ($s[0] != "-") {
+			for ($a = 0; $a < strlen($s); $a++) {
+				$c = $s[$a];
+				if ($c == ";") {
+					mysqli_query($sql, $q);
+					$qc++;
+					if (mysqli_errno($sql) != 0) {
+						echo "<b>Warning/Error</b><br>";
+						echo "<b>SQL:</b> " . $q . "<br>";
+						echo "<b>Error:</b> " . mysqli_error($sql) . " (Code " . mysqli_errno($sql) . ")<br><br>";
+						$qerr++;
+					} else $qok++;
+					$q = "";
+				} else
+					$q .= $c;
 			}
 		}
 	}
-echo "Finished Processing: ".$qc." queries (".$qok." ok, ".$qerr." warnings/errors)<br><br>";
-fclose($fp);
+	echo "Finished Processing: " . $qc . " queries (" . $qok . " ok, " . $qerr . " warnings/errors)<br><br>";
+	fclose($fp);
 }
 
 echo "<html><head><title>FreeNATS Setup</title></head><body>\n";
-echo "<h1>First Run Setup: Stage ".$stage."</h1>";
+echo "<h1>First Run Setup: Stage " . $stage . "</h1>";
 
 echo "Testing database connectivity...<br>";
-		$sql=mysqli_connect($fnCfg['db.server'],$fnCfg['db.username'],$fnCfg['db.password'])
-			or die("Failed to connect to database server ".$fnCfg['db.server']." with username ".$fnCfg['db.username']."<br>Details: ".mysqli_error($sql));
-		mysqli_select_db($sql,$fnCfg['db.database'])
-			or die("Connected ok but failed to select database ".$fnCfg['db.database']."<br>Details: ".mysqli_error($sql));
-		echo "Database connection succeeded!<br><br>";
+$sql = mysqli_connect($fnCfg['db.server'], $fnCfg['db.username'], $fnCfg['db.password'])
+	or die("Failed to connect to database server " . $fnCfg['db.server'] . " with username " . $fnCfg['db.username'] . "<br>Details: " . mysqli_error($sql));
+mysqli_select_db($sql, $fnCfg['db.database'])
+	or die("Connected ok but failed to select database " . $fnCfg['db.database'] . "<br>Details: " . mysqli_error($sql));
+echo "Database connection succeeded!<br><br>";
 
-switch($stage)
-	{
+switch ($stage) {
 	case 0:
 		echo "<b style=\"color: red;\">Users Performing an Upgrade Please Note:</b><br>this will only update the database and not ";
 		echo "the files which you must do manually or with the shell-install/vm-upgrade scripts.</b><br><br>";
@@ -126,40 +115,34 @@ switch($stage)
 		echo "</form>";
 		exit();
 		break;
-		
+
 	case 1:
-		if ($_REQUEST['insttype']=="fresh")
-			{
+		if ($_REQUEST['insttype'] == "fresh") {
 			echo "<b>Fresh Install or Clean Update</b><br><br>";
 			echo "<b>Setting Up Schema...</b><br><br>";
-			sqlfile("schema.drop",$sql);
+			sqlfile("schema.drop", $sql);
 			echo "<b>Setting Up Defaults...</b><br><br>";
-			sqlfile("default",$sql);
-			if (isset($_REQUEST['example']))
-				{
+			sqlfile("default", $sql);
+			if (isset($_REQUEST['example'])) {
 				echo "<b>Setting Up Examples...</b><br><br>";
-				sqlfile("example",$sql);
-				}
+				sqlfile("example", $sql);
 			}
-		else if ($_REQUEST['insttype']=="upgrade")
-			{
+		} else if ($_REQUEST['insttype'] == "upgrade") {
 			echo "<b>Experimental Upgrade... Expect to See Errors</b><br>";
 			echo "Doesn't mean it hasn't worked if you see already exists/duplicate errors<br><br>";
 			echo "<b style=\"color: red;\">Basically ignore errors: 1050, 1060, 1068 and 1054</b><br><br>";
 			echo "<b>Importing New Schema (sans drop tables)</b><br><br>";
-			sqlfile("schema",$sql);
+			sqlfile("schema", $sql);
 			echo "<br><br><b>Doing Schema Upgrade</b><br><br>";
-			sqlfile("schema.upgrade",$sql);
+			sqlfile("schema.upgrade", $sql);
 			echo "<br><br>";
-			}
-		else echo "<b>Error: Incorrect or Unknown Installation Type!</b><br><br>";
-		
-		if (isset($_REQUEST['tracker']))
-			{
+		} else echo "<b>Error: Incorrect or Unknown Installation Type!</b><br><br>";
+
+		if (isset($_REQUEST['tracker'])) {
 			echo "<b>Enabling Usage Tracker</b><br><br>";
-			$q="INSERT INTO fnconfig(fnc_var,fnc_val) VALUES(\"freenats.tracker\",\"1\")";
-			mysqli_query($sql,$q);
-			}
+			$q = "INSERT INTO fnconfig(fnc_var,fnc_val) VALUES(\"freenats.tracker\",\"1\")";
+			mysqli_query($sql, $q);
+		}
 		echo "<br><br>";
 		echo "<b>CONGRATULATIONS!!</b><br><br>";
 		echo "Setup should now be complete. If you saw errors etc above please see the <a href=http://www.purplepixie.org/freenats/>";
@@ -167,14 +150,12 @@ switch($stage)
 		echo "<b>RENAME THIS FILE &quot;firstrun.php&quot; TO SOMETHING ELSE LIKE &quot;firstrun-.php&quot; TO STOP OTHERS RUNNING IT</b>";
 		echo "<br><br>";
 		echo "<a href=./>Click here to continue</a> - login admin password admin (click settings once logged in to change)<br><br>";
-		
-		
+
+
 		exit();
 		break;
-		
+
 	default:
 		echo "Sorry - unknown step in setup process!<br><br>";
 		exit();
-	}
-
-?>
+}

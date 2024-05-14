@@ -31,7 +31,7 @@ class TFNTimer
 
 	function Start()
 	{
-		$timeString = microtime(); // 0.000000 0000000
+		$timeString = microtime(true); // 0.000000 0000000
 		$timeArray = explode(" ", $timeString);
 		$this->StartSecs = $timeArray[1];
 		$this->StartMSecs = $timeArray[0];
@@ -39,7 +39,7 @@ class TFNTimer
 
 	function Stop()
 	{
-		$timeString = microtime();
+		$timeString = microtime(true);
 		$timeArray = explode(" ", $timeString);
 		$this->FinishSecs = $timeArray[1];
 		$this->FinishMSecs = $timeArray[0];

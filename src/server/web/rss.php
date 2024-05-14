@@ -26,8 +26,7 @@ $NATS->Start();
 
 $id = $NATS->RSS->GetIdFromCompound($_REQUEST['feed']);
 
-if ($id===false)
-{
+if ($id === false) {
 	echo "Error: Invalid Feed Specified";
 	exit();
 }
@@ -36,4 +35,3 @@ ob_clean();
 header("Content-type: text/xml");
 echo $NATS->RSS->Render($id);
 ob_end_flush();
-?>

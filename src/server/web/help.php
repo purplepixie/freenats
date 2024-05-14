@@ -38,4 +38,3 @@ echo "For more information see <a href=http://www.purplepixie.org/freenats/ targ
 echo "<a href=\"javascript:window.close()\">Close Window</a>";
 
 echo "</body></html>";
-?>

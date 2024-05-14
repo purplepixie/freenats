@@ -27,7 +27,7 @@ class NATS_RSS
 
 	function Create($name)
 	{
-		mt_srand(microtime() * 1000000);
+		mt_srand(microtime(true) * 1000000);
 		$allow = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
 		$alen = strlen($allow);
 		$key = "";

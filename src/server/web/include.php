@@ -20,6 +20,5 @@ along with Foobar.  If not, see www.gnu.org/licenses
 For more information see www.purplepixie.org/freenats
 -------------------------------------------------------------- */
 
-$BaseDir="../base/";
-require($BaseDir."nats.php");
-?>
+$BaseDir = "../base/";
+require($BaseDir . "nats.php");

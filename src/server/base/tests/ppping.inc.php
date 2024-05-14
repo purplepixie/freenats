@@ -157,7 +157,7 @@ class PPPing
 	 **/
 	function startTimer()
 	{
-		$now = microtime();
+		$now = microtime(true);
 		$timearray = explode(" ", $now);
 		$this->timer_start_sec = $timearray[1];
 		$this->timer_start_msec = $timearray[0];
@@ -168,7 +168,7 @@ class PPPing
 	 **/
 	function stopTimer()
 	{
-		$now = microtime();
+		$now = microtime(true);
 		$timearray = explode(" ", $now);
 
 		$finish_secs = $timearray[1];

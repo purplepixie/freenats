@@ -305,7 +305,7 @@ function DoTest($test, $param, $hostname = "", $timeout = -1, $params = 0, $node
 			break;
 
 		case "testrand":
-			mt_srand(microtime() * 1000000);
+			mt_srand(microtime(true) * 1000000);
 			if (($param == "") || ($param == 0))
 				$param = 100;
 			return mt_rand(0, $param);

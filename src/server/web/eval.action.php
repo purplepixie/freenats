@@ -23,52 +23,46 @@ For more information see www.purplepixie.org/freenats
 ob_start();
 require("include.php");
 $NATS->Start();
-if (!$NATS_Session->Check($NATS->DB))
-	{
+if (!$NATS_Session->Check($NATS->DB)) {
 	header("Location: ./?login_msg=Invalid+Or+Expired+Session");
 	exit();
-	}
-if ($NATS_Session->userlevel<5) UL_Error("Action Test Eval");
+}
+if ($NATS_Session->userlevel < 5) UL_Error("Action Test Eval");
 
 function BackIfSet()
 {
-if (isset($_REQUEST['back']))
-	{
-	header("Location: ".$_REQUEST['back']);
-	exit();
+	if (isset($_REQUEST['back'])) {
+		header("Location: " . $_REQUEST['back']);
+		exit();
 	}
 }
 
-switch ($_REQUEST['action'])
-	{
+switch ($_REQUEST['action']) {
 	case "create":
 		// screw this for the moment
 		// get the highest weight for this testid
 		//$q="SELECT weight FROM fneval WHERE testid=\"".ss($_REQUEST['testid'])."
-		$q="INSERT INTO fneval(testid,eoperator,evalue,eoutcome) VALUES(\"".ss($_REQUEST['testid'])."\",";
-		$q.="\"".ss($_REQUEST['eoperator'])."\",\"".ss($_REQUEST['evalue'])."\",\"".ss($_REQUEST['eoutcome'])."\")";
+		$q = "INSERT INTO fneval(testid,eoperator,evalue,eoutcome) VALUES(\"" . ss($_REQUEST['testid']) . "\",";
+		$q .= "\"" . ss($_REQUEST['eoperator']) . "\",\"" . ss($_REQUEST['evalue']) . "\",\"" . ss($_REQUEST['eoutcome']) . "\")";
 		$NATS->DB->Query($q);
 		//echo $q;
 		//exit();
-		if ($_REQUEST['testid'][0]=="L")
-			{
-			$ltid=substr($_REQUEST['testid'],1,128);
-			header("Location: localtest.edit.php?localtestid=".$ltid);
+		if ($_REQUEST['testid'][0] == "L") {
+			$ltid = substr($_REQUEST['testid'], 1, 128);
+			header("Location: localtest.edit.php?localtestid=" . $ltid);
 			exit();
-			}
+		}
 		BackIfSet();
 		header("Location: main.php");
 		exit();
 	case "delete":
-		$q="DELETE FROM fneval WHERE evalid=".ss($_REQUEST['evalid']);
+		$q = "DELETE FROM fneval WHERE evalid=" . ss($_REQUEST['evalid']);
 		$NATS->DB->Query($q);
 		BackIfSet();
-		if (isset($_REQUEST['back'])) header("Location: ".$_REQUEST['back']);
+		if (isset($_REQUEST['back'])) header("Location: " . $_REQUEST['back']);
 		else header("Location: main.php?message=Evaluator+Deleted");
 		exit();
 	default:
 		header("Location: main.php?message=Unknown+Test+Eval+Action");
 		exit();
-	}
-
-?>
+}
