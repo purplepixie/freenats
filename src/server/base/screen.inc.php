@@ -445,7 +445,7 @@ $cc=0;
 for ($a=0; $a<count($fnIcons); $a++)
 	{
 	if ($cc==0) echo "<tr>";
-	echo "<td valign=top align=center><img src=icons/".$fnIcons[$a]."><br>".$fnIcons[$a]."<br>";
+	echo "<td valign=top align=center><img src=natsicons/".$fnIcons[$a]."><br>".$fnIcons[$a]."<br>";
 	if ($a==$fnIcon_DefNode) echo "<i>Node Default</i> ";
 	if ($a==$fnIcon_DefGroup) echo "<i>Group Default</i>";
 	echo "</td>";
@@ -463,7 +463,7 @@ echo "</table>";
 
 function GetIcons()
 {
-$iconFiles=glob("icons/{*.gif,*.GIF,*.jpg,*.JPG,*.jpeg,*.JPEG,*.png,*.PNG}", GLOB_BRACE);
+$iconFiles=glob("natsicons/{*.gif,*.GIF,*.jpg,*.JPG,*.jpeg,*.JPEG,*.png,*.PNG}", GLOB_BRACE);
 for($a=0;$a<count($iconFiles);$a++)
 	$iconFiles[$a]=substr($iconFiles[$a],6);
 return $iconFiles;
@@ -481,7 +481,7 @@ for ($a=0; $a<count($iconFiles); $a++)
 	{
 	$icon=$iconFiles[$a];
 	if ($cc==0) echo "<tr>";
-	echo "<td valign=top align=center><img src=icons/".$icon."><br>".$icon."<br>";
+	echo "<td valign=top align=center><img src=\"natsicons/".$icon."\"><br>".$icon."<br>";
 	if ($icon==$fnIcons[$fnIcon_DefNode]) echo "<i>".$NATS->Lang->Item("node.default")."</i> ";
 	if ($a==$fnIcons[$fnIcon_DefGroup]) echo "<i>".$NATS->Lang->Item("group.default")."</i>";
 	echo "</td>";
@@ -530,7 +530,7 @@ echo "<table class=\"nptiny-al".$al."\">";
 echo "<tr><td valign=center align=center>";
 if ($jslink) echo "<a href=\"javascript:nodeClick('".$nodeid."');\">";
 else echo "<a href=node.php?nodeid=".$nodeid.">";
-echo "<img src=\"icons/".NodeIcon($nodeid)."\" border=0>";
+echo "<img src=\"natsicons/".NodeIcon($nodeid)."\" border=0>";
 echo "</a>";
 if ($text)
 	{
@@ -601,7 +601,7 @@ $al=$NATS->GroupAlertLevel($groupid);
 echo "<table class=\"nptiny-al".$al."\">";
 echo "<tr><td valign=center align=center>";
 echo "<a href=group.php?groupid=".$groupid.">";
-echo "<img src=\"icons/".GroupIcon($groupid)."\" border=0>";
+echo "<img src=\"natsicons/".GroupIcon($groupid)."\" border=0>";
 echo "</a>";
 if ($text)
 	{
@@ -626,7 +626,7 @@ echo "<tr><td align=right>".$NATS->Lang->Item("status")."</td><td align=left>";
 echo "<b class=\"al".$al."\">".oText($al)."</b></td></tr>";
 echo "</table></td>";
 //echo "<td align=left valign=top align=right width=60>";
-//echo "<img src=icons/".GroupIcon($groupid).">";
+//echo "<img src=natsicons/".GroupIcon($groupid).">";
 //echo "</td>";
 echo "</tr>";
 echo "</table>";
@@ -654,7 +654,7 @@ echo "<tr><td align=right>".$NATS->Lang->Item("status")." :</td><td align=left>"
 echo "<b class=\"al".$al."\">".oText($al)."</b></td></tr>";
 echo "</table></td>";
 //echo "<td align=left valign=top align=right width=60>";
-//echo "<img src=icons/".GroupIcon($groupid).">";
+//echo "<img src=natsicons/".GroupIcon($groupid).">";
 //echo "</td>";
 echo "</tr>";
 echo "</table>";
