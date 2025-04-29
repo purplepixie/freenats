@@ -3,7 +3,7 @@
 /* -------------------------------------------------------------
 This file is part of FreeNATS
 
-FreeNATS is (C) Copyright 2008-2016 PurplePixie Systems
+FreeNATS is (C) Copyright 2008-2025 PurplePixie Systems
 
 FreeNATS is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -39,7 +39,7 @@ $nodeCfg['phpscandir'] = "site/";
 $nodeCfg['xmlscan'] = false;
 $nodeCfg['xmlscandir'] = "xml/";
 
-$nodeCfg['version'] = "0.09";
+$nodeCfg['version'] = "0.10";
 
 $nodeCfg['uptime']	=	true;
 $nodeCfg['disk']	=	true;
@@ -399,8 +399,8 @@ if ($nodeCfg['net']) {
 				if ($trtx == "") $trtx = 0;
 				if ($trtt == "") $trtt = 0;
 			}
+			@fclose($fp);
 		} else $trlvl = -1;
-		@fclose($fp);
 
 		// write my file
 		if ($fileUpdate) {
@@ -472,7 +472,8 @@ if ($pull) {
 
 	$request = array("http" => array(
 		"method" => "POST",
-		"header" => "Content-type: application/x-www-form-urlencoded", "content" => $data
+		"header" => "Content-type: application/x-www-form-urlencoded",
+		"content" => $data
 	));
 	$context = stream_context_create($request);
 	$fp = fopen($nodeCfg['push_target'], 'rb', false, $context);
