@@ -2,7 +2,7 @@
 /* -------------------------------------------------------------
 This file is part of FreeNATS
 
-FreeNATS is (C) Copyright 2008 PurplePixie Systems
+FreeNATS is (C) Copyright 2008-2026 PurplePixie Systems
 
 FreeNATS is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -38,7 +38,8 @@ class TNATS_DB
 	function Connect()
 	{
 		global $fnCfg;
-		$this->sql = mysqli_connect($fnCfg['db.server'], $fnCfg['db.username'], $fnCfg['db.password'])
+		$port = isset($fnCfg['db.port']) ? $fnCfg['db.port'] : null;
+		$this->sql = mysqli_connect($fnCfg['db.server'], $fnCfg['db.username'], $fnCfg['db.password'], $port)
 			or die("Cannot connect to MySQL server");
 		mysqli_select_db($this->sql, $fnCfg['db.database'])
 			or die("Cannot select MySQL database");

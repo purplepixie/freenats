@@ -1,4 +1,4 @@
--- FreeNATS freenats-1.30.20b Schema
+-- FreeNATS freenats-1.31.00b Schema
 -- No DROP TABLES - suitable for upgrade
 -- MySQL dump 10.13  Distrib 5.7.39, for osx11.0 (x86_64)
 --
@@ -485,4 +485,4 @@ CREATE TABLE `fnviewitem` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-05-30 19:38:54
+-- Dump completed on 2025-04-29 17:05:19
