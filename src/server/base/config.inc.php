@@ -26,6 +26,7 @@ $fnCfg['db.server']	=	"localhost";
 $fnCfg['db.username']	=	"freenats";
 $fnCfg['db.password']	=	"freenats";
 $fnCfg['db.database']	=	"freenats";
+// $fnCfg['db.port']    =     3306; // optional configuration otherwise will use default (null also forces default)
 
 /* -- ok from version 1.01.9 onwards you can just drop new icons into the server/web/icons directory and they will
       appear. This is left in for the DEFAULTS only - if you want to change them just change the FILE NAMES. Rather
