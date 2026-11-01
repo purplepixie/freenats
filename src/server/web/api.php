@@ -73,6 +73,11 @@ switch ($mode) {
 		lo("<freenats-data>");
 		break;
 
+	case "json":
+		header("Content-type: application/json");
+		$json = array();
+		break;
+
 	case "js":
 		if (isset($_REQUEST['dataid'])) $dataid = $_REQUEST['dataid'];
 		else {
@@ -103,8 +108,10 @@ for ($a = 0; $a < $query_count; $a++) {
 				lo($dataid . "[" . $a . "]=new Array();");
 			} else if ($mode == "xml") lo("<nodelist count=\"" . $NATS->DB->Num_Rows($r) . "\" query=\"" . $a . "\">");
 			$ctr = 0;
+			$jnodes = array();
 			while ($row = $NATS->DB->Fetch_Array($r)) {
 				$nodealert = $NATS->NodeAlertLevel($row['nodeid']);
+				if ($mode == "json") $jnodes[] = array("nodeid" => $row['nodeid'], "alertlevel" => $nodealert);
 				if ($mode == "xml") lo("<node nodeid=\"" . $row['nodeid'] . "\" alertlevel=\"" . $nodealert . "\">" . $row['nodeid'] . "</node>");
 				else if ($mode == "js") {
 					lo($dataid . "[" . $a . "][" . $ctr . "]=new Array();");
@@ -114,6 +121,7 @@ for ($a = 0; $a < $query_count; $a++) {
 				$ctr++;
 			}
 			if ($mode == "xml") lo("</nodelist>");
+			else if ($mode == "json") $json[] = array("query" => $a, "type" => "nodelist", "nodes" => $jnodes);
 			$NATS->DB->Free($r);
 			break;
 
@@ -126,9 +134,11 @@ for ($a = 0; $a < $query_count; $a++) {
 					lo($dataid . "[" . $a . "]=new Array();");
 				} else if ($mode == "xml") lo("<node nodeid=\"" . $nodedata['nodeid'] . "\" query=\"" . $a . "\">");
 				$ctr = 0;
+				$jdata = array();
 				foreach ($nodedata as $key => $val) {
 					if (!is_numeric($key)) // pesky double-arrays avoided
 					{
+						if ($mode == "json") $jdata[$key] = $val;
 						if ($mode == "xml") lo(" <" . $key . ">" . $val . "</" . $key . ">");
 						else if ($mode == "js") {
 							lo($dataid . "[" . $a . "][" . $ctr . "]=new Array;");
@@ -139,6 +149,7 @@ for ($a = 0; $a < $query_count; $a++) {
 					}
 				}
 				if ($mode == "xml") lo("</node>");
+				else if ($mode == "json") $json[] = array("query" => $a, "type" => "node", "data" => $jdata);
 			}
 			break;
 
@@ -150,9 +161,11 @@ for ($a = 0; $a < $query_count; $a++) {
 					lo($dataid . "[" . $a . "]=new Array();");
 				} else if ($mode == "xml") lo("<group groupid=\"" . $groupdata['groupid'] . "\" query=\"" . $a . "\">");
 				$ctr = 0;
+				$jdata = array();
 				foreach ($groupdata as $key => $val) {
 					if (!is_numeric($key)) // pesky double-arrays avoided
 					{
+						if ($mode == "json") $jdata[$key] = $val;
 						if ($mode == "xml") lo(" <" . $key . ">" . $val . "</" . $key . ">");
 						else if ($mode == "js") {
 							lo($dataid . "[" . $a . "][" . $ctr . "]=new Array;");
@@ -163,6 +176,7 @@ for ($a = 0; $a < $query_count; $a++) {
 					}
 				}
 				if ($mode == "xml") lo("</group>");
+				else if ($mode == "json") $json[] = array("query" => $a, "type" => "group", "data" => $jdata);
 			}
 			break;
 
@@ -233,9 +247,11 @@ for ($a = 0; $a < $query_count; $a++) {
 					lo($dataid . "[" . $a . "][1]=new Array();"); // Values
 				} else if ($mode == "xml") lo("<test testid=\"" . $testdata['testid'] . "\" nodeid=\"" . $testdata['nodeid'] . "\" query=\"" . $a . "\">");
 				$ctr = 0;
+				$jdata = array();
 				foreach ($testdata as $key => $val) {
 					if (!is_numeric($key)) // pesky double-arrays avoided
 					{
+						if ($mode == "json") $jdata[$key] = $val;
 						if ($mode == "xml") lo(" <" . $key . ">" . $val . "</" . $key . ">");
 						else if ($mode == "js") {
 							lo($dataid . "[" . $a . "][0][" . $ctr . "]='" . $key . "';");
@@ -245,6 +261,7 @@ for ($a = 0; $a < $query_count; $a++) {
 					}
 				}
 				if ($mode == "xml") lo("</test>");
+				else if ($mode == "json") $json[] = array("query" => $a, "type" => "test", "data" => $jdata);
 			}
 			break;
 
@@ -255,17 +272,20 @@ for ($a = 0; $a < $query_count; $a++) {
 			if ($alerts === false) $count = 0; // as showing a 1 in count otherwise
 			if ($mode == "xml") lo("<alerts count=\"" . $count . "\" query=\"" . $a . "\">");
 			else if ($mode == "js") lo($dataid . "[" . $a . "]=new Array();");
+			$jalerts = array();
 
 			if ($alerts) // some were returned
 			{
 				// nodeid alertlevel	
 				for ($alctr = 0; $alctr < $count; $alctr++) {
+					if ($mode == "json") $jalerts[] = array("nodeid" => $alerts[$alctr]['nodeid'], "alertlevel" => $alerts[$alctr]['alertlevel']);
 					if ($mode == "xml") lo(" <node nodeid=\"" . $alerts[$alctr]['nodeid'] . "\" alertlevel=\"" . $alerts[$alctr]['alertlevel'] . "\">" . $alerts[$alctr]['nodeid'] . "</node>");
 					else if ($mode == "js") lo($dataid . "[" . $a . "][" . $alctr . "]='" . $alerts[$alctr]['nodeid'] . "';");
 				}
 			}
 
 			if ($mode == "xml") lo("</alerts>");
+			else if ($mode == "json") $json[] = array("query" => $a, "type" => "alerts", "count" => $count, "alerts" => $jalerts);
 
 			break;
 
@@ -289,8 +309,11 @@ for ($a = 0; $a < $query_count; $a++) {
 			}
 
 			$ctr = 0;
+			$jrecords = array();
 			while ($row = $NATS->DB->Fetch_Array($r)) {
-				if ($mode == "xml") {
+				if ($mode == "json") {
+					$jrecords[] = array("recordx" => $row['recordx'], "testvalue" => $row['testvalue'], "alertlevel" => $row['alertlevel']);
+				} else if ($mode == "xml") {
 					lo(" <record recordx=\"" . $row['recordx'] . "\" alertlevel=\"" . $row['alertlevel'] . "\">" . $row['testvalue'] . "</record>");
 				} else {
 					lo($dataid . "[" . $a . "][" . $ctr . "]=new Array();");
@@ -303,6 +326,7 @@ for ($a = 0; $a < $query_count; $a++) {
 			$NATS->DB->Free($r);
 
 			if ($mode == "xml") lo("</testdata>");
+			else if ($mode == "json") $json[] = array("query" => $a, "type" => "testdata", "testid" => $_REQUEST['param'][$a], "count" => $count, "records" => $jrecords);
 
 			break;
 	}
@@ -311,6 +335,7 @@ for ($a = 0; $a < $query_count; $a++) {
 // Footer and Finish
 
 if ($mode == "xml") lo("</freenats-data>");
+else if ($mode == "json") echo json_encode($json);
 else if ($mode == "js") {
 	if (isset($_REQUEST['callback'])) {
 		lo($_REQUEST['callback'] . "(" . $dataid . ");");
